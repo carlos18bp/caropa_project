@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia'
-import { get_request } from "./services/request_http";
+import { defineStore } from 'pinia';
+import { get_request } from './services/request_http';
 
 export const useProductStore = defineStore('productStore', {
   state: () => ({
@@ -9,39 +9,40 @@ export const useProductStore = defineStore('productStore', {
   }),
   getters: {
     /**
-     * Filters products based on current categories and search query.
-     * 
-     * @param {object} state - The state object.
-     * @returns {array} - The filtered list of products.
+     * Get product by id.
+     * @param {object} state - State.
+     * @returns {function} - A function that takes a product id and returns the product.
      */
-    filterProducts: (state) => {
-      let filtered = state.products;
-
-      if (state.currentCategories.length > 0) {
-        filtered = filtered.filter(product => state.currentCategories.includes(product.category));
-      }
-
-      if (state.searchQuery) {
-        filtered = filtered.filter(product => product.title.toLowerCase().includes(state.searchQuery.toLowerCase()));
-      }
-
-      return filtered;
+    productById: (state) => (productId) => {
+      return state.products.find((product) => product.id === productId);
     },
     /**
-     * Retrieves the unique list of categories from the products.
+     * Get all products by a given reference.
+     * @param {object} state - The state object.
+     * @returns {function} - A function that takes a reference and returns the list of products.
+     */
+    productsByRef: (state) => (ref) => {
+      return state.products.filter(product => product.ref === ref);
+    },
+    /**
+     * Get a unique list of products by reference.
      * 
      * @param {object} state - The state object.
-     * @returns {array} - The list of categories.
+     * @returns {array} - The list of unique products by reference.
      */
-    categories: (state) => {
-      const categorySet = new Set();
-      if (Array.isArray(state.products)) {
-        state.products.forEach(product => {
-          categorySet.add(product.category);
-        });
-      }
-      return Array.from(categorySet);
-    }
+    uniqueProductsByRef: (state) => {
+      const refSet = new Set();
+      const uniqueProducts = [];
+
+      state.products.forEach(product => {
+        if (!refSet.has(product.ref)) {
+          refSet.add(product.ref);
+          uniqueProducts.push(product);
+        }
+      });
+
+      return uniqueProducts;
+    },
   },
   actions: {
     /**
@@ -72,4 +73,4 @@ export const useProductStore = defineStore('productStore', {
       this.searchQuery = query;
     }
   }
-})
+});

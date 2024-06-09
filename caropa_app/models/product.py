@@ -2,16 +2,17 @@ import re
 from django.db import models
 from django_attachments.fields import GalleryField
 from django.core.exceptions import ValidationError
-from caropa_app.models import ProductDetail, Category, Size, Color, ProductByRef
+from caropa_app.models import ProductDetail, Category, Size, Color
+from django_attachments.models import Library
 
 def validate_ref(value):
     if not re.match(r'^[A-Z0-9]+$', value):
         raise ValidationError('Reference must contain only uppercase letters and numbers, and no spaces.')
 
 class Product(models.Model):
-    ref = models.ForeignKey(ProductByRef, related_name='products', on_delete=models.PROTECT)
-    product_detail = models.ForeignKey(ProductDetail, related_name='products', on_delete=models.CASCADE)
+    ref = models.CharField(max_length=20, validators=[validate_ref])    
     categories = models.ManyToManyField(Category, related_name='products')
+    product_detail = models.ForeignKey(ProductDetail, related_name='products', on_delete=models.PROTECT)
     size = models.ForeignKey(Size, related_name='products', on_delete=models.PROTECT)
     color = models.ForeignKey(Color, related_name='products', on_delete=models.PROTECT)
     
@@ -21,8 +22,9 @@ class Product(models.Model):
         return f'{self.ref} ({self.product_detail.name})'
 
     def delete(self, *args, **kwargs):
-        if self.product_detail:
-            self.product_detail.delete()
-        if self.gallery:
-            self.gallery.delete()
+        try:
+            if self.gallery:
+                self.gallery.delete()
+        except Library.DoesNotExist:
+            pass
         super(Product, self).delete(*args, **kwargs)

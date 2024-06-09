@@ -1,7 +1,7 @@
 from faker import Faker
 from django.core.management.base import BaseCommand
 from django.core.files import File
-from caropa_app.models import Product, ProductDetail, Category, Size, Color, ProductByRef
+from caropa_app.models import Product, ProductDetail, Category, Size, Color
 from django_attachments.models import Library, Attachment
 import random
 import os
@@ -25,8 +25,8 @@ class Command(BaseCommand):
         ]
 
         # List of predefined colors and sizes
-        predefined_colors = ['RED', 'BLUE', 'YELLOW', 'GREEN', 'ORANGE', 'PURPLE', 'BLACK', 'WHITE', 'PINK', 'BROWN']
-        predefined_sizes = ['S', 'M', 'L', 'XL']
+        predefined_colors = ['red', 'blue', 'yellow', 'green', 'orange', 'violet', 'black', 'white', 'pink', 'rose']
+        predefined_sizes = ['Small', 'Medium', 'Large', 'Extra Large']
 
         # Ensure the test images exist
         for image_path in test_images:
@@ -35,25 +35,17 @@ class Command(BaseCommand):
                 return
 
         for _ in range(number_of_products):
-            # Create or get a ProductByRef
             ref_value = 'REF' + str(random.randint(1000, 9999))
-            product_by_ref, _ = ProductByRef.objects.get_or_create(ref=ref_value)
 
             # Create a new ProductDetail
             product_detail = ProductDetail.objects.create(
-                name=fake.word(),
-                description=fake.text(max_nb_chars=300),
+                name=fake.word().capitalize(),
+                description=fake.text(max_nb_chars=60),
                 price=fake.pydecimal(left_digits=4, right_digits=2, positive=True)
             )
 
             # Create or get a random Category
             category, _ = Category.objects.get_or_create(name=fake.word())
-
-            # Select a random predefined size
-            size, _ = Size.objects.get_or_create(name=random.choice(predefined_sizes))
-
-            # Select a random predefined color
-            color, _ = Color.objects.get_or_create(name=random.choice(predefined_colors))
 
             # Create a new gallery (library)
             gallery = Library.objects.create(title=fake.word())
@@ -69,18 +61,34 @@ class Command(BaseCommand):
                         rank=0  # You can set rank as needed
                     )
 
-            # Now create the product with the gallery
-            new_product = Product.objects.create(
-                ref=product_by_ref,
-                product_detail=product_detail,
-                size=size,
-                color=color,
-                gallery=gallery  # Associate the gallery with the product
-            )
+            used_combinations = set()
 
-            # Add the category to the product
-            new_product.categories.add(category)
+            for i in range(5):  # Create 5 products with the same reference
 
-            self.stdout.write(self.style.SUCCESS(f'Product "{new_product}" created with gallery "{gallery}"'))
+                # Select a unique predefined size and color combination
+                while True:
+                    size_name = random.choice(predefined_sizes)
+                    color_name = random.choice(predefined_colors)
+                    combination = (size_name, color_name)
+                    if combination not in used_combinations:
+                        used_combinations.add(combination)
+                        break
+
+                size, _ = Size.objects.get_or_create(name=size_name)
+                color, _ = Color.objects.get_or_create(name=color_name)
+
+                # Now create the product with the gallery
+                new_product = Product.objects.create(
+                    ref=ref_value,
+                    product_detail=product_detail,
+                    size=size,
+                    color=color,
+                    gallery=gallery  # Associate the gallery with the product
+                )
+
+                # Add the category to the product
+                new_product.categories.add(category)
+
+                self.stdout.write(self.style.SUCCESS(f'Product "{new_product}" created with gallery "{gallery}"'))
 
         self.stdout.write(self.style.SUCCESS(f'"{Product.objects.count()}" Product records created'))

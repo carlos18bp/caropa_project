@@ -5,7 +5,7 @@
 <script setup>
   import { onMounted } from 'vue'
   import { RouterView } from "vue-router";
-  import { useProductStore } from '@/store/product';
+  import { useProductStore } from '@/stores/product';
 
   // Initialize the product store
   const prductStore = useProductStore()
