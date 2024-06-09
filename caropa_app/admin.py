@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, ProductDetail, Category, Size, Color, ProductByRef
+from .models import Product, ProductDetail, Category, Size, Color
 from .forms import ProductForm
 from django_attachments.admin import AttachmentsAdminMixin
 
@@ -20,4 +20,3 @@ admin.site.register(ProductDetail)
 admin.site.register(Category)
 admin.site.register(Size)
 admin.site.register(Color)
-admin.site.register(ProductByRef)

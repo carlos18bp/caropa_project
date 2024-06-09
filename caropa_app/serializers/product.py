@@ -1,10 +1,9 @@
 from rest_framework import serializers
 from caropa_app.models import Product
-from caropa_app.serializers import ProductDetailSerializer, ProductByRefSerializer, CategorySerializer, SizeSerializer, ColorSerializer
+from caropa_app.serializers import ProductDetailSerializer, CategorySerializer, SizeSerializer, ColorSerializer
 
 class ProductSerializer(serializers.ModelSerializer):
     product_detail = ProductDetailSerializer()
-    ref = ProductByRefSerializer()
     categories = CategorySerializer(many=True)
     size = SizeSerializer()
     color = ColorSerializer()
