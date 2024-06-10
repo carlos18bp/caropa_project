@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-  import { onMounted } from 'vue'
+  import { onMounted } from 'vue';
   import { RouterView } from "vue-router";
   import { useProductStore } from '@/stores/product';
 
@@ -14,6 +14,6 @@
    * Fetch the list of products from the store when the component is mounted.
    */
   onMounted(() => {
-    prductStore.fetchProducts()
+    prductStore.fetchProducts();
   })
 </script>
