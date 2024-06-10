@@ -160,7 +160,9 @@
           </p>
           <p class="text-lg">
             Discover our story |
-            <a href="#" class="text-black underline">About Us</a>
+            <router-link :to="{ name: 'about_us' }" class="text-black underline">
+              About Us
+            </router-link>
           </p>
         </div>
       </div>
