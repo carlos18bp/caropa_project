@@ -43,6 +43,15 @@ export const useProductStore = defineStore('productStore', {
 
       return uniqueProducts;
     },
+    /**
+     * Get all trending products.
+     * 
+     * @param {object} state - The state object.
+     * @returns {array} - The list of products that are trending.
+     */
+    trendingProducts: (state) => {
+      return state.products.filter(product => product.trending_now);
+    },
   },
   actions: {
     /**
@@ -52,6 +61,7 @@ export const useProductStore = defineStore('productStore', {
       try {
         const data = await get_request('products/');
         this.products = Array.isArray(data) ? data : []; // Ensure products is always an array
+        console.log(this.products)
       } catch (error) {
         console.error('Failed to fetch products:', error);
       }
