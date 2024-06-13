@@ -3,7 +3,6 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django_attachments.fields import GalleryField
 from django_attachments.models import Library
-from .product import Product 
 
 def validate_title(value):
     if not re.match(r'^[A-Z0-9 ]+$', value):
@@ -18,26 +17,23 @@ class Banner(models.Model):
 class HomeCategories(models.Model):
     title = models.CharField(max_length=100, validators=[validate_title])
     image = models.ImageField(upload_to='Home/categories/')
-    products = models.ManyToManyField(Product, related_name='home_categories')
 
     def __str__(self):
         return self.title
-
-    def clean(self):
-        if HomeCategories.objects.count() >= 12:
-            raise ValidationError("You can only create a maximum of 12 HomeCategories.")
-
+    
     class Meta:
         verbose_name = "Home Category"
         verbose_name_plural = "Home Categories"
 
 
 class Home(models.Model):
-    banners = models.ManyToManyField(Banner, related_name='home_banners')
     carousel_presentation = GalleryField(related_name='homes_with_carousel', on_delete=models.CASCADE)
-    section_3_title = models.CharField(max_length=100, validators=[validate_title])
+    section_3_title = models.CharField(max_length=100)
     section_3_description = models.TextField()
     section_3_gallery = GalleryField(related_name='homes_with_section_3_gallery', on_delete=models.CASCADE)
+    section_5_title = models.CharField(max_length=100)
+    section_5_description = models.TextField()
+    section_5_image = models.ImageField(upload_to='Home/images/')
 
     def __str__(self):
         return f'Home {self.id}'
