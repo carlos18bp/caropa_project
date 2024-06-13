@@ -8,14 +8,15 @@
             </div>
         </div>
         <div class="grow flex justify-center items-center gap-8">
-            <a 
-            v-for="(category, index) in categories" 
-            :key="category.id" 
-            :class="{
-                'inline-block font-famil-semibold text-lg cursor-pointer': true, 
-                'inline-block font-famil-semibold text-lg text-primary': index === categories.length - 1
+            <a v-for="category in categories" :key="category.id"
+                @click="filterProducts(category)" 
+                class="inline-block font-famil-semibold text-lg uppercase"
+                :class="{
+                'text-primary': selectedCategory === category, 
+                'hover:text-yellow-300': selectedCategory !== category, 
+                'cursor-pointer': true
                 }">
-                {{ category.name }}
+                    {{ category }}
             </a>
         </div>
         <div class="flex items-center justify-end gap-6">
@@ -26,15 +27,34 @@
 </template>
 
 <script setup>
-import { ShoppingBagIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
-import { useHomeStore } from '@/stores/home';
-import { ref, onMounted } from 'vue';
+    import { computed, onMounted, ref } from 'vue';
+    import { ShoppingBagIcon, MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
+    import { useProductStore } from "@/stores/product";
+    import { useRouter, useRoute } from 'vue-router';  
 
-const homeStore = useHomeStore();
-const categories = ref([]);
+    const productStore = useProductStore();
+    const categories = computed(() => productStore.primaryCategories);
+    /**
+     * Router instance
+     */
+    const router = useRouter();
+    const route = useRoute();
 
-onMounted(async () => {
-    await homeStore.fetchHome();
-    categories.value = homeStore.header_categories;
-});
+    const selectedCategory = computed(() => productStore.primaryCategorySeleted);
+
+    onMounted(async () => {
+        await productStore.fetchProducts();
+    });
+
+    /**
+     * Filters products based on selected category
+     * @param {String} category - The selected category
+     */
+     const filterProducts = (category) => {
+        if (route.name !== 'catalog') {
+            router.push({ name: 'catalog' });
+        }
+        productStore.primaryCategorySeleted = category;
+        productStore.filterProductsByCategory();        
+    };
 </script>

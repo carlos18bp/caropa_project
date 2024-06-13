@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import Product, ProductDetail, Category, Size, Color, Home, HomeCategories, Banner
 from .forms import ProductForm, HomeForm
 from django_attachments.admin import AttachmentsAdminMixin
+from .forms import ProductForm
+from .models import Product, ProductDetail, Category, Size, Color
 
 admin.site.site_header = "Caropa Project"
 admin.site.site_title = "Caropa Project"

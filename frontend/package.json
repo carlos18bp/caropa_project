@@ -15,11 +15,11 @@
     "bootstrap-icons": "^1.11.3",
     "dynamic-marquee": "^2.6.3",
     "flowbite": "^2.3.0",
-    "gsap": "^3.12.5",
     "pinia": "^2.1.7",
-    "sweetalert2": "^11.11.0",
+    "sweetalert2": "^11.11.1",
     "swiper": "^11.1.4",
     "vue": "^3.4.21",
+    "vue-3-slider-component": "^1.0.0",
     "vue-router": "^4.3.2",
     "vue3-google-map": "^0.20.0",
     "vue3-marquee": "^4.2.0"

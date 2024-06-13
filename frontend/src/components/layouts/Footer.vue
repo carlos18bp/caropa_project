@@ -27,24 +27,32 @@
                     <h3 class="text-sm font-medium leading-6 text-white">COMPANY</h3>
                     <ul role="list" class="mt-6 grid grid-cols-1 gap-4 font-regular text-white text-sm">
                     <li>
-                        <a href="#" class="leading-6">Shop</a>
+                        <a @click="goTo('catalog')" class="cursor-pointer">Shop</a>
                     </li>
                     <li>
-                        <a href="#" class="leading-6">About</a>
+                        <a @click="goTo('about_us')" class="cursor-pointer">About Us</a>
                     </li>
                     <li>
-                        <a href="#" class="leading-6e">Contact</a>
+                        <a  class="cursor-pointer"
+                            data-modal-toggle="contact_modal"
+                            data-modal-target="contact_modal"> 
+                            Contact
+                        </a>
+                        <ContactModel></ContactModel>
                     </li>
                     <li>
-                        <a href="#" class="leading-6">Blue Mom</a>
+                        <a href="#" class="cursor-pointer">Blue Mom</a>
                     </li>
                     </ul>
                 </div>
                 <div class="mt-10 md:mt-0">
                     <h3 class="text-sm font-medium leading-6 text-white">NAVIGATE</h3>
                     <ul role="list" class="mt-6 grid grid-cols-2 gap-4 font-regular text-white text-sm">
-                    <li v-if="categories" v-for="category in categories">
-                        <a href="#" class="leading-6">{{ category.name }}</a>
+                    <li v-for="category in categories">
+                        <a @click="filterProducts(category)" 
+                            class="cursor-pointer">
+                            {{ category }}
+                        </a>
                     </li>
                     </ul>
                 </div>
@@ -70,14 +78,50 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useHomeStore } from '@/stores/home'
+    import ContactModel from "@/components/ContactModel.vue";
+    import { computed, onMounted } from 'vue';
+    import { useProductStore } from "@/stores/product";
+    import { useRouter, useRoute } from 'vue-router';
 
-const homeStore = useHomeStore();
-const categories = ref([])
+    const productStore = useProductStore();
+    /**
+     * Router instance
+     */
+    const router = useRouter();
+    const route = useRoute();
+    const categories = computed(() => productStore.primaryCategories);
 
-onMounted( async () => {
-    await homeStore.fetchHome();
-    categories.value = homeStore.header_categories;
-});
+    onMounted( async () => {
+        await productStore.fetchProducts();
+    });
+
+    const goTo = (route) => {
+        router.push({ name: route });
+        scrollToTop();
+    };
+
+    /**
+     * Filters products based on selected category
+     * @param {String} category - The selected category
+     */
+    const filterProducts = (category) => {
+        if (route.name !== 'catalog') {
+            router.push({ name: 'catalog' });
+        }
+        scrollToTop();
+        productStore.primaryCategorySeleted = category;
+        productStore.filterProductsByCategory();        
+    };
+
+    const scrollToTop = () => {
+        const scrollDuration = 2500; // Duration in milliseconds
+        const scrollStep = -window.scrollY / (scrollDuration / 15);
+        const scrollInterval = setInterval(() => {
+            if (window.scrollY !== 0) {
+            window.scrollBy(0, scrollStep);
+            } else {
+            clearInterval(scrollInterval);
+            }
+        }, 15);
+    };
 </script>

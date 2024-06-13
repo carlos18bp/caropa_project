@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from caropa_app.models import ProductDetail
+from rest_framework import serializers
 
 class ProductDetailSerializer(serializers.ModelSerializer):
     class Meta:

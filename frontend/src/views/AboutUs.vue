@@ -2,6 +2,7 @@
   <Header></Header>
   <div class="m-12 space-y-12">
     <div class="flex">
+
       <!-- Text content -->
       <div class="w-1/2">
         <h2 class="text-2xl font-semibold mb-4">WHO WE ARE</h2>
@@ -39,6 +40,7 @@
           part of our community that celebrates diversity and female strength.
         </p>
       </div>
+
       <!-- Image content -->
       <div class="flex justify-center items-start w-1/2">
         <img
@@ -49,6 +51,7 @@
       </div>
     </div>
     <div class="flex">
+
       <!-- Image content -->
       <div class="flex justify-center items-start w-1/2">
         <img
@@ -57,6 +60,7 @@
           class="rounded-full shadow-lg object-cover w-2/3"
         />
       </div>
+      
       <!-- Text content -->
       <div class="w-1/2 text-right">
         <h2 class="text-2xl font-semibold mb-4">

@@ -1,6 +1,6 @@
-from rest_framework import serializers
 from caropa_app.models import Product
 from caropa_app.serializers import ProductDetailSerializer, CategorySerializer, SizeSerializer, ColorSerializer
+from rest_framework import serializers
 
 class ProductSerializer(serializers.ModelSerializer):
     product_detail = ProductDetailSerializer()
@@ -24,11 +24,3 @@ class ProductSerializer(serializers.ModelSerializer):
         if obj.gallery:
             return [request.build_absolute_uri(attachment.file.url) for attachment in obj.gallery.attachment_set.all()]
         return []
-
-# Ejemplo de cómo usar el serializador:
-# from rest_framework.renderers import JSONRenderer
-
-# product_instance = Product.objects.first()
-# serializer = ProductSerializer(product_instance, context={'request': request})
-# json_data = JSONRenderer().render(serializer.data)
-# print(json_data)
