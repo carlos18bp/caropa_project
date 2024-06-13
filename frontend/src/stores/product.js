@@ -43,6 +43,15 @@ export const useProductStore = defineStore('productStore', {
 
       return uniqueProducts;
     },
+    /**
+     * Get all trending products.
+     * 
+     * @param {object} state - The state object.
+     * @returns {array} - The list of products that are trending.
+     */
+    trendingProducts: (state) => {
+      return state.products.filter(product => product.trending_now);
+    },
   },
   actions: {
     /**

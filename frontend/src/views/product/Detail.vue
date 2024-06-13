@@ -147,26 +147,7 @@
     <ProductCarousel></ProductCarousel>
 
     <!-- Last content -->
-    <div class="px-4 sm:px-6 lg:px-8 py-8">
-      <div class="flex">
-        <div class="w-4/5">
-          <img src="@/assets/images/product/image1.png" alt="Image 1" />
-        </div>
-        <div class="flex flex-col justify-center items-center space-y-8">
-          <img src="@/assets/images/logo2.png" alt="Logo 3" class="w-56" />
-          <p class="text-lg text-gray-700 text-center">
-            Learn more about our brand's journey, values, and commitment to
-            quality fashion.
-          </p>
-          <p class="text-lg">
-            Discover our story |
-            <router-link :to="{ name: 'about_us' }" class="text-black underline">
-              About Us
-            </router-link>
-          </p>
-        </div>
-      </div>
-    </div>
+    <AboutShortCut></AboutShortCut>
   </div>
 
   <Footer></Footer>
@@ -176,6 +157,7 @@
   import Header from "@/components/layouts/Header.vue";
   import Footer from "@/components/layouts/Footer.vue";
   import ProductCarousel from "@/components/ProductCarousel.vue";
+  import AboutShortCut from "@/components/AboutShortCut.vue";
   import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
   import { onMounted, ref, reactive, computed } from "vue";
   import { useProductStore } from "@/stores/product";
