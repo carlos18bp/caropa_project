@@ -33,7 +33,15 @@
         </div>
       </div>
       <div class="py-4 flex justify-center items-center gap-8">
-        <a v-for="(category, index) in categories" :key="category.id" :class="{'inline-block font-famil-semibold text-lg cursor-pointer': true, 'inline-block font-famil-semibold text-lg text-primary': index === categories.length - 1}">{{ category.name }}</a>
+        <a 
+        v-for="(category, index) in categories" 
+        :key="category.id" 
+        :class="{
+            'inline-block font-famil-semibold text-lg cursor-pointer': true, 
+            'inline-block font-famil-semibold text-lg text-primary': index === categories.length - 1
+            }">
+            {{ category.name }}
+        </a>
       </div>
     </header>
 </template>

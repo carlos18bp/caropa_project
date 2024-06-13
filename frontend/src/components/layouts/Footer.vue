@@ -43,35 +43,8 @@
                 <div class="mt-10 md:mt-0">
                     <h3 class="text-sm font-medium leading-6 text-white">NAVIGATE</h3>
                     <ul role="list" class="mt-6 grid grid-cols-2 gap-4 font-regular text-white text-sm">
-                    <li>
-                        <a href="#" class="leading-6">Handmade</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Trousers</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Skirts</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Swimwear</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Denim</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Sets</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Blouses</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Accessories</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Dresses</a>
-                    </li>
-                    <li>
-                        <a href="#" class="leading-6">Sale</a>
+                    <li v-if="categories" v-for="category in categories">
+                        <a href="#" class="leading-6">{{ category.name }}</a>
                     </li>
                     </ul>
                 </div>
@@ -95,3 +68,16 @@
     </footer>
 
 </template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useHomeStore } from '@/stores/home'
+
+const homeStore = useHomeStore();
+const categories = ref([])
+
+onMounted( async () => {
+    await homeStore.fetchHome();
+    categories.value = homeStore.header_categories;
+});
+</script>

@@ -26,9 +26,9 @@ export const useHomeStore = defineStore('homeStore', {
           
           const categoriesData = await get_request('categories/');
           
-          // Separar las categorías en principales y secundarias
-          this.header_categories = categoriesData.filter(category => category.main);
-          this.secondary_categories = categoriesData.filter(category => !category.main);
+          // Separate categories between header categories and secondary categories
+          this.header_categories = categoriesData.filter(category => category.is_primary);
+          this.secondary_categories = categoriesData.filter(category => !category.is_primary);
 
           this.dataLoaded = true;
         } catch (error) {

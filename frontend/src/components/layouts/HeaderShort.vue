@@ -8,7 +8,15 @@
             </div>
         </div>
         <div class="grow flex justify-center items-center gap-8">
-            <a v-for="(category, index) in categories" :key="category.id" :class="{'inline-block font-famil-semibold text-lg cursor-pointer': true, 'inline-block font-famil-semibold text-lg text-primary': index === categories.length - 1}">{{ category.name }}</a>
+            <a 
+            v-for="(category, index) in categories" 
+            :key="category.id" 
+            :class="{
+                'inline-block font-famil-semibold text-lg cursor-pointer': true, 
+                'inline-block font-famil-semibold text-lg text-primary': index === categories.length - 1
+                }">
+                {{ category.name }}
+            </a>
         </div>
         <div class="flex items-center justify-end gap-6">
             <MagnifyingGlassIcon class="text-black size-6 cursor-pointer"></MagnifyingGlassIcon>

@@ -8,7 +8,7 @@ class BannerSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Banner
-        fields = ['__all__']
+        fields = "__all__"
 
 class HomeCategoriesSerializer(serializers.ModelSerializer):
     """
@@ -20,7 +20,7 @@ class HomeCategoriesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HomeCategories
-        fields = ['__all__']
+        fields = "__all__"
 
 class HomeSerializer(serializers.ModelSerializer):
     """
@@ -34,7 +34,7 @@ class HomeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Home
-        fields = ['__all__']
+        fields = "__all__"
 
     def get_carousel_presentation_urls(self, obj):
         """

@@ -18,6 +18,6 @@
    */
   onMounted(() => {
     productStore.fetchProducts();
-    homeStore.fetchHomeData();
+    homeStore.fetchHome();
   })
 </script>

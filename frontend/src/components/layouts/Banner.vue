@@ -14,7 +14,7 @@ const homeStore = useHomeStore();
 const banners = ref([])
 
 onMounted( async () => {
-    await homeStore.fetchHomeData();
+    await homeStore.fetchHome();
     banners.value = homeStore.banners
 })
 </script>
