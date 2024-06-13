@@ -48,7 +48,7 @@ const homeStore = useHomeStore();
 const categories = ref([]);
 
 onMounted( async () => {
-    await homeStore.fetchHomeData();
+    await homeStore.fetchHome();
     categories.value = homeStore.header_categories;
 })
 

@@ -61,7 +61,6 @@ export const useProductStore = defineStore('productStore', {
       try {
         const data = await get_request('products/');
         this.products = Array.isArray(data) ? data : []; // Ensure products is always an array
-        console.log(this.products)
       } catch (error) {
         console.error('Failed to fetch products:', error);
       }

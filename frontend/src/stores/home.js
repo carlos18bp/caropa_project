@@ -16,7 +16,7 @@ export const useHomeStore = defineStore('homeStore', {
      * Calls the API endpoint to get the data and updates the store's state.
      * Checks if the data has already been loaded to prevent redundant requests.
      */
-    async fetchHomeData() {
+    async fetchHome() {
       if (!this.dataLoaded) {
         try {
           const homeData = await get_request('home-data/');

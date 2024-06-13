@@ -106,7 +106,7 @@ const pagination = {
 };
 
 onMounted(async () => {
-  await homeStore.fetchHomeData();
+  await homeStore.fetchHome();
   home.value = homeStore.home
   home_categories.value = homeStore.home_categories
 
