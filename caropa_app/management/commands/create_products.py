@@ -18,10 +18,10 @@ class Command(BaseCommand):
 
         # List of test images
         test_images = [
-            '/media/temp/product_temp1.jpg',
-            '/media/temp/product_temp2.jpg',
-            '/media/temp/product_temp3.jpg',
-            '/media/temp/product_temp4.jpg',
+            '/media/temp/product/product_temp1.jpg',
+            '/media/temp/product/product_temp2.jpg',
+            '/media/temp/product/product_temp3.jpg',
+            '/media/temp/product/product_temp4.jpg',
         ]
 
         # List of predefined colors and sizes
