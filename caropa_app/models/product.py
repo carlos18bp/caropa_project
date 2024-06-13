@@ -13,7 +13,7 @@ def validate_ref(value):
 class Product(models.Model):
     ref = models.CharField(max_length=20, validators=[validate_ref])    
     categories = models.ManyToManyField(Category, related_name='products')
-    categories_home = models.ManyToManyField('caropa_app.HomeCategories', related_name='Home_Categories')
+    home_categories = models.ManyToManyField('caropa_app.HomeCategories', related_name='home_categories')
     trending_now = models.BooleanField(default=False)
     product_detail = models.ForeignKey(ProductDetail, related_name='products', on_delete=models.PROTECT)
     size = models.ForeignKey(Size, related_name='products', on_delete=models.PROTECT)

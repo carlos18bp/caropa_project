@@ -16,7 +16,7 @@ class Banner(models.Model):
 
 class HomeCategories(models.Model):
     title = models.CharField(max_length=100, validators=[validate_title])
-    image = models.ImageField(upload_to='Home/categories/')
+    image = models.ImageField(upload_to='home/categories/')
 
     def __str__(self):
         return self.title
@@ -33,7 +33,7 @@ class Home(models.Model):
     section_3_gallery = GalleryField(related_name='homes_with_section_3_gallery', on_delete=models.CASCADE)
     section_5_title = models.CharField(max_length=100)
     section_5_description = models.TextField()
-    section_5_image = models.ImageField(upload_to='Home/images/')
+    section_5_image = models.ImageField(upload_to='home/images/')
 
     def __str__(self):
         return f'Home {self.id}'
