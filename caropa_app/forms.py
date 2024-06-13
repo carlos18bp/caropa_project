@@ -2,7 +2,6 @@ from django import forms
 from django_attachments.models import Library
 from .models import Product, Home
 
-
 class ProductForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)

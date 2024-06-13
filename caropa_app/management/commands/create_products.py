@@ -1,10 +1,11 @@
-from faker import Faker
-from django.core.management.base import BaseCommand
-from django.core.files import File
-from caropa_app.models import Product, ProductDetail, Category, Size, Color
-from django_attachments.models import Library, Attachment
-import random
 import os
+import random
+from caropa_app.models import Category, Color, Product, ProductDetail, Size
+from django.core.files import File
+from django.core.management.base import BaseCommand
+from django_attachments.models import Attachment, Library
+from faker import Faker
+
 
 class Command(BaseCommand):
     help = 'Create Product records in the database'
@@ -34,6 +35,9 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR(f'Image file {image_path} not found'))
                 return
 
+        primary_categories = list(Category.objects.filter(is_primary=True))
+        non_primary_categories = list(Category.objects.filter(is_primary=False))
+
         for _ in range(number_of_products):
             ref_value = 'REF' + str(random.randint(1000, 9999))
 
@@ -41,11 +45,8 @@ class Command(BaseCommand):
             product_detail = ProductDetail.objects.create(
                 name=fake.word().capitalize(),
                 description=fake.text(max_nb_chars=60),
-                price=fake.pydecimal(left_digits=4, right_digits=2, positive=True)
+                price=fake.random_int(min=1, max=100)
             )
-
-            # Create or get a random Category
-            category, _ = Category.objects.get_or_create(name=fake.word())
 
             # Create a new gallery (library)
             gallery = Library.objects.create(title=fake.word())
@@ -86,8 +87,12 @@ class Command(BaseCommand):
                     gallery=gallery  # Associate the gallery with the product
                 )
 
-                # Add the category to the product
-                new_product.categories.add(category)
+                # Add a primary category and two non-primary categories to the product
+                primary_category = random.choice(primary_categories)
+                new_product.categories.add(primary_category)
+
+                non_primary_category1, non_primary_category2 = random.sample(non_primary_categories, 2)
+                new_product.categories.add(non_primary_category1, non_primary_category2)
 
                 self.stdout.write(self.style.SUCCESS(f'Product "{new_product}" created with gallery "{gallery}"'))
 

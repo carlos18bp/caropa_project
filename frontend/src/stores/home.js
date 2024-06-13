@@ -6,8 +6,6 @@ export const useHomeStore = defineStore('homeStore', {
     home: null,
     banners: [],
     home_categories: [],
-    header_categories: [],
-    secondary_categories: [],
     dataLoaded: false,
   }),
   actions: {
@@ -23,12 +21,6 @@ export const useHomeStore = defineStore('homeStore', {
           this.home = homeData.home;
           this.banners = homeData.banners;
           this.home_categories = homeData.home_categories;
-          
-          const categoriesData = await get_request('categories/');
-          
-          // Separate categories between header categories and secondary categories
-          this.header_categories = categoriesData.filter(category => category.is_primary);
-          this.secondary_categories = categoriesData.filter(category => !category.is_primary);
 
           this.dataLoaded = true;
         } catch (error) {

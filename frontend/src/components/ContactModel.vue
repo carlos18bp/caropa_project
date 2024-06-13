@@ -1,26 +1,14 @@
 <template>
-  <!-- Button to call the CONTACT MODAL-->
-  <div class="flex justify-center p-4">
-    <button
-      id="button"
-      data-modal-toggle="contact_modal"
-      data-modal-target="contact_modal"
-      type="button"
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
-    >
-      Show CONTACT MODAL
-    </button>
-  </div>
-
   <div
     id="contact_modal"
     tabindex="-1"
     aria-hidden="true"
-    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-  >
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative w-1/3">
+
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow">
+
         <!-- Modal header -->
         <div class="flex items-start justify-between p-5 pb-0">
           <h3 class="text-xl font-semibold text-gray-900 lg:text-2xl">
@@ -46,8 +34,8 @@
             </svg>
           </button>
         </div>
-        <!-- Modal body -->
 
+        <!-- Modal body -->
         <div class="p-6">
           <div class="flex items-center pb-4">
             <div class="flex items-center w-8">
@@ -74,7 +62,8 @@
             </p>
           </div>
         </div>
-        <!-- Map Container -->
+
+        <!-- Map Container 
         <div class="w-full h-40">
           <GoogleMap
             api-key="AIzaSyD7cf5pD4u32w9k2zEnjq19nd8WlGmm-ls"
@@ -83,8 +72,9 @@
             :zoom="10"
           >
             <Marker :options="{ position: center }" />
-          </GoogleMap>
+          </GoogleMap>z
         </div>
+        -->
         <div class="flex justify-evenly p-6 pb-8">
           <a href="#">
             <i class="bi bi-facebook text-4xl"></i>
@@ -99,9 +89,8 @@
 </template>
 
 <script setup>
-  import { onMounted } from "vue";
   import { initModals } from "flowbite";
-
+  import { onMounted } from "vue";
   import { GoogleMap, Marker } from "vue3-google-map";
 
   /**

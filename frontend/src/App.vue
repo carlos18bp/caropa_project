@@ -16,8 +16,8 @@
    * Fetch the list of products from the store when the component is mounted.
    * Fetch the home objects from the store when the component is mounted.
    */
-  onMounted(() => {
-    productStore.fetchProducts();
-    homeStore.fetchHome();
+  onMounted(async () => {
+    await productStore.fetchProducts();
+    await homeStore.fetchHome();
   })
 </script>

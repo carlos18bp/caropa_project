@@ -9,8 +9,10 @@
       class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8"
     >
       <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
+
         <!-- Image gallery -->
         <TabGroup as="div" class="flex flex-col-reverse">
+
           <!-- Image selector -->
           <div class="mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
             <TabList class="grid grid-cols-4 gap-6">
@@ -28,7 +30,7 @@
                 </span>
                 <span
                   :class="[
-                    selected ? 'ring-primary_p' : 'ring-transparent',
+                    'ring-transparent',
                     'pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2',
                   ]"
                   aria-hidden="true"
@@ -55,6 +57,7 @@
         <!-- Product info -->
         <div class="relative mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
           <div class="absolute inset-0 z-10">
+
             <!-- Product Title and Brand -->
             <div class="mb-12">
               <p class="text-1xl text-slate-600">Caropa Couture</p>
@@ -120,8 +123,8 @@
             <!-- Add to Bag Button -->
             <div class="mt-4">
               <button
-                class="w-full py-3 bg-yellow-600 text-white font-semibold rounded-md"
-              >
+                class="w-full py-3 bg-yellow-400 text-white font-semibold rounded-md"
+                @click="addToCart">
                 Add to Bag
               </button>
             </div>
@@ -159,15 +162,15 @@
   import ProductCarousel from "@/components/ProductCarousel.vue";
   import AboutShortCut from "@/components/AboutShortCut.vue";
   import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
-  import { onMounted, ref, reactive, computed } from "vue";
+  import { computed, onMounted, reactive, ref } from "vue";
   import { useProductStore } from "@/stores/product";
   import { useRoute } from "vue-router";
+  import Swal from 'sweetalert2';
 
   const route = useRoute();
   const productStore = useProductStore();
   const productsByRef = ref([]);
   const product = reactive({});
-  const selected = "";
   const selectedColor = ref(null);
   const selectedSize = ref(null);
 
@@ -249,7 +252,14 @@
    */
   const setProductBySize = (size) => {
     selectedSize.value = size;
-    console.log("This size will be used in Shopping Cart");
+  };
+
+  const addToCart = () => {
+    productStore.addProductToCart(product);
+    Swal.fire({
+      title: "Product added to Shopping Cart successfully",
+      icon: "success"
+    });
   };
 
   const selectedImage = ref(null);
@@ -297,4 +307,3 @@
   };
 </script>
 
-<style scoped></style>

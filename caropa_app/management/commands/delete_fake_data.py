@@ -1,5 +1,5 @@
-from django.core.management.base import BaseCommand
 from caropa_app.models import Product
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = 'Create rake records in the database'
