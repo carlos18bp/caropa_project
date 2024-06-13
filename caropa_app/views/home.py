@@ -1,23 +1,23 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from caropa_app.models import Home, Banner, HomeCategories
-from caropa_app.serializers import HomeSerializer, BannerSerializer, HomeCategoriesSerializer
+from caropa_app.models import Home, Banner, HomeCategory
+from caropa_app.serializers import HomeSerializer, BannerSerializer, HomeCategorySerializer
 
 @api_view(['GET'])
 def home_data(request):
     """
-    Retrieve data for Home, Banner, and HomeCategories models.
+    Retrieve data for Home, Banner, and HomeCategory models.
     """
     # Assuming you have only one Home instance, otherwise adjust the query as needed
     home = Home.objects.first()
     banners = Banner.objects.all()
-    home_categories = HomeCategories.objects.all()
+    home_categories = HomeCategory.objects.all()
 
     # Serialize the data
     home_serializer = HomeSerializer(home, context={'request': request})
     banner_serializer = BannerSerializer(banners, many=True, context={'request': request})
-    home_categories_serializer = HomeCategoriesSerializer(home_categories, many=True, context={'request': request})
+    home_categories_serializer = HomeCategorySerializer(home_categories, many=True, context={'request': request})
 
     # Combine the serialized data into a single response
     data = {

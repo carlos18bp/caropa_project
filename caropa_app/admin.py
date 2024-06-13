@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, ProductDetail, Category, Size, Color, Home, HomeCategories, Banner
+from .models import Product, ProductDetail, Category, Size, Color, Home, HomeCategory, Banner
 from .forms import ProductForm, HomeForm
 from django_attachments.admin import AttachmentsAdminMixin
 from .forms import ProductForm
@@ -24,7 +24,7 @@ class HomeAdmin(AttachmentsAdminMixin, admin.ModelAdmin):
             obj.delete()
 
 admin.site.register(Home, HomeAdmin)
-admin.site.register(HomeCategories)
+admin.site.register(HomeCategory)
 admin.site.register(Banner)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductDetail)

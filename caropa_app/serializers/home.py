@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from caropa_app.models import Home, Banner, HomeCategories
+from caropa_app.models import Home, Banner, HomeCategory
 
 class BannerSerializer(serializers.ModelSerializer):
     """
@@ -10,16 +10,16 @@ class BannerSerializer(serializers.ModelSerializer):
         model = Banner
         fields = "__all__"
 
-class HomeCategoriesSerializer(serializers.ModelSerializer):
+class HomeCategorySerializer(serializers.ModelSerializer):
     """
-    Serializer for the HomeCategories model.
+    Serializer for the HomeCategory model.
     Serializes the title, image fields.
     The image field is configured to return the URL of the image.
     """
     image = serializers.ImageField(use_url=True)  # This ensures the image field returns a URL
 
     class Meta:
-        model = HomeCategories
+        model = HomeCategory
         fields = "__all__"
 
 class HomeSerializer(serializers.ModelSerializer):

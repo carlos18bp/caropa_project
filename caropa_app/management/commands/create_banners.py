@@ -8,9 +8,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         fake = Faker()
 
-        for _ in range(4):
+        for _ in range(5):
             banner_text = fake.sentence(nb_words=6)
             banner_instance = Banner.objects.create(text=banner_text)
             self.stdout.write(self.style.SUCCESS(f'Banner "{banner_instance}" created'))
 
-        self.stdout.write(self.style.SUCCESS(f'4 Banner records created'))
+        self.stdout.write(self.style.SUCCESS(f'5 Banner records created'))

@@ -2,9 +2,8 @@ import re
 from django.db import models
 from django_attachments.fields import GalleryField
 from django.core.exceptions import ValidationError
-from caropa_app.models import ProductDetail, Category, Size, Color
+from caropa_app.models import ProductDetail, Category, HomeCategory, Size, Color
 from django_attachments.models import Library
-from django.apps import apps
 
 def validate_ref(value):
     if not re.match(r'^[A-Z0-9]+$', value):
@@ -13,7 +12,7 @@ def validate_ref(value):
 class Product(models.Model):
     ref = models.CharField(max_length=20, validators=[validate_ref])    
     categories = models.ManyToManyField(Category, related_name='products')
-    home_categories = models.ManyToManyField('caropa_app.HomeCategories', related_name='home_categories')
+    home_categories = models.ManyToManyField(HomeCategory, related_name='home_categories')
     trending_now = models.BooleanField(default=False)
     product_detail = models.ForeignKey(ProductDetail, related_name='products', on_delete=models.PROTECT)
     size = models.ForeignKey(Size, related_name='products', on_delete=models.PROTECT)
@@ -31,8 +30,3 @@ class Product(models.Model):
         except Library.DoesNotExist:
             pass
         super(Product, self).delete(*args, **kwargs)
-
-    @property
-    def home_categories(self):
-        HomeCategories = apps.get_model('caropa_app', 'HomeCategories')
-        return HomeCategories.objects.filter(products=self)

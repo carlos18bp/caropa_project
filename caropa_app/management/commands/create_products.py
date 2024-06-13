@@ -1,11 +1,10 @@
 import os
 import random
-from caropa_app.models import Category, Color, Product, ProductDetail, Size
+from caropa_app.models import Category, Color, HomeCategory, Product, ProductDetail, Size
 from django.core.files import File
 from django.core.management.base import BaseCommand
 from django_attachments.models import Attachment, Library
 from faker import Faker
-
 
 class Command(BaseCommand):
     help = 'Create Product records in the database'
@@ -19,10 +18,10 @@ class Command(BaseCommand):
 
         # List of test images
         test_images = [
-            '/media/temp/product/product_temp1.webp',
-            '/media/temp/product/product_temp2.webp',
-            '/media/temp/product/product_temp3.webp',
-            '/media/temp/product/product_temp4.webp',
+            '/media/temp/product/image_temp1.webp',
+            '/media/temp/product/image_temp2.webp',
+            '/media/temp/product/image_temp3.webp',
+            '/media/temp/product/image_temp4.webp',
         ]
 
         # List of predefined colors and sizes
@@ -37,6 +36,10 @@ class Command(BaseCommand):
 
         primary_categories = list(Category.objects.filter(is_primary=True))
         non_primary_categories = list(Category.objects.filter(is_primary=False))
+        home_categories = list(HomeCategory.objects.all())
+
+        # Assign a random home category to the product
+        home_category1, home_category2 = random.sample(home_categories, 2)
 
         for _ in range(number_of_products):
             ref_value = 'REF' + str(random.randint(1000, 9999))
@@ -84,7 +87,8 @@ class Command(BaseCommand):
                     product_detail=product_detail,
                     size=size,
                     color=color,
-                    gallery=gallery  # Associate the gallery with the product
+                    gallery=gallery,  # Associate the gallery with the product
+                    trending_now=random.choice([True, False])  # Assign random value for trending_now
                 )
 
                 # Add a primary category and two non-primary categories to the product
@@ -93,6 +97,8 @@ class Command(BaseCommand):
 
                 non_primary_category1, non_primary_category2 = random.sample(non_primary_categories, 2)
                 new_product.categories.add(non_primary_category1, non_primary_category2)
+
+                new_product.home_categories.add(home_category1, home_category2)
 
                 self.stdout.write(self.style.SUCCESS(f'Product "{new_product}" created with gallery "{gallery}"'))
 

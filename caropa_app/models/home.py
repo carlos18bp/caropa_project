@@ -14,7 +14,7 @@ class Banner(models.Model):
     def __str__(self):
         return self.text
 
-class HomeCategories(models.Model):
+class HomeCategory(models.Model):
     title = models.CharField(max_length=100, validators=[validate_title])
     image = models.ImageField(upload_to='home/categories/')
 
@@ -50,4 +50,4 @@ class Home(models.Model):
 
     class Meta:
         verbose_name = "Home"
-        verbose_name_plural = "Homes"
+        verbose_name_plural = "Home"

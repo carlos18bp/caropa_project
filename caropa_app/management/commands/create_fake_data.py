@@ -13,5 +13,8 @@ class Command(BaseCommand):
     """
     def handle(self, *args, **options):
         number_of_records = options['number_of_records']
+        call_command('create_banners')
+        call_command('create_home_categories')
+        call_command('create_homes')
         call_command('create_categories')
         call_command('create_products', number_of_products=number_of_records)
