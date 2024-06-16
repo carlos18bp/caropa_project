@@ -17,11 +17,12 @@ class Product(models.Model):
     product_detail = models.ForeignKey(ProductDetail, related_name='products', on_delete=models.PROTECT)
     size = models.ForeignKey(Size, related_name='products', on_delete=models.PROTECT)
     color = models.ForeignKey(Color, related_name='products', on_delete=models.PROTECT)
+    stock = models.IntegerField(default=1, null=False, blank=False)
     
     gallery = GalleryField(related_name='products_with_attachment', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.ref} ({self.product_detail.name})'
+        return f'{self.ref} ({self.product_detail.name} - Stock: {self.stock})'
 
     def delete(self, *args, **kwargs):
         try:

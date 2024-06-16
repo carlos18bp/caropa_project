@@ -88,7 +88,8 @@ class Command(BaseCommand):
                     size=size,
                     color=color,
                     gallery=gallery,  # Associate the gallery with the product
-                    trending_now=random.choice([True, False])  # Assign random value for trending_now
+                    trending_now=random.choice([True, False]),  # Assign random value for trending_now
+                    stock=fake.random_int(min=1, max=20)
                 )
 
                 # Add a primary category and two non-primary categories to the product

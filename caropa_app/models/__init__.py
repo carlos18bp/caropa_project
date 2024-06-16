@@ -4,5 +4,6 @@ from .product_detail import ProductDetail
 from .size import Size
 from .home import Home, HomeCategory, Banner
 from .product import Product
+from .sale import Sale, SoldProduct
 
 
