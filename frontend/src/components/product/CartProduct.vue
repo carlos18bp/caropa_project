@@ -3,7 +3,7 @@
       <img :src="product.gallery_urls[0]" alt="Product Image" class="w-20 h-20 rounded" />
       <div class="flex-1 ml-4">
         <h3 class="font-semibold">{{ product.product_detail.name }}</h3>
-        <p class="text-sm text-gray-500">{{ product.product_detail.color }}</p>
+        <p class="text-sm text-gray-500">{{ product.color.name }}</p>
         <p class="text-sm">Qty {{ product.quantity }}</p>
       </div>
       <div class="text-right">

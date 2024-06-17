@@ -1,0 +1,18 @@
+export default {
+    free_shipping: 'Envío gratuito en pedidos superiores a $350',
+    purchase_safety: 'Purchase 100% Safety',
+    contact_information: 'Información de contacto',
+    email_address: 'Correo electronico',
+    payment_details: 'Detalles del pago',
+    card_number: 'Numero de tarjeta',
+    expiration_date: 'Fecha de expiración (MM/YY)',
+    shipping_address: 'Dirección de envio',
+    address: 'Dirección',
+    city: 'Ciudad',
+    state_province: 'Estado / Provincia',
+    postal_code: 'Codigo postal',
+    pay_now: 'Pagar ahora',
+    amount_due: 'Importe a pagar',
+    remove: 'Eliminar',
+    shipping: 'Envio',
+}

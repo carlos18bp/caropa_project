@@ -17,12 +17,14 @@ export const useHomeStore = defineStore('homeStore', {
     async fetchHome() {
       if (!this.dataLoaded) {
         try {
-          const homeData = await get_request('home-data/');
+          const response = await get_request('home-data/');
+          const homeData = response.data;
           this.home = homeData.home;
           this.banners = homeData.banners;
           this.home_categories = homeData.home_categories;
 
           this.dataLoaded = true;
+          return response.status;
         } catch (error) {
           console.error('Failed to fetch home data:', error);
         }
