@@ -89,9 +89,7 @@
     import { gsap } from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-
     gsap.registerPlugin(ScrollTrigger);
-
 
     const header = ref(null)
     const headerShort = ref(null)
