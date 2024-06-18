@@ -1,6 +1,5 @@
 <template>
   <div>
-    <Banner></Banner>
     <Header></Header>
     <section class="w-full h-screen">
       <swiper :modules="modules" :loop="true" :pagination="pagination" :autoplay="{
@@ -96,7 +95,6 @@
 </template>
 
 <script setup>
-  import Banner from "@/components/layouts/Banner.vue";
   import Header from "@/components/layouts/Header.vue";
   import Footer from "@/components/layouts/Footer.vue";
   import ProductCarousel from "@/components/ProductCarousel.vue";

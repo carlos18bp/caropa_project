@@ -19,6 +19,14 @@ export const useProductStore = defineStore("productStore", {
   }),
   getters: {
     /**
+     * Filter products by name
+     * @param {Object} state - The state object
+     * @returns {Function} - Function to filter products by name
+     */
+    productsByName: (state) => (name) => {
+      return state.products.filter((product) => product.product_detail.name.toLowerCase().includes(name.toLowerCase()));
+    },
+    /**
      * Find product by ID
      * @param {Object} state - The state object
      * @returns {Function} - Function to get product by ID

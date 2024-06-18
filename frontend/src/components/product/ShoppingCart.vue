@@ -1,15 +1,15 @@
 <template>
   <!-- Shopping Cart Overlay -->
-  <div class="fixed inset-0 flex justify-end bg-black bg-opacity-50 z-50"
-    v-show="shoppingCartToggle">
-    <div class="bg-white h-full w-full max-w-md shadow-lg flex flex-col">
+  <div 
+  class="w-full h-full inset-0 flex justify-end bg-gray-500 bg-opacity-40 backdrop-blur-md"
+  v-if="shoppingCartToggle">
+    <div @click="closeModal" class="absolute inset-0"></div>
+    <div class="relative z-50 bg-white h-full w-full max-w-md shadow-lg flex flex-col">
       
       <!-- Cart Header -->
       <div class="flex justify-between items-center border-b p-4">
         <h2 class="text-xl font-semibold">Shopping cart</h2>
-        <button @click="$emit('toggle-cart')" class="text-gray-500 hover:text-gray-700">
-          <span class="text-xl">&times;</span>
-        </button>
+        <XMarkIcon @click="closeModal" class="h-6 w-6 cursor-pointer text-gray-500"></XMarkIcon>
       </div>
       
       <!-- Cart Items -->
@@ -27,7 +27,7 @@
       </div>
       
       <!-- Cart Footer -->
-      <div class="border-t p-4">
+      <div v-if="cartProduct.length" class="border-t p-4">
         <div class="flex justify-between items-center mb-4">
           <span class="text-lg font-semibold">Total</span>
           <span class="text-lg font-semibold">$ {{ cartTotalPrice }}</span>
@@ -51,6 +51,7 @@
   import CartProduct from './CartProduct.vue';
   import { computed } from 'vue';
   import { useProductStore } from "@/stores/product";
+  import { XMarkIcon } from '@heroicons/vue/24/outline';
 
   const productStore = useProductStore();
   const cartProduct = computed(() => productStore.cartProducts);
@@ -62,6 +63,11 @@
       required: true
     }
   });
+  const emit = defineEmits(["update:shoppingCartToggle"]);
+
+  const closeModal = () => {
+    emit('update:shoppingCartToggle', false);
+  }
 
   const addProduct = (product) => {
     productStore.addProductToCart(product);

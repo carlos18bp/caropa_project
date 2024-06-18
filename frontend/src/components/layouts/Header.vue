@@ -1,4 +1,5 @@
 <template>
+    <Banner></Banner>
     <header ref="header" class="bg-white">
         <div class="w-full grid grid-cols-3 px-8">
             <div class="pt-2 text-md font-famil-semibold text-black flex gap-6">
@@ -26,23 +27,22 @@
             </div>
             <div class="pt-2 flex justify-end gap-6">
                 <div>
-                    <div class="flex items-center justify-center gap-3 cursor-pointer">
+                    <div @click="showSearchBar = true" class="flex items-center justify-center gap-3 cursor-pointer">
                         <MagnifyingGlassIcon class="text-black size-6"></MagnifyingGlassIcon>
                         <a class="text-md font-famil-semibold text-black">Search</a>
                     </div>
                 </div>
                 
-                <div class="flex cursor-pointer">
-                    <ShoppingBagIcon class="size-6 text-black" @click="toggleShoppingCart"/>
-                    <span v-if="totalCartProducts > 0" 
-                        class="bg-gray-400 text-white rounded-full text-xs w-6 h-6 flex items-center justify-center shadow-lg">
-                        ({{ totalCartProducts }})
+                <div class="relative cursor-pointer">
+                    <ShoppingBagIcon class="size-6 text-black" @click="shoppingCartToggle = true"/>
+                    <span
+                    @click="shoppingCartToggle = true" 
+                    v-if="totalCartProducts > 0" 
+                    class="absolute top-0 left-1/2 font-regular bg-primary text-white rounded-full text-xxs w-4 h-4 flex items-center justify-center shadow-lg">
+                        {{ totalCartProducts }}
                     </span>
                 </div>
                 
-                <ShoppingCart :shoppingCartToggle="shoppingCartToggle" 
-                    @toggle-cart="toggleShoppingCart">
-                </ShoppingCart>
 
                 <div class="flex gap-3">
                     <a class="text-black font-famil-semibold text-md cursor-pointer">EN</a>
@@ -66,10 +66,19 @@
     <div ref="headerShort" class="fixed top-0 left-0 z-20 opacity-0">
         <HeaderShort></HeaderShort>
     </div>
+    <div v-if="showSearchBar" class="fixed z-30 top-0">
+        <SearchBar :visible="showSearchBar" @update:visible="showSearchBar = $event"></SearchBar>
+    </div>
+    <div v-if="shoppingCartToggle" class="fixed z-30 w-full h-screen top-0">
+        <ShoppingCart :shoppingCartToggle="shoppingCartToggle" @update:shoppingCartToggle="shoppingCartToggle = $event">
+        </ShoppingCart>
+    </div>
 </template>
 
 <script setup>
     import ContactModel from "@/components/ContactModel.vue";
+    import Banner from "@/components/layouts/Banner.vue"
+    import SearchBar from "@/components/layouts/SearchBar.vue";
     import HeaderShort from "./HeaderShort.vue";
     import { computed, onMounted, ref } from 'vue';
     import { ShoppingBagIcon } from '@heroicons/vue/24/outline';
@@ -86,6 +95,7 @@
 
     const header = ref(null)
     const headerShort = ref(null)
+    const showSearchBar = ref(false);
 
     const productStore = useProductStore();
     const categories = computed(() => productStore.primaryCategories);
@@ -121,10 +131,6 @@
 
     const goTo = (route) => {
         router.push({ name: route });
-    };
-
-    const toggleShoppingCart = () => {
-        shoppingCartToggle.value = !shoppingCartToggle.value;
     };
 
     /**
