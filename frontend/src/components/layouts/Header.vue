@@ -1,5 +1,5 @@
 <template>
-    <header class="bg-white">
+    <header ref="header" class="bg-white">
         <div class="w-full grid grid-cols-3 px-8">
             <div class="pt-2 text-md font-famil-semibold text-black flex gap-6">
                 <a @click="goTo('catalog')" class="cursor-pointer">Shop</a>
@@ -63,16 +63,29 @@
             </a>
         </div>
     </header>
+    <div ref="headerShort" class="fixed top-0 left-0 z-20 opacity-0">
+        <HeaderShort></HeaderShort>
+    </div>
 </template>
 
 <script setup>
     import ContactModel from "@/components/ContactModel.vue";
+    import HeaderShort from "./HeaderShort.vue";
     import { computed, onMounted, ref } from 'vue';
     import { ShoppingBagIcon } from '@heroicons/vue/24/outline';
     import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
     import ShoppingCart from "@/components/product/ShoppingCart.vue";
     import { useProductStore } from "@/stores/product";
     import { useRouter, useRoute } from 'vue-router';    
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+
+    gsap.registerPlugin(ScrollTrigger);
+
+
+    const header = ref(null)
+    const headerShort = ref(null)
 
     const productStore = useProductStore();
     const categories = computed(() => productStore.primaryCategories);
@@ -88,6 +101,22 @@
 
     onMounted(async () => {
         await productStore.fetchProducts();
+        gsap.fromTo(headerShort.value, 
+        {
+            opacity: 0,
+            y: -100
+        },
+        {
+            y: 0,
+            opacity: 1,
+            duration: 1,
+            ease: 'power2.inOut', 
+            scrollTrigger: {
+                trigger: header.value,
+                start: 'bottom top',
+                toggleActions: 'play none reverse none',
+            },
+        });
     })
 
     const goTo = (route) => {

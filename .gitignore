@@ -2,3 +2,6 @@ db.sqlite3
 __pycache__/
 !media/temp/
 media/
+caropa_app/migrations/__pycache__/*
+caropa_app/migrations/*
+!caropa_app/migrations/__init__.py
