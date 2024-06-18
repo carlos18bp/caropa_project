@@ -1,4 +1,6 @@
 db.sqlite3
-!media/temp/
+pycache/
 media/
+!media/temp/
 caropa_app/migrations/
+!caropa_app/migrations/init.py
