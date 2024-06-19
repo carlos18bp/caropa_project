@@ -1,8 +1,19 @@
-from caropa_app.models import Product
-from caropa_app.serializers import ProductDetailSerializer, CategorySerializer, SizeSerializer, ColorSerializer
 from rest_framework import serializers
+from caropa_app.models import Product
+from caropa_app.serializers import (
+    CategorySerializer,
+    ColorSerializer,
+    ProductDetailSerializer,
+    SizeSerializer,
+)
 
 class ProductSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Product model.
+
+    This serializer converts Product model instances to JSON format and vice versa.
+    It also includes nested serializers for related models.
+    """
     product_detail = ProductDetailSerializer()
     categories = CategorySerializer(many=True)
     size = SizeSerializer()
@@ -17,8 +28,11 @@ class ProductSerializer(serializers.ModelSerializer):
         """
         Retrieves the URLs of all images in the gallery associated with the Product instance.
         
-        :param obj: The Product instance.
-        :return: A list of absolute URLs of the images in the gallery.
+        Args:
+            obj (Product): The Product instance.
+        
+        Returns:
+            list: A list of absolute URLs of the images in the gallery.
         """
         request = self.context.get('request')
         if obj.gallery:

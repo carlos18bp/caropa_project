@@ -4,9 +4,7 @@
         <div class="w-full grid grid-cols-3 px-8">
             <div class="pt-2 text-md font-famil-semibold text-black flex gap-6">
                 <a @click="goTo('catalog')" class="cursor-pointer">Shop</a>
-                <a  class="cursor-pointer"
-                data-modal-toggle="contact_modal"
-                data-modal-target="contact_modal"> 
+                <a class="cursor-pointer" data-modal-toggle="contact_modal" data-modal-target="contact_modal">
                     Contact
                 </a>
                 <ContactModel></ContactModel>
@@ -32,34 +30,36 @@
                         <a class="text-md font-famil-semibold text-black">Search</a>
                     </div>
                 </div>
-                
+
                 <div class="relative cursor-pointer">
-                    <ShoppingBagIcon class="size-6 text-black" @click="shoppingCartToggle = true"/>
-                    <span
-                    @click="shoppingCartToggle = true" 
-                    v-if="totalCartProducts > 0" 
-                    class="absolute top-0 left-1/2 font-regular bg-primary text-white rounded-full text-xxs w-4 h-4 flex items-center justify-center shadow-lg">
+                    <ShoppingBagIcon class="size-6 text-black" @click="shoppingCartToggle = true" />
+                    <span @click="shoppingCartToggle = true" v-if="totalCartProducts > 0"
+                        class="absolute top-0 left-1/2 font-regular bg-primary text-white rounded-full text-xxs w-4 h-4 flex items-center justify-center shadow-lg">
                         {{ totalCartProducts }}
                     </span>
                 </div>
-                
+
 
                 <div class="flex gap-3">
-                    <a class="text-black font-famil-semibold text-md cursor-pointer">EN</a>
+                    <a class="text-black font-famil-semibold text-md cursor-pointer"
+                        @click="handleLanguage('en')">
+                        <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'en' }">EN</span>
+                    </a>
                     <span class="text-black font-semibold text-lg">|</span>
-                    <a class="text-black font-famil-semibold text-md cursor-pointer">ES</a>
+                    <a class="text-black font-famil-semibold text-md cursor-pointer"
+                        @click="handleLanguage('es')">
+                        <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'es' }">ES</span>
+                    </a>
                 </div>
             </div>
         </div>
 
         <div class="py-4 flex justify-center items-center gap-8">
-            <a v-for="(category, index) in categories" :key="category.id"
-                @click="filterProducts(category)" 
-                class="inline-block font-famil-semibold text-lg uppercase hover:text-yellow-300 cursor-pointer"
-                :class="{
-                'text-primary': selectedCategory === category && route.name !== 'home',
+            <a v-for="(category, index) in categories" :key="category.id" @click="filterProducts(category)"
+                class="inline-block font-famil-semibold text-lg uppercase hover:text-yellow-300 cursor-pointer" :class="{
+                    'text-primary': selectedCategory === category && route.name !== 'home',
                 }">
-                    {{ category }}
+                {{ category }}
             </a>
         </div>
     </header>
@@ -84,8 +84,9 @@
     import { ShoppingBagIcon } from '@heroicons/vue/24/outline';
     import { MagnifyingGlassIcon } from '@heroicons/vue/24/outline';
     import ShoppingCart from "@/components/product/ShoppingCart.vue";
+    import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
-    import { useRouter, useRoute } from 'vue-router';    
+    import { useRouter, useRoute } from 'vue-router';
     import { gsap } from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -95,8 +96,10 @@
     const headerShort = ref(null)
     const showSearchBar = ref(false);
 
+    const appStore = useAppStore();
+    const currentLanguage = computed(() => appStore.getCurrentLanguage);
     const productStore = useProductStore();
-    const categories = computed(() => productStore.primaryCategories);
+    const categories = computed(() => productStore.primaryCategories(currentLanguage.value));
     /**
      * Router instance
      */
@@ -109,23 +112,31 @@
 
     onMounted(async () => {
         await productStore.fetchProducts();
-        gsap.fromTo(headerShort.value, 
-        {
-            opacity: 0,
-            y: -100
-        },
-        {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: 'power2.inOut', 
-            scrollTrigger: {
-                trigger: header.value,
-                start: 'bottom top',
-                toggleActions: 'play none reverse none',
+        gsap.fromTo(headerShort.value,
+            {
+                opacity: 0,
+                y: -100
             },
-        });
+            {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power2.inOut',
+                scrollTrigger: {
+                    trigger: header.value,
+                    start: 'bottom top',
+                    toggleActions: 'play none reverse none',
+                },
+            });
     })
+
+    /**
+     * Handle language change
+     * @param {string} lang - Language to set
+     */
+     const handleLanguage = (lang) => {
+        appStore.setCurrentLanguage(lang);
+    }
 
     const goTo = (route) => {
         router.push({ name: route });
@@ -140,6 +151,6 @@
             router.push({ name: 'catalog' });
         }
         productStore.primaryCategorySeleted = category;
-        productStore.filterProductsByCategory();        
+        productStore.filterProductsByCategory(currentLanguage.value);
     };
 </script>

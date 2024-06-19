@@ -45,9 +45,13 @@ class Command(BaseCommand):
             ref_value = 'REF' + str(random.randint(1000, 9999))
 
             # Create a new ProductDetail
+            produc_detail_name=fake.word().capitalize()
+            produc_detail_description=fake.text(max_nb_chars=60)
             product_detail = ProductDetail.objects.create(
-                name=fake.word().capitalize(),
-                description=fake.text(max_nb_chars=60),
+                name_en=produc_detail_name + '(EN)',
+                name_es=produc_detail_name + '(ES)',
+                description_en=produc_detail_description + '(EN)',
+                description_es=produc_detail_description + '(ES)',
                 price=fake.random_int(min=1, max=100)
             )
 

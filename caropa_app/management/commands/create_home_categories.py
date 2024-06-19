@@ -7,18 +7,25 @@ class Command(BaseCommand):
     help = 'Create HomeCategory records in the database'
 
     def handle(self, *args, **options):
+        """
+        Handle the creation of HomeCategory records with predefined titles and test images.
+
+        Args:
+            *args: Variable length argument list.
+            **options: Arbitrary keyword arguments.
+        """
         home_category_titles = [
-            'Just in', 
-            'A fresh style', 
-            'Deluxe', 
-            'New season essentials', 
-            'New western', 
-            'Sun-kissed swimwear', 
-            'Works day', 
-            'Dressed for date night', 
-            'All dressed up', 
-            'The spring style refresh', 
-            'New season', 
+            'Just in',
+            'A fresh style',
+            'Deluxe',
+            'New season essentials',
+            'New western',
+            'Sun-kissed swimwear',
+            'Works day',
+            'Dressed for date night',
+            'All dressed up',
+            'The spring style refresh',
+            'New season',
             'A fresh day'
         ]
 
@@ -40,17 +47,19 @@ class Command(BaseCommand):
 
         # Ensure the test images exist
         for image_path in test_images:
-            if not os.path.isfile(os.getcwd() + image_path):
-                self.stdout.write(self.style.ERROR(f'Image file {image_path} not found'))
+            full_image_path = os.getcwd() + image_path
+            if not os.path.isfile(full_image_path):
+                self.stdout.write(self.style.ERROR(f'Image file {full_image_path} not found'))
                 return
 
         for i, title in enumerate(home_category_titles):
             image_path = os.getcwd() + test_images[i]
             with open(image_path, 'rb') as image_file:
                 home_category = HomeCategory.objects.create(
-                    title=title,
+                    title_en=f'{title} (EN)',
+                    title_es=f'{title} (ES)',
                     image=File(image_file, name=os.path.basename(image_path))
                 )
-                self.stdout.write(self.style.SUCCESS(f'HomeCategory "{home_category.title}" created'))
+                self.stdout.write(self.style.SUCCESS(f'HomeCategory "{home_category.title_en}" created'))
 
         self.stdout.write(self.style.SUCCESS(f'{len(home_category_titles)} HomeCategory records created'))

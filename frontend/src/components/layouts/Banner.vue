@@ -3,7 +3,8 @@
         <Vue3Marquee class="bg-black">
         <div class="flex w-full justify-between">
             <h2 v-for="banner in banners" :key="banner.id" class="text-white font-famil-semibold text-md">
-            {{ banner.text }}
+                <span v-if="currentLanguage === 'en'">{{ banner.text_en }}</span>
+                <span v-else>{{ banner.text_es }}</span>
             </h2>
         </div>
         </Vue3Marquee>
@@ -11,10 +12,13 @@
 </template>
   
 <script setup>
-    import { computed, onMounted } from 'vue'
-    import { useHomeStore } from '@/stores/home'
-    import { Vue3Marquee } from 'vue3-marquee'
+    import { computed, onMounted } from 'vue';
+    import { useAppStore } from '@/stores/language.js';
+    import { useHomeStore } from '@/stores/home';
+    import { Vue3Marquee } from 'vue3-marquee';
 
+    const appStore = useAppStore();
+    const currentLanguage = computed(() => appStore.getCurrentLanguage);
     const homeStore = useHomeStore();
     const banners = computed(() => homeStore.banners);
 

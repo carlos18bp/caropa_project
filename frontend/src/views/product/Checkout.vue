@@ -23,12 +23,14 @@
                 </div>
                 <ShoppingCart :shoppingCartToggle="shoppingCartToggle" @toggle-cart="toggleShoppingCart" />
                 <div class="flex items-center space-x-2 text-sm">
-                    <span class="cursor-pointer font-bold" :class="{ 'border-b-2 border-black border-current': currentLanguage === 'en' }"
+                    <span class="cursor-pointer font-bold"
+                        :class="{ 'border-b-2 border-black border-current': currentLanguage === 'en' }"
                         @click="handleLanguage('en')">
                         EN
                     </span>
                     <span class="font-bold">|</span>
-                    <span class="cursor-pointer font-bold" :class="{ 'border-b-2 border-black border-current': currentLanguage === 'es' }"
+                    <span class="cursor-pointer font-bold"
+                        :class="{ 'border-b-2 border-black border-current': currentLanguage === 'es' }"
                         @click="handleLanguage('es')">
                         ES
                     </span>
@@ -108,7 +110,9 @@
                             <div class="flex-1 ml-4 space-y-20">
                                 <div>
                                     <!-- Product Title -->
-                                    <h3 class="font-semibold" v-if="currentLanguage === 'en'">{{ product.product_detail.name }}</h3>
+                                    <h3 class="font-semibold" v-if="currentLanguage === 'en'">
+                                        {{ product.product_detail.name }}
+                                    </h3>
                                     <h3 class="font-semibold" v-else>{{ product.titulo }}</h3>
                                     <!-- Selected Color -->
                                     <p class="text-sm text-gray-500">{{ product.colorSelected }}</p>
@@ -118,7 +122,8 @@
                             </div>
                             <div class="text-right mb-20">
                                 <!-- Total Price -->
-                                <p class="text-lg font-semibold">${{ product.product_detail.price * product.quantity }}</p>
+                                <p class="text-lg font-semibold">${{ product.product_detail.price * product.quantity }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -150,31 +155,31 @@
 </template>
 
 <script setup>
-    import { computed, reactive, ref, watchEffect } from 'vue'
-    import { useAppStore } from '@/stores/language.js'
-    import { useProductStore } from '@/stores/product'
-    import ShoppingCart from "@/components/product/ShoppingCart.vue"
-    import { ShoppingBagIcon } from '@heroicons/vue/24/outline'
-    import enMessages from '@/locales/product/checkout/en.js'
-    import esMessages from '@/locales/product/checkout/es.js'
+    import { computed, reactive, ref, watchEffect } from 'vue';
+    import { useAppStore } from '@/stores/language.js';
+    import { useProductStore } from '@/stores/product';
+    import ShoppingCart from "@/components/product/ShoppingCart.vue";
+    import { ShoppingBagIcon } from '@heroicons/vue/24/outline';
+    import enMessages from '@/locales/product/checkout/en.js';
+    import esMessages from '@/locales/product/checkout/es.js';
 
     // Product store references
-    const productStore = useProductStore()
-    const cartProducts = computed(() => productStore.cartProducts)
-    const cartSubtotal = ref(0)
-    const shippingCost = ref(25.00) // Example shipping cost
-    const total = computed(() => productStore.totalCartPrice + shippingCost.value)
-    const totalCartProducts = computed(() => productStore.totalCartProducts)
+    const productStore = useProductStore();
+    const cartProducts = computed(() => productStore.cartProducts);
+    const cartSubtotal = ref(0);
+    const shippingCost = ref(25.00); // Example shipping cost
+    const total = computed(() => productStore.totalCartPrice + shippingCost.value);
+    const totalCartProducts = computed(() => productStore.totalCartProducts);
 
-    const shoppingCartToggle = ref(false)
+    const shoppingCartToggle = ref(false);
 
     // Reactive references for language
-    const appStore = useAppStore()
-    const currentLanguage = computed(() => appStore.getCurrentLanguage)
-    const messages = ref(enMessages)
+    const appStore = useAppStore();
+    const currentLanguage = computed(() => appStore.getCurrentLanguage);
+    const messages = ref(enMessages);
 
     // Translation function
-    const $t = (key) => messages.value[key]
+    const $t = (key) => messages.value[key];
 
     // Form reference
     const form = reactive({
@@ -187,17 +192,17 @@
         state: '',
         postalCode: '',
         soldProducts: '',
-    })
+    });
 
     watchEffect(() => {
-        messages.value = currentLanguage.value === 'en' ? enMessages : esMessages
-    })
+        messages.value = currentLanguage.value === 'en' ? enMessages : esMessages;
+    });
 
     /**
      * Handle form submission
      */
-     const handleSubmit = () => {
-        form.soldProducts =  extractProductInfo(cartProducts.value);
+    const handleSubmit = () => {
+        form.soldProducts = extractProductInfo(cartProducts.value);
         productStore.createSale(form);
         localStorage.removeItem('cartProducts');
         productStore.cartProducts = [];
@@ -221,7 +226,7 @@
      * Toggle shopping cart visibility
      */
     const toggleShoppingCart = () => {
-        shoppingCartToggle.value = !shoppingCartToggle.value
+        shoppingCartToggle.value = !shoppingCartToggle.value;
     }
 
     /**
@@ -229,7 +234,7 @@
      * @param {string} lang - Language to set
      */
     const handleLanguage = (lang) => {
-        appStore.setCurrentLanguage(lang)
+        appStore.setCurrentLanguage(lang);
     }
 </script>
 
