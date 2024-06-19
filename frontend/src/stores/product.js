@@ -19,20 +19,22 @@ export const useProductStore = defineStore("productStore", {
   }),
   getters: {
     /**
-     * Filter products by name
-     * @param {Object} state - The state object
-     * @returns {Function} - Function to filter products by name
+     * Getter method to filter products by name and language.
+     *
+     * @param {Object} state - The current state of the store.
+     * @return {Function} - A function that takes a product name and language,
+     *                      and returns a filtered list of products that match
+     *                      the name in the specified language and have stock available.
      */
-    productsByName: (state) => (name) => {
-      return state.products.filter((product) => product.product_detail.name.toLowerCase().includes(name.toLowerCase()));
-    },
-    /**
-     * Find product by ID
-     * @param {Object} state - The state object
-     * @returns {Function} - Function to get product by ID
-     */
-    productById: (state) => (productId) => {
-      return state.products.find((product) => product.id === productId);
+    productsByName: (state) => (name, lang) => {
+      const lowerCaseName = name.toLowerCase();
+      return state.uniqueProductsByRef.filter((product) => {
+        const productName =
+          lang === "en"
+            ? product.product_detail.name_en.toLowerCase()
+            : product.product_detail.name_es.toLowerCase();
+        return productName.includes(lowerCaseName) && product.stock > 0;
+      });
     },
     /**
      * Get products by reference
@@ -40,7 +42,9 @@ export const useProductStore = defineStore("productStore", {
      * @returns {Function} - Function to get products by reference
      */
     productsByRef: (state) => (ref) => {
-      return state.products.filter((product) => product.ref === ref);
+      return state.products.filter(
+        (product) => product.ref === ref && product.stock > 0
+      );
     },
     /**
      * Get unique products by reference
@@ -50,48 +54,58 @@ export const useProductStore = defineStore("productStore", {
     uniqueProductsByRef: (state) => {
       const productsMap = new Map();
       state.products.forEach((product) => {
-        const ref = product.ref;
-        const color = product.color.name;
-        if (!productsMap.has(ref)) {
-          productsMap.set(ref, {
-            ...product,
-            colors: [color],
-          });
-        } else {
-          const existingProduct = productsMap.get(ref);
-          existingProduct.colors.push(color);
+        if (product.stock > 0) {
+          const ref = product.ref;
+          const color = product.color.name;
+          if (!productsMap.has(ref)) {
+            productsMap.set(ref, {
+              ...product,
+              colors: [color],
+            });
+          } else {
+            const existingProduct = productsMap.get(ref);
+            existingProduct.colors.push(color);
+          }
         }
       });
       return Array.from(productsMap.values());
     },
     /**
-     * Get primary categories
-     * @param {Object} state - The state object
-     * @returns {Array} - Array of primary categories
+     * Getter method to retrieve a list of primary categories.
+     *
+     * @param {Object} state - The current state of the store.
+     * @return {Function} - A function that takes a language and returns a list
+     *                      of unique primary category names in the specified language.
      */
-    primaryCategories: (state) => {
+    primaryCategories: (state) => (lang) => {
       const primaryCategories = new Set();
       primaryCategories.add("All");
       state.products.forEach((product) => {
         product.categories.forEach((category) => {
           if (category.is_primary) {
-            primaryCategories.add(category.name);
+            const categoryName =
+              lang === "en" ? category.name_en : category.name_es;
+            primaryCategories.add(categoryName);
           }
         });
       });
       return Array.from(primaryCategories);
     },
     /**
-     * Get non-primary categories
-     * @param {Object} state - The state object
-     * @returns {Array} - Array of non-primary categories
+     * Getter method to retrieve a list of non-primary categories.
+     *
+     * @param {Object} state - The current state of the store.
+     * @return {Function} - A function that takes a language and returns a list
+     *                      of unique non-primary category names in the specified language.
      */
-    nonPrimaryCategories: (state) => {
+    nonPrimaryCategories: (state) => (lang) => {
       const nonPrimaryCategories = new Set();
       state.products.forEach((product) => {
         product.categories.forEach((category) => {
           if (!category.is_primary) {
-            nonPrimaryCategories.add(category.name);
+            const categoryName =
+              lang === "en" ? category.name_en : category.name_es;
+            nonPrimaryCategories.add(categoryName);
           }
         });
       });
@@ -116,17 +130,21 @@ export const useProductStore = defineStore("productStore", {
       return Array.from(colorSet);
     },
     /**
-     * Get unique products by primary category
-     * @param {Object} state - The state object
-     * @returns {Function} - Function to get unique products by primary category
+     * Getter method to retrieve unique products by primary category.
+     *
+     * @param {Object} state - The current state of the store.
+     * @return {Function} - A function that takes a primary category name and language,
+     *                      and returns a list of unique products with their colors in the specified category.
      */
-    uniqueProductsByPrimaryCategory: (state) => (primaryCategory) => {
+    uniqueProductsByPrimaryCategory: (state) => (primaryCategory, lang) => {
       const productsMap = new Map();
       state.products.forEach((product) => {
         if (
+          product.stock > 0 &&
           product.categories.some(
             (category) =>
-              category.name === primaryCategory && category.is_primary
+              (lang === "en" ? category.name_en : category.name_es) ===
+                primaryCategory && category.is_primary
           )
         ) {
           const ref = product.ref;
@@ -214,12 +232,13 @@ export const useProductStore = defineStore("productStore", {
      * Filter products by category
      * @param {String} category - The category to filter by
      */
-    filterProductsByCategory() {
+    filterProductsByCategory(lang) {
       if (this.primaryCategorySeleted === "All") {
         this.filteredProductsByCategory = this.uniqueProductsByRef;
       } else {
         this.filteredProductsByCategory = this.uniqueProductsByPrimaryCategory(
-          this.primaryCategorySeleted
+          this.primaryCategorySeleted,
+          lang
         );
       }
       this.categoryFilterForceRerender();
@@ -239,6 +258,7 @@ export const useProductStore = defineStore("productStore", {
       is_priceFilter = false,
       colorsSelected = [],
       is_colorsFilter = false,
+      lang = "en",
     } = {}) {
       this.filteredProducts = this.filteredProductsByCategory;
 
@@ -262,29 +282,38 @@ export const useProductStore = defineStore("productStore", {
       }
 
       this.filterProductsByNonPrimaryCategory(
-        this.nonPrimaryCategoriesSelected
+        this.nonPrimaryCategoriesSelected, 
+        lang
       );
       this.filterProductsByPriceRange(this.minPrice, this.maxPrice);
       this.filterProductsByColor(this.colorsSelected);
     },
     /**
-     * Filter products by non-primary categories
-     * @param {Array} nonPrimaryCategoriesSelected - Selected non-primary categories
+     * Method to filter products by non-primary categories.
+     *
+     * @param {Array} nonPrimaryCategoriesSelected - The list of selected non-primary category names.
+     * @param {String} lang - The language to use for filtering (e.g., 'en' or 'es').
      */
-    filterProductsByNonPrimaryCategory(nonPrimaryCategoriesSelected) {
+    filterProductsByNonPrimaryCategory(nonPrimaryCategoriesSelected, lang) {
+      // If no non-primary categories are selected, do nothing
       if (nonPrimaryCategoriesSelected.length === 0) return;
 
       const refSet = new Set();
       const uniqueProducts = [];
 
       this.filteredProducts.forEach((product) => {
+        // Check if the product belongs to any of the selected non-primary categories in the specified language
         if (
-          product.categories.some(
-            (category) =>
-              nonPrimaryCategoriesSelected.includes(category.name) &&
+          product.categories.some((category) => {
+            const categoryName =
+              lang === "en" ? category.name_en : category.name_es;
+            return (
+              nonPrimaryCategoriesSelected.includes(categoryName) &&
               !category.is_primary
-          )
+            );
+          })
         ) {
+          // If the product reference has not been added to the set, add it and push the product to the unique products list
           if (!refSet.has(product.ref)) {
             refSet.add(product.ref);
             uniqueProducts.push(product);
@@ -292,6 +321,7 @@ export const useProductStore = defineStore("productStore", {
         }
       });
 
+      // Update the filtered products with the unique products list
       this.filteredProducts = uniqueProducts;
     },
     /**
@@ -378,7 +408,7 @@ export const useProductStore = defineStore("productStore", {
           sold_products: form.soldProducts,
         });
 
-        return response.status
+        return response.status;
       } catch (error) {
         console.error("Error creating sale:", error);
       }

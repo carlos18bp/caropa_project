@@ -10,7 +10,9 @@ class Command(BaseCommand):
 
         for _ in range(5):
             banner_text = fake.sentence(nb_words=6)
-            banner_instance = Banner.objects.create(text=banner_text)
+            banner_text_en = banner_text + ' (EN)'
+            banner_text_es = banner_text + ' (ES)'
+            banner_instance = Banner.objects.create(text_en=banner_text_en, text_es=banner_text_es)
             self.stdout.write(self.style.SUCCESS(f'Banner "{banner_instance}" created'))
 
-        self.stdout.write(self.style.SUCCESS(f'5 Banner records created'))
+        self.stdout.write(self.style.SUCCESS('5 Banner records created'))
