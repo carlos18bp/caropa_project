@@ -1,245 +1,345 @@
 <template>
-    <div class="min-h-screen flex flex-col">
-        <!-- Top Banner -->
-        <div class="bg-black text-white p-2 text-center text-sm">
-            {{ $t('free_shipping') }}
+    <div class="flex flex-col bg-white">
+      <Banner></Banner>
+      <!-- Header -->
+      <header class="flex justify-between items-center px-8 py-2">
+        <img
+          src="@/assets/images/logo2.png"
+          alt="Caropa Couture Logo"
+          class="h-20 cursor-pointer mb-8"
+        />
+  
+        <div class="flex items-center space-x-4">
+          <LockClosedIcon class="text-black_p w-6 h-6"></LockClosedIcon>
+          <div class="flex items-center space-x-2">
+            <span class="text-black_p text-lg font-bold">{{
+              $t("purchase_safety")
+            }}</span>
+          </div>
+          <div class="flex items-center space-x-2 text-lg">
+            <span class="cursor-pointer font-bold" @click="handleLanguage('en')">
+              EN
+            </span>
+            <span class="font-bold">|</span>
+            <span class="cursor-pointer font-bold" @click="handleLanguage('es')"> ES </span>
+          </div>
         </div>
-
-        <!-- Header -->
-        <header class="flex justify-between items-center p-6 bg-white shadow">
-            <router-link :to="{ name: 'home' }">
-                <img src="@/assets/images/logo2.png" alt="Caropa Couture Logo" class="h-14 cursor-pointer" />
-            </router-link>
-            <div class="flex items-center space-x-4">
-                <div class="flex">
-                    <ShoppingBagIcon class="size-5 text-black m-2 cursor-pointer" @click="toggleShoppingCart" />
-                    <span v-if="totalCartProducts > 0"
-                        class="bg-gray-300 text-white rounded-full text-xs size-5 flex items-center justify-center shadow-lg m-2 ml-0">
-                        ({{ totalCartProducts }})
-                    </span>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <span class="text-gray-700 text-sm font-bold">{{ $t('purchase_safety') }}</span>
-                </div>
-                <ShoppingCart :shoppingCartToggle="shoppingCartToggle" @toggle-cart="toggleShoppingCart" />
-                <div class="flex items-center space-x-2 text-sm">
-                    <span class="cursor-pointer font-bold"
-                        :class="{ 'border-b-2 border-black border-current': currentLanguage === 'en' }"
-                        @click="handleLanguage('en')">
-                        EN
-                    </span>
-                    <span class="font-bold">|</span>
-                    <span class="cursor-pointer font-bold"
-                        :class="{ 'border-b-2 border-black border-current': currentLanguage === 'es' }"
-                        @click="handleLanguage('es')">
-                        ES
-                    </span>
-                </div>
+      </header>
+  
+      <!-- Main Content -->
+      <div class="w-full grid grid-cols-2">
+        <!-- Left Column -->
+        <div class="relative w-full">
+          <form @submit.prevent="handleSubmit" class="sticky top-0 py-8 px-16">
+            <h2 class="text-2xl font-semibold">
+              {{ $t("contact_information") }}
+            </h2>
+            <div class="mt-4">
+              <label class="block text-gray-500 mb-2 font-semibold text-md">{{
+                $t("email_address")
+              }}</label>
+              <input
+                type="email"
+                v-model="form.email"
+                class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
+                required
+              />
             </div>
-        </header>
-
-        <!-- Main Content -->
-        <div class="flex justify-center bg-gray-100">
-            <div class="w-full bg-white rounded-lg shadow-lg flex flex-col lg:flex-row">
-                <!-- Left Column -->
-                <div class="w-full lg:w-1/2 p-5">
-                    <h2 class="text-2xl font-bold mb-5">{{ $t('contact_information') }}</h2>
-                    <form @submit.prevent="handleSubmit">
-                        <div class="mb-5">
-                            <label class="block text-gray-700 mb-2">{{ $t('email_address') }}</label>
-                            <input type="email" v-model="form.email" class="w-full p-3 border rounded-lg" required />
-                        </div>
-
-                        <h2 class="text-2xl font-bold mb-5">{{ $t('payment_details') }}</h2>
-                        <div class="mb-5">
-                            <label class="block text-gray-700 mb-2">{{ $t('card_number') }}</label>
-                            <input type="text" v-model="form.cardNumber" class="w-full p-3 border rounded-lg"
-                                required />
-                        </div>
-                        <div class="mb-5 flex space-x-5">
-                            <div class="w-1/2">
-                                <label class="block text-gray-700 mb-2">{{ $t('expiration_date') }}</label>
-                                <input type="text" v-model="form.expirationDate" class="w-full p-3 border rounded-lg"
-                                    required />
-                            </div>
-                            <div class="w-1/2">
-                                <label class="block text-gray-700 mb-2">CVC</label>
-                                <input type="text" v-model="form.cvc" class="w-full p-3 border rounded-lg" required />
-                            </div>
-                        </div>
-
-                        <h2 class="text-2xl font-bold mb-5">{{ $t('shipping_address') }}</h2>
-                        <div class="mb-5">
-                            <label class="block text-gray-700 mb-2">{{ $t('address') }}</label>
-                            <input type="text" v-model="form.address" class="w-full p-3 border rounded-lg" required />
-                        </div>
-                        <div class="mb-5 flex space-x-5">
-                            <div class="w-1/3">
-                                <label class="block text-gray-700 mb-2">{{ $t('city') }}</label>
-                                <input type="text" v-model="form.city" class="w-full p-3 border rounded-lg" required />
-                            </div>
-                            <div class="w-1/3">
-                                <label class="block text-gray-700 mb-2">{{ $t('state_province') }}</label>
-                                <input type="text" v-model="form.state" class="w-full p-3 border rounded-lg" required />
-                            </div>
-                            <div class="w-1/3">
-                                <label class="block text-gray-700 mb-2">{{ $t('postal_code') }}</label>
-                                <input type="text" v-model="form.postalCode" class="w-full p-3 border rounded-lg"
-                                    required />
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end">
-                            <button type="submit"
-                                class="w-36 bg-yellow-500 text-white p-3 rounded-lg hover:bg-yellow-600">
-                                {{ $t('pay_now') }}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Right Column -->
-                <div
-                    class="w-full lg:w-1/2 bg-gray-50 p-5 rounded-lg mt-10 lg:mt-0 lg:ml-10 border-l-2 border-t-2 border-yellow-400">
-                    <h2 class="text-2xl font-bold mb-5">{{ $t('amount_due') }}</h2>
-                    <div class="space-y-4 flex-1 overflow-y-auto">
-                        <div v-for="product in cartProducts" :key="product.id"
-                            class="flex justify-between items-center border-b pb-4 mb-4">
-                            <!-- Product Image -->
-                            <img :src="product.gallery_urls[0]" alt="Product Image" class="size-36 rounded" />
-                            <div class="flex-1 ml-4 space-y-20">
-                                <div>
-                                    <!-- Product Title -->
-                                    <h3 class="font-semibold" v-if="currentLanguage === 'en'">
-                                        {{ product.product_detail.name }}
-                                    </h3>
-                                    <h3 class="font-semibold" v-else>{{ product.titulo }}</h3>
-                                    <!-- Selected Color -->
-                                    <p class="text-sm text-gray-500">{{ product.colorSelected }}</p>
-                                </div>
-                                <!-- Quantity -->
-                                <p class="text-sm">Qty {{ product.quantity }}</p>
-                            </div>
-                            <div class="text-right mb-20">
-                                <!-- Total Price -->
-                                <p class="text-lg font-semibold">${{ product.product_detail.price * product.quantity }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-10 space-y-2 border-t-2">
-                        <div class="flex justify-between">
-                            <span class="text-gray-700">Subtotal</span>
-                            <span class="text-gray-700">$ {{ cartSubtotal }}</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-700">{{ $t('shipping') }}</span>
-                            <span class="text-gray-700">$ {{ shippingCost }}</span>
-                        </div>
-                    </div>
-
-                    <div class="mt-5 flex justify-between font-bold text-xl border-t-2">
-                        <span>Total</span>
-                        <span>$ {{ total }}</span>
-                    </div>
-                </div>
+  
+            <h2 class="text-2xl font-semibold mt-6">
+              {{ $t("payment_details") }}
+            </h2>
+            <div class="mt-4">
+              <label class="block text-gray-500 mb-2 font-semibold text-md">{{
+                $t("card_number")
+              }}</label>
+              <input
+                type="text"
+                v-model="form.cardNumber"
+                class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
+                required
+              />
             </div>
+            <div class="mt-4 flex space-x-5">
+              <div class="w-1/2">
+                <label class="block text-gray-500 mb-2 font-semibold text-md">{{
+                  $t("expiration_date")
+                }}</label>
+                <input
+                  type="text"
+                  v-model="form.expirationDate"
+                  class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
+                  required
+                />
+              </div>
+              <div class="w-1/2">
+                <label class="block text-gray-500 mb-2 font-semibold text-md"
+                  >CVC</label
+                >
+                <input
+                  type="text"
+                  v-model="form.cvc"
+                  class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
+                  required
+                />
+              </div>
+            </div>
+  
+            <h2 class="text-2xl font-semibold mt-6">
+              {{ $t("shipping_address") }}
+            </h2>
+            <div class="mt-4">
+              <label class="block text-gray-500 mb-2 font-semibold text-md">{{
+                $t("address")
+              }}</label>
+              <input
+                type="text"
+                v-model="form.address"
+                class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
+                required
+              />
+            </div>
+            <div class="mt-4 flex space-x-5">
+              <div class="w-1/3">
+                <label class="block text-gray-500 mb-2 font-semibold text-md">{{
+                  $t("city")
+                }}</label>
+                <input
+                  type="text"
+                  v-model="form.city"
+                  class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
+                  required
+                />
+              </div>
+              <div class="w-1/3">
+                <label class="block text-gray-500 mb-2 font-semibold text-md">{{
+                  $t("state_province")
+                }}</label>
+                <input
+                  type="text"
+                  v-model="form.state"
+                  class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
+                  required
+                />
+              </div>
+              <div class="w-1/3">
+                <label class="block text-gray-500 mb-2 font-semibold text-md">{{
+                  $t("postal_code")
+                }}</label>
+                <input
+                  type="text"
+                  v-model="form.postalCode"
+                  class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
+                  required
+                />
+              </div>
+            </div>
+  
+            <div class="flex justify-end mt-6">
+              <button
+                type="submit"
+                class="w-36 bg-primary text-white p-3 rounded-lg hover:bg-primary_p font-semibold text-md tracking-wider"
+              >
+                {{ $t("pay_now") }}
+              </button>
+            </div>
+          </form>
         </div>
-
-        <!-- Footer -->
-        <div class="bg-black text-white p-2 text-center text-sm">
-            © 2024 Caropa Couture. All rights reserved.
+  
+        <!-- Right Column -->
+        <div class="w-full border-t-2 border-t-primary border-l-2 border-l-primary px-16 py-8">
+          <h2 class="text-xl font-semibold text-gray-500">
+            {{ $t("amount_due") }}
+          </h2>
+          <h2 class="font-semibold text-3xl text-black -mt-1">
+            $ {{ productStore.totalCartPrice }}
+          </h2>
+          <div class="mt-8 ps-12 divide-y-2 divide-brown overflow-auto">
+            <div
+              v-for="product in cartProducts"
+              :key="product.id"
+              class="flex justify-between h-40 py-4 box-content"
+            >
+              <!-- Product Image -->
+              <img
+                :src="product.gallery_urls[0]"
+                alt="Product Image"
+                class="w-40 h-full rounded"
+              />
+              <div class="h-full relative flex-1 pl-4">
+                <div>
+                  <!-- Product Title -->
+                  <h3
+                    class="font-semibold text-xl text-black"
+                    v-if="currentLanguage === 'en'"
+                  >
+                    {{ product.product_detail.name_en }}
+                  </h3>
+                  <h3 class="font-semibold text-xl text-black" v-else>
+                    {{ product.product_detail.name_es }}
+                  </h3>
+                  <!-- Selected Color -->
+                  <p class="text-md font-semibold text-gray-500">
+                    {{ product.color.name }}
+                  </p>
+                </div>
+                <!-- Quantity -->
+                <p class="absolute bottom-0 text-md font-semibold text-gray-500">
+                  Qty {{ product.quantity }}
+                </p>
+              </div>
+              <div class="text-right relative h-full grid">
+                <!-- Total Price -->
+                <p class="text-xl font-semibold text-black">
+                  ${{ product.product_detail.price * product.quantity }}
+                </p>
+                <!-- Remove Product Button -->
+                <div class="flex items-end">
+                  <a
+                    @click="removeProduct(product.id)"
+                    class="text-black font-semibold text-lg cursor-pointer"
+                  >
+                    {{ $t("remove") }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="mt-10 border-t-2 border-t-brown">
+            <div class="flex justify-between mt-4">
+              <span class="text-gray-500 font-semibold text-2xl">Subtotal</span>
+              <span class="text-gray-500 font-semibold text-2xl"
+                >$ {{ productStore.totalCartPrice }}</span
+              >
+            </div>
+            <div class="flex justify-between mt-4">
+              <span class="text-gray-500 font-semibold text-2xl">{{
+                $t("shipping")
+              }}</span>
+              <span class="text-gray-500 font-semibold text-2xl"
+                >$ {{ shippingCost }}</span
+              >
+            </div>
+            <div class="flex justify-between mt-4">
+              <span class="text-gray-500 font-semibold text-2xl">{{
+                $t("taxes")
+              }}</span>
+              <span class="text-gray-500 font-semibold text-2xl">$ {{ taxes }}</span>
+            </div>
+          </div>
+  
+          <div class="mt-4 border-t-2 border-brown">
+            <div class="mt-4 flex justify-between font-semibold text-2xl">
+              <span class="text-black">Total</span>
+              <span class="text-black">$ {{ total }}</span>
+            </div>
+          </div>
         </div>
+      </div>
+  
+      <!-- Footer -->
+      <div class="bg-black text-white p-4 text-start text-lg font-medium">
+        © 2024 Caropa Couture. All rights reserved.
+      </div>
     </div>
-</template>
-
-<script setup>
-    import { computed, reactive, ref, watchEffect } from 'vue';
-    import { useAppStore } from '@/stores/language.js';
-    import { useProductStore } from '@/stores/product';
-    import ShoppingCart from "@/components/product/ShoppingCart.vue";
-    import { ShoppingBagIcon } from '@heroicons/vue/24/outline';
-    import enMessages from '@/locales/product/checkout/en.js';
-    import esMessages from '@/locales/product/checkout/es.js';
-
-    // Product store references
-    const productStore = useProductStore();
-    const cartProducts = computed(() => productStore.cartProducts);
-    const cartSubtotal = ref(0);
-    const shippingCost = ref(25.00); // Example shipping cost
-    const total = computed(() => productStore.totalCartPrice + shippingCost.value);
-    const totalCartProducts = computed(() => productStore.totalCartProducts);
-
-    const shoppingCartToggle = ref(false);
-
-    // Reactive references for language
-    const appStore = useAppStore();
-    const currentLanguage = computed(() => appStore.getCurrentLanguage);
-    const messages = ref(enMessages);
-
-    // Translation function
-    const $t = (key) => messages.value[key];
-
-    // Form reference
-    const form = reactive({
-        email: '',
-        cardNumber: '',
-        expirationDate: '',
-        cvc: '',
-        address: '',
-        city: '',
-        state: '',
-        postalCode: '',
-        soldProducts: '',
-    });
-
-    watchEffect(() => {
-        messages.value = currentLanguage.value === 'en' ? enMessages : esMessages;
-    });
-
-    /**
-     * Handle form submission
-     */
-    const handleSubmit = () => {
-        form.soldProducts = extractProductInfo(cartProducts.value);
-        productStore.createSale(form);
-        localStorage.removeItem('cartProducts');
-        productStore.cartProducts = [];
-    }
-
-    /**
-     * Extract specific fields from a list of products.
-     * 
-     * @param {Array} products - The list of products to process. 
-     * @returns {Array} A new array of objects, where each object contains only the properties of each product.
-     */
-    const extractProductInfo = (products) => {
-        return products.map(product => ({
-            product_id: product.id,
-            color_selected: product.color.name,
-            quantity: product.quantity,
-        }));
-    };
-
-    /**
-     * Toggle shopping cart visibility
-     */
-    const toggleShoppingCart = () => {
-        shoppingCartToggle.value = !shoppingCartToggle.value;
-    }
-
-    /**
-     * Handle language change
-     * @param {string} lang - Language to set
-     */
-    const handleLanguage = (lang) => {
-        appStore.setCurrentLanguage(lang);
-    }
-</script>
-
-<style scoped>
-    body {
-        font-family: 'Arial', sans-serif;
-    }
-</style>
+  </template>
+  
+  <script setup>
+  import { computed, reactive, ref, watchEffect, onMounted } from "vue";
+  import Banner from "@/components/layouts/Banner.vue";
+  import { LockClosedIcon } from "@heroicons/vue/24/outline";
+  import { useAppStore } from "@/stores/language.js";
+  import { useProductStore } from "@/stores/product";
+  import enMessages from "@/locales/product/checkout/en.js";
+  import esMessages from "@/locales/product/checkout/es.js";
+  
+  // Product store references
+  const productStore = useProductStore();
+  const cartProducts = computed(() => productStore.cartProducts);
+  const shippingCost = ref(25.0);
+  const taxes = ref(30.0);
+  const total = computed(
+    () => productStore.totalCartPrice + shippingCost.value + taxes.value
+  );
+  
+  const shoppingCartToggle = ref(false);
+  
+  // Reactive references for language
+  const appStore = useAppStore();
+  const currentLanguage = computed(() => appStore.getCurrentLanguage);
+  const messages = ref(enMessages);
+  
+  // Translation function
+  const $t = (key) => messages.value[key];
+  
+  // Form reference
+  const form = reactive({
+    email: "",
+    cardNumber: "",
+    expirationDate: "",
+    cvc: "",
+    address: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    soldProducts: "",
+  });
+  
+  watchEffect(() => {
+    messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+  });
+  
+  // It's necesary to activate overflow after Shopping Cart component
+  onMounted(() => {
+    document.body.style.overflow = 'auto'
+  })
+  
+  /**
+   * Handle form submission
+   */
+  const handleSubmit = () => {
+    form.soldProducts = extractProductInfo(cartProducts.value);
+    productStore.createSale(form);
+  
+    localStorage.removeItem("cartProducts");
+    productStore.cartProducts = [];
+  };
+  
+  /**
+   * Toggle shopping cart visibility
+   */
+  const toggleShoppingCart = () => {
+    shoppingCartToggle.value = !shoppingCartToggle.value;
+  };
+  
+  /**
+   * Handle language change
+   * @param {string} lang - Language to set
+   */
+  const handleLanguage = (lang) => {
+    appStore.setCurrentLanguage(lang);
+  };
+  
+  /**
+   * Extract specific fields from a list of products.
+   *
+   * @param {Array} products - The list of products to process.
+   * @returns {Array} A new array of objects, where each object contains only the properties of each product.
+   */
+  const extractProductInfo = (products) => {
+    return products.map((product) => ({
+      product_id: product.id,
+      color_selected: product.colorSelected,
+      quantity: product.quantity,
+    }));
+  };
+  
+  /**
+   * Remove product from cart
+   * @param {Number} productId - The ID of the product to remove
+   */
+  const removeProduct = (productId) => {
+    productStore.removeProductFromCart(productId);
+  };
+  </script>

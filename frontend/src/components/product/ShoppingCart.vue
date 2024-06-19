@@ -1,38 +1,53 @@
 <template>
     <!-- Shopping Cart Overlay -->
-    <div class="w-full h-full inset-0 flex justify-end bg-gray-500 bg-opacity-40 backdrop-blur-md" v-if="shoppingCartToggle">
-        <div @click="closeModal" class="absolute inset-0"></div>
-        <div class="relative z-50 bg-white h-full w-full max-w-md shadow-lg flex flex-col">
-
+    <div class="fixed inset-0 flex justify-end z-50" v-if="visible">
+        <div ref="background" 
+            @click="closeCart()" 
+            class="absolute inset-0 bg-gray-500 bg-opacity-40 backdrop-blur-md">
+        </div>
+        <div ref="cart" class="relative bg-white h-full w-2/5 shadow-lg flex flex-col z-60">
             <!-- Cart Header -->
-            <div class="flex justify-between items-center border-b p-4">
-                <h2 class="text-xl font-semibold">Shopping cart</h2>
-                <XMarkIcon @click="closeModal" class="h-6 w-6 cursor-pointer text-gray-500"></XMarkIcon>
+            <div class="flex justify-between items-center p-10">
+                <h2 class="text-2xl font-famil-semibold">Shopping Cart</h2>
+                <XMarkIcon @click="closeCart()" class="text-gray-500 cursor-pointer w-6 h-6">
+                </XMarkIcon>
             </div>
 
             <!-- Cart Items -->
-            <div v-if="cartProducts.length" class="p-4 space-y-4 flex-1 overflow-y-auto">
-                <CartProduct v-for="product in cartProducts" :key="product.id" :product="product"
-                    @addProduct="addProduct" @removeProduct="removeProduct" />
+            <div v-if="cartProduct.length" class="p-10 space-y-4 flex-1 overflow-y-auto">
+                <CartProduct v-for="product in cartProduct" 
+                    :key="product.id" 
+                    :product="product"
+                    @addProduct="addProduct(product)" 
+                    @removeProduct="removeProduct(product.id)" />
             </div>
-            <div v-else>
-                <p class="p-4">No products in the cart</p>
+            <div v-else class="text-lg font-regular ps-10">
+                <p>No products added</p>
+                <RouterLink :to="{ name: 'catalog' }" class="cursor-pointer">
+                    <span class="text-primary">Continue Shopping</span>
+                </RouterLink>
             </div>
 
             <!-- Cart Footer -->
-            <div v-if="cartProducts.length" class="border-t p-4">
+            <div v-if="cartProduct.length" class="border-t p-4">
                 <div class="flex justify-between items-center mb-4">
-                    <span class="text-lg font-semibold">Total</span>
-                    <span class="text-lg font-semibold">$ {{ cartTotalPrice }}</span>
+                    <div>
+                        <h3 class="text-2xl font-semibold">Subtotal</h3>
+                        <p class="text-md text-gray-500 font-medium">
+                            Shipping and taxes calculated at checkout.
+                        </p>
+                    </div>
+                    <span class="text-xl font-semibold">$ {{ cartTotalPrice }}</span>
                 </div>
                 <router-link to="/checkout">
-                    <button class="bg-yellow-400 text-white w-full py-2 rounded hover:bg-yellow-600">
+                    <button
+                        class="bg-primary text-white w-full mt-4 py-2 rounded-lg hover:bg-terciary font-medium text-xl tracking-wide">
                         Checkout
                     </button>
                 </router-link>
-                <div class="text-center mt-4">
-                    <RouterLink :to="{ name: 'catalog' }" class="cursor-pointer text-yellow-400 hover:underline">
-                        or Continue Shopping
+                <div class="text-center mt-4 font-regular text-lg">
+                    <RouterLink :to="{ name: 'catalog' }" class="cursor-pointer">
+                        <span class="text-black">or</span> <span class="text-primary">Continue Shopping</span>
                     </RouterLink>
                 </div>
             </div>
@@ -41,53 +56,114 @@
 </template>
 
 <script setup>
-    // Importing necessary modules and components
-    import { computed } from 'vue';
-    import { XMarkIcon } from '@heroicons/vue/24/outline';
-    import Swal from 'sweetalert2';
-    
-    import CartProduct from './CartProduct.vue';
+    import { computed, ref, watchEffect } from "vue";
+    import CartProduct from "./CartProduct.vue";
+    import { gsap } from "gsap";
+    import { XMarkIcon } from "@heroicons/vue/24/outline";
     import { useProductStore } from "@/stores/product";
 
-    // Initialize product store to access cart products and total price
+    // Create references for Background and Cart Elements
+    const background = ref(null);
+    const cart = ref(null);
+
+
+    // Product store references
     const productStore = useProductStore();
-    const cartProducts = computed(() => productStore.cartProducts);
+    const cartProduct = computed(() => productStore.cartProducts);
     const cartTotalPrice = computed(() => productStore.totalCartPrice);
 
-    // Define props
+    // Props definition
     const props = defineProps({
-        shoppingCartToggle: {
+        visible: {
             type: Boolean,
-            required: true
+            required: true,
+        },
+    });
+    const emit = defineEmits(["update:visible"]);
+
+    // Watch for changes in the state of shoppingCartToggle
+    watchEffect(() => {
+        if (props.visible) {
+            document.body.style.overflow = "hidden";
+            if (background.value) {
+                gsap.fromTo(
+                    background.value,
+                    {
+                        opacity: 0,
+                    },
+                    {
+                        opacity: 1,
+                        duration: 1,
+                        ease: "power2.inOut",
+                    }
+                );
+            }
+            if (cart.value) {
+                gsap.fromTo(
+                    cart.value,
+                    {
+                        x: cart.value.offsetWidth,
+                    },
+                    {
+                        x: 0,
+                        duration: 1,
+                        ease: "power2.inOut",
+                    }
+                );
+            }
+        } else {
+            document.body.style.overflow = "auto";
         }
     });
 
-    // Define custom events
-    const emit = defineEmits(["update:shoppingCartToggle"]);
+    const closeCart = () => {
+        // Create the animations like a promises
+        const cartAnimation = gsap
+            .fromTo(
+                cart.value,
+                {
+                    x: 0,
+                },
+                {
+                    x: cart.value.offsetWidth,
+                    duration: 1,
+                    ease: "power2.inOut",
+                }
+            )
+            .then();
 
-    // Close the shopping cart modal
-    const closeModal = () => {
-        emit('update:shoppingCartToggle', false);
+        const backgroundAnimation = gsap
+            .fromTo(
+                background.value,
+                {
+                    opacity: 1,
+                },
+                {
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.inOut",
+                }
+            )
+            .then();
+
+        // Wait while both are finished
+        Promise.all([cartAnimation, backgroundAnimation]).then(() => {
+            document.body.style.overflow = "auto";
+            emit("update:visible", false);
+        });
     };
 
     /**
-     * Add a product to the cart
+     * Add product to cart
      * @param {Object} product - The product to add
      */
     const addProduct = (product) => {
-        if ((product.quantity + 1) <= product.stock) {
-            productStore.addProductToCart(product);
-        } else {
-            Swal.fire({
-                title: "Sorry, we have no more units for this product",
-                icon: "warning"
-            });
-        }
+        productStore.addProductToCart(product, 1, product.colorSelected);
     };
 
     /**
-     * Remove a product from the cart
-     * @param {number} productId - The ID of the product to remove
+     * Remove product from cart
+     * @param {Number} productId - The ID of the product to remove
      */
     const removeProduct = (productId) => {
         productStore.removeProductFromCart(productId);

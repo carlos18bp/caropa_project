@@ -15,4 +15,5 @@ export default {
     amount_due: 'Amount due',
     remove: 'Remove',
     shipping: 'Shipping',
+    taxes: 'Taxes'
 }

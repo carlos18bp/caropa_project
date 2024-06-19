@@ -15,4 +15,5 @@ export default {
     amount_due: 'Importe a pagar',
     remove: 'Eliminar',
     shipping: 'Envio',
+    taxes: 'Impuestos',
 }

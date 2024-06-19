@@ -1,10 +1,10 @@
 <template>
     <!-- Modal overlay -->
-    <div v-if="visible" class="w-screen h-screen bg-gray-500 bg-opacity-40 backdrop-blur-md">
+    <div v-if="visible" class="w-screen h-screen">
         <!-- Close modal when clicking outside the modal content -->
-        <div @click="closeModal" class="absolute inset-0"></div>
+        <div ref="background" @click="closeModal" class="absolute inset-0 bg-gray-500 bg-opacity-40 backdrop-blur-md"></div>
         <!-- Modal content -->
-        <div class="relative z-50 bg-white shadow-lg w-full p-6">
+        <div ref="bar" class="relative z-50 bg-white shadow-lg w-full p-6">
             <!-- Modal header with search input -->
             <div class="flex items-center justify-between border-b pb-4">
                 <input type="text"
@@ -41,10 +41,15 @@
 </template>
 
 <script setup>
-    import { computed, ref, onMounted } from "vue";
+    import { computed, ref, onMounted, watchEffect } from "vue";
     import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
     import { XMarkIcon } from "@heroicons/vue/24/outline";
+    import { gsap } from "gsap";
+
+    // Create references for Background and Bar Elements
+    const background = ref(null);
+    const bar = ref(null);
 
     // Define component props and events
     const props = defineProps({
@@ -61,9 +66,42 @@
 
     // Close modal function
     const closeModal = () => {
-        emit("update:visible", false);
-        products.value = [];
-        searchQuery.value = null;
+        // Create the animations like a promises
+        const barAnimation = gsap
+            .fromTo(
+                bar.value,
+                {
+                    y: 0,
+                },
+                {
+                    y: -bar.value.offsetHeight,
+                    duration: 1,
+                    ease: "power2.inOut",
+                }
+            )
+            .then();
+
+        const backgroundAnimation = gsap
+            .fromTo(
+                background.value,
+                {
+                    opacity: 1,
+                },
+                {
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.inOut",
+                }
+            )
+            .then();
+
+        // Wait while both are finished
+        Promise.all([barAnimation, backgroundAnimation]).then(() => {
+            document.body.style.overflow = "auto";
+            products.value = [];
+            searchQuery.value = null;
+            emit("update:visible", false);
+        });
     };
 
     // Search function to filter products by name
@@ -72,6 +110,41 @@
             products.value = productStore.productsByName(name, currentLanguage.value);
         }
     };
+    // Watch for changes in the state of Modal Search Bar for animate
+    watchEffect(() => {
+        if (props.visible) {
+            document.body.style.overflow = "hidden";
+            if (background.value) {
+                gsap.fromTo(
+                    background.value,
+                    {
+                        opacity: 0,
+                    },
+                    {
+                        opacity: 1,
+                        duration: 1,
+                        ease: "power2.inOut",
+                    }
+                );
+            }
+            if (bar.value) {
+                gsap.fromTo(
+                    bar.value,
+                    {
+                        y: -bar.value.offsetHeight,
+                    },
+                    {
+                        y: 0,
+                        duration: 1,
+                        ease: "power2.inOut",
+                    }
+                );
+            }
+        } else {
+            document.body.style.overflow = "auto";
+        }
+    });
+
 
     // Fetch products when the component is mounted
     onMounted(async () => {
