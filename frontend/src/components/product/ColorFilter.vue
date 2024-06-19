@@ -19,11 +19,12 @@
                         <div v-for="color in colors" :key="color"
                             class="relative flex flex-col items-center cursor-pointer">
                             <!-- Color Button -->
-                            <button @click="handleColorChange(color)" :class="[
-                'w-8 h-8 rounded-full border-4 flex items-center justify-center',
-                color === 'black' || color === 'white' ? `bg-${color}` :
-                    (color === 'yellow' ? `bg-${color}-300` : `bg-${color}-500`),
-            ]">
+                            <button @click="handleColorChange(color)" 
+                                :class="[
+                                    'w-8 h-8 rounded-full border-4 flex items-center justify-center',
+                                    color === 'black' || color === 'white' ? `bg-${color}` :
+                                        (color === 'yellow' ? `bg-${color}-300` : `bg-${color}-500`),
+                                ]">
                                 <!-- Checked Icon for Selected Colors -->
                                 <img v-if="colorsSelected.includes(color) && color !== 'white'"
                                     src="@/assets/images/product/checked_white.png" alt="checked"

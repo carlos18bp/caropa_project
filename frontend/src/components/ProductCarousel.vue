@@ -1,4 +1,5 @@
 <template>
+    <!-- Carousel container for trending products -->
     <div v-if="productsOnTrending" class="carousel-container px-72 py-16">
         <div class="text-center mb-8">
             <h2 class="text-3xl font-semibold">TRENDING NOW</h2>
@@ -8,15 +9,18 @@
             </p>
         </div>
         <div class="relative">
+            <!-- Previous button for carousel -->
             <button
                 class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-black text-white rounded-full shadow size-6 flex items-center justify-center z-10"
                 @click="prev">
                 <span class="sr-only">Previous</span>
                 <span class="block text-sm leading-none">&lsaquo;</span>
             </button>
+            <!-- Carousel items container -->
             <div class="overflow-hidden">
                 <ul class="flex transition-transform duration-500 ease-in-out"
                     :style="{ transform: `translateX(-${(currentIndex * 100) / 5}%)` }">
+                    <!-- Loop through trending products and display them in the carousel -->
                     <router-link :to="{ name: 'product', params: { product_ref: product.ref } }"
                         v-for="product in productsOnTrending" :key="product.id"
                         class="flex-none w-full sm:w-1/2 lg:w-1/5 px-2 cursor-pointer">
@@ -25,6 +29,7 @@
                                 class="w-full object-cover mb-4" />
                             <div class="text-center">
                                 <h3 class="text-lg font-semibold">
+                                    <!-- Display product name based on current language -->
                                     <span v-if="currentLanguage === 'en'">{{ product.product_detail.name_en }}</span>
                                     <span v-else>{{ product.product_detail.name_es }}</span>
                                 </h3>
@@ -36,6 +41,7 @@
                     </router-link>
                 </ul>
             </div>
+            <!-- Next button for carousel -->
             <button
                 class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-black text-white rounded-full shadow size-6 flex items-center justify-center z-10"
                 @click="next">
@@ -47,31 +53,38 @@
 </template>
 
 <script setup>
+    // Importing necessary modules
     import { computed, ref, onMounted, onUnmounted } from "vue";
     import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
 
-    const appStore = useAppStore();
-    const currentLanguage = computed(() => appStore.getCurrentLanguage);
-    const productStore = useProductStore();
+    // Initializing state
     const currentIndex = ref(0);
     const interval = ref(null);
     const productsOnTrending = ref(null);
 
-    // Fetch products when component is mounted
+    // Access the current language from the store
+    const appStore = useAppStore();
+    const currentLanguage = computed(() => appStore.getCurrentLanguage);
+
+    // Access the product store to get trending products
+    const productStore = useProductStore();
+
+    // Fetch products when the component is mounted
     onMounted(async () => {
         await productStore.fetchProducts();
         productsOnTrending.value = productStore.trendingProducts;
         startCarousel();
     });
 
+    // Stop the carousel when the component is unmounted
     onUnmounted(() => {
         stopCarousel();
     });
 
-    // Compute unique products to be displayed in the carousel
-
-    // Move to the next set of products in the carousel
+    /**
+     * Move to the next set of products in the carousel
+     */
     const next = () => {
         if (currentIndex.value < Math.ceil(productsOnTrending.value.length / 5) - 1) {
             currentIndex.value++;
@@ -80,7 +93,9 @@
         }
     };
 
-    // Move to the previous set of products in the carousel
+    /**
+     * Move to the previous set of products in the carousel
+     */
     const prev = () => {
         if (currentIndex.value > 0) {
             currentIndex.value--;
@@ -89,14 +104,18 @@
         }
     };
 
-    // Start the automatic carousel rotation
+    /**
+     * Start the automatic carousel rotation
+     */
     const startCarousel = () => {
         interval.value = setInterval(() => {
             next();
         }, 3000);
     };
 
-    // Stop the automatic carousel rotation
+    /**
+     * Stop the automatic carousel rotation
+     */
     const stopCarousel = () => {
         if (interval.value) {
             clearInterval(interval.value);

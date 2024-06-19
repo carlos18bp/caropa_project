@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import { create_request, get_request } from "./services/request_http";
 
+/**
+ * Define the product store using Pinia
+ */
 export const useProductStore = defineStore("productStore", {
   state: () => ({
     products: [],
@@ -19,12 +22,11 @@ export const useProductStore = defineStore("productStore", {
   }),
   getters: {
     /**
-     * Getter method to filter products by name and language.
-     *
-     * @param {Object} state - The current state of the store.
+     * Filter products by name and language
+     * @param {Object} state - The current state of the store
      * @return {Function} - A function that takes a product name and language,
      *                      and returns a filtered list of products that match
-     *                      the name in the specified language and have stock available.
+     *                      the name in the specified language and have stock available
      */
     productsByName: (state) => (name, lang) => {
       const lowerCaseName = name.toLowerCase();
@@ -71,11 +73,10 @@ export const useProductStore = defineStore("productStore", {
       return Array.from(productsMap.values());
     },
     /**
-     * Getter method to retrieve a list of primary categories.
-     *
-     * @param {Object} state - The current state of the store.
+     * Get a list of primary categories
+     * @param {Object} state - The current state of the store
      * @return {Function} - A function that takes a language and returns a list
-     *                      of unique primary category names in the specified language.
+     *                      of unique primary category names in the specified language
      */
     primaryCategories: (state) => (lang) => {
       const primaryCategories = new Set();
@@ -92,11 +93,10 @@ export const useProductStore = defineStore("productStore", {
       return Array.from(primaryCategories);
     },
     /**
-     * Getter method to retrieve a list of non-primary categories.
-     *
-     * @param {Object} state - The current state of the store.
+     * Get a list of non-primary categories
+     * @param {Object} state - The current state of the store
      * @return {Function} - A function that takes a language and returns a list
-     *                      of unique non-primary category names in the specified language.
+     *                      of unique non-primary category names in the specified language
      */
     nonPrimaryCategories: (state) => (lang) => {
       const nonPrimaryCategories = new Set();
@@ -130,11 +130,10 @@ export const useProductStore = defineStore("productStore", {
       return Array.from(colorSet);
     },
     /**
-     * Getter method to retrieve unique products by primary category.
-     *
-     * @param {Object} state - The current state of the store.
+     * Get unique products by primary category
+     * @param {Object} state - The current state of the store
      * @return {Function} - A function that takes a primary category name and language,
-     *                      and returns a list of unique products with their colors in the specified category.
+     *                      and returns a list of unique products with their colors in the specified category
      */
     uniqueProductsByPrimaryCategory: (state) => (primaryCategory, lang) => {
       const productsMap = new Map();
@@ -189,19 +188,28 @@ export const useProductStore = defineStore("productStore", {
       );
     },
     /**
-     * Get all trending products.
-     *
-     * @param {object} state - The state object.
-     * @returns {array} - The list of products that are trending.
+     * Get all trending products
+     * @param {object} state - The state object
+     * @returns {array} - The list of products that are trending
      */
     trendingProducts: (state) => {
       return state.products.filter((product) => product.trending_now);
     },
+    /**
+     * Get total number of products in the cart
+     * @param {object} state - The state object
+     * @returns {number} - The total number of products in the cart
+     */
     totalCartProducts: (state) => {
       return state.cartProducts.reduce((total, product) => {
         return total + product.quantity;
       }, 0);
     },
+    /**
+     * Get total price of products in the cart
+     * @param {object} state - The state object
+     * @returns {number} - The total price of products in the cart
+     */
     totalCartPrice: (state) => {
       return state.cartProducts.reduce((total, product) => {
         return (
@@ -229,8 +237,8 @@ export const useProductStore = defineStore("productStore", {
       }
     },
     /**
-     * Filter products by category
-     * @param {String} category - The category to filter by
+     * Filter products by primary category
+     * @param {String} lang - The language to use for filtering
      */
     filterProductsByCategory(lang) {
       if (this.primaryCategorySeleted === "All") {
@@ -282,27 +290,24 @@ export const useProductStore = defineStore("productStore", {
       }
 
       this.filterProductsByNonPrimaryCategory(
-        this.nonPrimaryCategoriesSelected, 
+        this.nonPrimaryCategoriesSelected,
         lang
       );
       this.filterProductsByPriceRange(this.minPrice, this.maxPrice);
       this.filterProductsByColor(this.colorsSelected);
     },
     /**
-     * Method to filter products by non-primary categories.
-     *
-     * @param {Array} nonPrimaryCategoriesSelected - The list of selected non-primary category names.
-     * @param {String} lang - The language to use for filtering (e.g., 'en' or 'es').
+     * Filter products by non-primary categories
+     * @param {Array} nonPrimaryCategoriesSelected - The list of selected non-primary category names
+     * @param {String} lang - The language to use for filtering
      */
     filterProductsByNonPrimaryCategory(nonPrimaryCategoriesSelected, lang) {
-      // If no non-primary categories are selected, do nothing
       if (nonPrimaryCategoriesSelected.length === 0) return;
 
       const refSet = new Set();
       const uniqueProducts = [];
 
       this.filteredProducts.forEach((product) => {
-        // Check if the product belongs to any of the selected non-primary categories in the specified language
         if (
           product.categories.some((category) => {
             const categoryName =
@@ -313,7 +318,6 @@ export const useProductStore = defineStore("productStore", {
             );
           })
         ) {
-          // If the product reference has not been added to the set, add it and push the product to the unique products list
           if (!refSet.has(product.ref)) {
             refSet.add(product.ref);
             uniqueProducts.push(product);
@@ -321,7 +325,6 @@ export const useProductStore = defineStore("productStore", {
         }
       });
 
-      // Update the filtered products with the unique products list
       this.filteredProducts = uniqueProducts;
     },
     /**
@@ -371,6 +374,10 @@ export const useProductStore = defineStore("productStore", {
       this.colorFilterKey += 1;
       this.colorsSelected = [];
     },
+    /**
+     * Add product to the cart
+     * @param {Object} addProduct - The product to add to the cart
+     */
     addProductToCart(addProduct) {
       const existingProduct = this.cartProducts.find(
         (product) => product.id === addProduct.id
@@ -383,6 +390,10 @@ export const useProductStore = defineStore("productStore", {
       }
       localStorage.setItem("cartProducts", JSON.stringify(this.cartProducts));
     },
+    /**
+     * Remove product from the cart
+     * @param {Number} removeProductId - The ID of the product to remove from the cart
+     */
     removeProductFromCart(removeProductId) {
       const removeProduct = this.cartProducts.find(
         (product) => product.id === removeProductId
@@ -397,6 +408,11 @@ export const useProductStore = defineStore("productStore", {
       }
       localStorage.setItem("cartProducts", JSON.stringify(this.cartProducts));
     },
+    /**
+     * Create a new sale
+     * @param {Object} form - The form data for the sale
+     * @returns {Number} - The response status of the sale creation request
+     */
     async createSale(form) {
       try {
         const response = await create_request("create-sale/", {

@@ -1,7 +1,6 @@
 <template>
     <!-- Shopping Cart Overlay -->
-    <div class="w-full h-full inset-0 flex justify-end bg-gray-500 bg-opacity-40 backdrop-blur-md"
-        v-if="shoppingCartToggle">
+    <div class="w-full h-full inset-0 flex justify-end bg-gray-500 bg-opacity-40 backdrop-blur-md" v-if="shoppingCartToggle">
         <div @click="closeModal" class="absolute inset-0"></div>
         <div class="relative z-50 bg-white h-full w-full max-w-md shadow-lg flex flex-col">
 
@@ -17,7 +16,7 @@
                     @addProduct="addProduct" @removeProduct="removeProduct" />
             </div>
             <div v-else>
-                <p class="p-4">No products on the cart</p>
+                <p class="p-4">No products in the cart</p>
             </div>
 
             <!-- Cart Footer -->
@@ -42,16 +41,20 @@
 </template>
 
 <script setup>
-    import CartProduct from './CartProduct.vue';
+    // Importing necessary modules and components
     import { computed } from 'vue';
-    import { useProductStore } from "@/stores/product";
     import { XMarkIcon } from '@heroicons/vue/24/outline';
     import Swal from 'sweetalert2';
+    
+    import CartProduct from './CartProduct.vue';
+    import { useProductStore } from "@/stores/product";
 
+    // Initialize product store to access cart products and total price
     const productStore = useProductStore();
     const cartProducts = computed(() => productStore.cartProducts);
     const cartTotalPrice = computed(() => productStore.totalCartPrice);
 
+    // Define props
     const props = defineProps({
         shoppingCartToggle: {
             type: Boolean,
@@ -59,12 +62,18 @@
         }
     });
 
+    // Define custom events
     const emit = defineEmits(["update:shoppingCartToggle"]);
 
+    // Close the shopping cart modal
     const closeModal = () => {
         emit('update:shoppingCartToggle', false);
-    }
+    };
 
+    /**
+     * Add a product to the cart
+     * @param {Object} product - The product to add
+     */
     const addProduct = (product) => {
         if ((product.quantity + 1) <= product.stock) {
             productStore.addProductToCart(product);
@@ -76,7 +85,11 @@
         }
     };
 
+    /**
+     * Remove a product from the cart
+     * @param {number} productId - The ID of the product to remove
+     */
     const removeProduct = (productId) => {
-        productStore.removeProductFromCart(productId)
+        productStore.removeProductFromCart(productId);
     };
 </script>

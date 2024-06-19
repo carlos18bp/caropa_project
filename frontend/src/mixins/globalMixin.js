@@ -6,14 +6,17 @@ export default {
       globalState: 'This is a global state',
     };
   },
-  created() {     
+  created() {
     const productStore = useProductStore();
     const storedCartProducts = localStorage.getItem('cartProducts');
-    productStore.cartProducts = storedCartProducts
-      ? JSON.parse(storedCartProducts)
-      : [];    
+
+    // Load cart products from local storage or initialize to an empty array
+    productStore.cartProducts = storedCartProducts ? JSON.parse(storedCartProducts) : [];
   },
   methods: {
+    /**
+     * Global method to log a message to the console
+     */
     globalMethod() {
       console.log('This is a global method');
     },
