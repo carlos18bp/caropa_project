@@ -82,7 +82,7 @@
 
     <!-- Shopping cart component -->
     <div v-if="shoppingCartToggle" class="fixed z-30 w-full h-screen top-0">
-        <ShoppingCart :shoppingCartToggle="shoppingCartToggle" @update:shoppingCartToggle="shoppingCartToggle = $event">
+        <ShoppingCart :visible="shoppingCartToggle" @update:visible="shoppingCartToggle = $event">
         </ShoppingCart>
     </div>
 </template>
