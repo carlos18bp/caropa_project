@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <!-- Disclosure Component for Price Filter -->
         <Disclosure defaultOpen>
             <template #default="{ open }">

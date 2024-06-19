@@ -1,20 +1,25 @@
 <template>
     <div>
+        <!-- Header component -->
         <Header></Header>
+
+        <!-- Carousel section -->
         <section class="w-full h-screen">
             <swiper :modules="modules" :loop="true" :pagination="pagination" :autoplay="{
                 delay: 4000,
                 disableOnInteraction: false,
             }" class="w-full h-full">
                 <swiper-slide class="flex justify-center items-center" v-if="home"
-                    v-for="image in home.carousel_presentation_urls">
+                    v-for="image in home.carousel_presentation_urls" :key="image">
                     <img class="block w-full h-full object-cover" :src="image" />
                 </swiper-slide>
             </swiper>
         </section>
+
+        <!-- First category section -->
         <section class="px-72 py-16">
             <div class="grid grid-cols-2 gap-4">
-                <div v-for="(category, index) in home_categories.slice(0, 2)" :key="category.id">
+                <div v-for="category in home_categories.slice(0, 2)" :key="category.id">
                     <div>
                         <h1 class="text-black font-semibold text-3xl text-center">
                             <span v-if="currentLanguage === 'en'">
@@ -31,6 +36,8 @@
                 </div>
             </div>
         </section>
+
+        <!-- Different occasions section -->
         <section class="px-72 py-16">
             <div>
                 <h1 class="text-black font-semibold text-3xl text-center">
@@ -42,7 +49,7 @@
                 </h2>
             </div>
             <div class="mt-16 grid grid-cols-3 gap-4">
-                <div v-for="(category, index) in home_categories.slice(2, 8)" :key="category.id">
+                <div v-for="category in home_categories.slice(2, 8)" :key="category.id">
                     <h2 class="text-black font-semibold text-lg text-center">
                         <span v-if="currentLanguage === 'en'">
                             {{ category.title_en }}
@@ -57,18 +64,20 @@
                 </div>
             </div>
         </section>
+
+        <!-- Gallery and description section -->
         <section v-if="home" class="px-72 py-16 grid grid-cols-2">
             <swiper :modules="modules" :loop="true" :pagination="pagination" :autoplay="{
                 delay: 3000,
                 disableOnInteraction: false,
             }" class="w-full h-full">
-                <swiper-slide class="flex justify-center items-center" v-for="image in home.section_3_gallery_urls">
+                <swiper-slide class="flex justify-center items-center" v-for="image in home.section_3_gallery_urls" :key="image">
                     <img class="block w-full h-full object-cover" :src="image" />
                 </swiper-slide>
             </swiper>
             <div class="flex justify-center items-center">
                 <div>
-                    <h1 class="font-semibold tect-black text-4xl text-center">
+                    <h1 class="font-semibold text-black text-4xl text-center">
                         <span v-if="currentLanguage === 'en'">
                             {{ home.section_3_title_en }}
                         </span>
@@ -87,9 +96,11 @@
                 </div>
             </div>
         </section>
+
+        <!-- Second category section -->
         <section class="px-72 py-16">
             <div class="grid grid-cols-2 gap-4">
-                <div v-for="(category, index) in home_categories.slice(8, 12)" :key="category.id">
+                <div v-for="category in home_categories.slice(8, 12)" :key="category.id">
                     <div>
                         <h1 class="text-black font-semibold text-lg text-center">
                             <span v-if="currentLanguage === 'en'">
@@ -106,28 +117,36 @@
                 </div>
             </div>
         </section>
+
+        <!-- Product carousel component -->
         <ProductCarousel></ProductCarousel>
+        <!-- About shortcut component -->
         <AboutShortCut></AboutShortCut>
+        <!-- Footer component -->
         <Footer></Footer>
     </div>
 </template>
 
 <script setup>
-    import Header from "@/components/layouts/Header.vue";
-    import Footer from "@/components/layouts/Footer.vue";
-    import ProductCarousel from "@/components/ProductCarousel.vue";
-    import AboutShortCut from "@/components/AboutShortCut.vue";
+    // Importing necessary modules and components
+    import { computed, ref, onMounted } from "vue";
+    import { Pagination, Autoplay } from "swiper/modules";
+    import { Swiper, SwiperSlide } from "swiper/vue";
     import { useAppStore } from '@/stores/language.js';
     import { useHomeStore } from "@/stores/home";
-    import { computed, ref, onMounted } from "vue";
-    import { Swiper, SwiperSlide } from "swiper/vue";
+    
+    import AboutShortCut from "@/components/AboutShortCut.vue";
+    import Footer from "@/components/layouts/Footer.vue";
+    import Header from "@/components/layouts/Header.vue";
+    import ProductCarousel from "@/components/ProductCarousel.vue";
+
     import "swiper/css";
     import "swiper/css/pagination";
-    import { Pagination, Autoplay } from "swiper/modules";
 
+    // Initialize store instances and state variables
     const appStore = useAppStore();
-    const currentLanguage = computed(() => appStore.getCurrentLanguage);
     const homeStore = useHomeStore();
+    const currentLanguage = computed(() => appStore.getCurrentLanguage);
     const home = ref(null);
     const home_categories = ref([]);
     const modules = [Pagination, Autoplay];
@@ -135,6 +154,7 @@
         clickable: true,
     };
 
+    // Fetch home data when the component is mounted
     onMounted(async () => {
         await homeStore.fetchHome();
         home.value = homeStore.home;
@@ -143,6 +163,7 @@
 </script>
 
 <style>
+    /* Custom styles for the Swiper pagination bullets */
     .swiper-pagination-bullet {
         background-color: transparent;
         border: 1px solid #fff;

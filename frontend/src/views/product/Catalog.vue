@@ -59,9 +59,9 @@
                                             <a href="#"
                                                 class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium"
                                                 :class="{
-                                'border-primary_p text-primary_p': currentPage === page,
-                                'text-gray-500 hover:text-terciary_p hover:border-terciary_p': currentPage !== page
-                            }" @click="goToPage(page)">
+                                                        'border-primary_p text-primary_p': currentPage === page,
+                                                        'text-gray-500 hover:text-terciary_p hover:border-terciary_p': currentPage !== page
+                                                    }" @click="goToPage(page)">
                                                 {{ page }}
                                             </a>
                                         </template>

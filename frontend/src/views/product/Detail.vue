@@ -17,9 +17,9 @@
                                     <img :src="image" alt="" class="h-full w-full object-cover object-center" />
                                 </span>
                                 <span :class="[
-        'ring-transparent',
-        'pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2',
-    ]" aria-hidden="true" />
+                                        'ring-transparent',
+                                        'pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2',
+                                    ]" aria-hidden="true" />
                             </Tab>
                         </TabList>
                     </div>
@@ -58,12 +58,13 @@
                             <h3 class="text-md font-medium text-gray-700">Color</h3>
                             <div class="flex space-x-2 mt-2">
                                 <span v-for="color in colors" :key="color"
-                                    class="w-8 h-8 border border-gray-300 cursor-pointer" :class="[
-        { 'ring-2 ring-primary_p': selectedColor === color },
-        color === 'black' || color === 'white'
-            ? `bg-${color}`
-            : `bg-${color}-500`,
-    ]" @click="updateProductByColor(color)">
+                                    class="w-8 h-8 border border-gray-300 cursor-pointer" 
+                                    :class="[
+                                        { 'ring-2 ring-primary_p': selectedColor === color },
+                                        color === 'black' || color === 'white'
+                                            ? `bg-${color}`
+                                            : `bg-${color}-500`,
+                                    ]" @click="updateProductByColor(color)">
                                 </span>
                             </div>
                         </div>
@@ -106,9 +107,10 @@
                     <!-- Zoomed Image Display -->
                     <div v-if="selectedImage" class="absolute inset-0 z-20">
                         <div class="rounded-lg overflow-clip bg-black bg-opacity-75">
-                            <img :src="selectedImage ? selectedImage : image" alt="Image selected to zoom" :style="{
-        transform: `scale(${zoom}) translate(${mouseX}px, ${mouseY}px)`,
-    }" />
+                            <img :src="selectedImage ? selectedImage : image" alt="Image selected to zoom" 
+                                :style="{
+                                    transform: `scale(${zoom}) translate(${mouseX}px, ${mouseY}px)`,
+                                }" />
                         </div>
                     </div>
                 </div>
