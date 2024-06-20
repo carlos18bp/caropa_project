@@ -14,7 +14,6 @@ def create_sale(request):
         Response: A response object containing the serialized sale data or errors.
     """
     if request.method == 'POST':
-        print(request.data)
         serializer = SaleSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

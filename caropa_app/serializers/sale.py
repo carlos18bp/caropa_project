@@ -44,5 +44,6 @@ class SaleSerializer(serializers.ModelSerializer):
         for sold_product_data in sold_products_data:
             product_id = sold_product_data.pop('product_id')
             product = Product.objects.get(id=product_id)
-            SoldProduct.objects.create(sale=sale, product=product, **sold_product_data)
+            sold_product = SoldProduct.objects.create(product=product, **sold_product_data)
+            sale.sold_products.add(sold_product)
         return sale

@@ -378,15 +378,15 @@ export const useProductStore = defineStore("productStore", {
      * Add product to the cart
      * @param {Object} addProduct - The product to add to the cart
      */
-    addProductToCart(addProduct) {
+    addProductToCart(addProduct, colorSelected) {
       const existingProduct = this.cartProducts.find(
-        (product) => product.id === addProduct.id
+        (product) => product === addProduct
       );
 
       if (existingProduct) {
         existingProduct.quantity += 1;
       } else {
-        this.cartProducts.push({ ...addProduct, quantity: 1 });
+        this.cartProducts.push({ ...addProduct, quantity: 1, color_selected: colorSelected });
       }
       localStorage.setItem("cartProducts", JSON.stringify(this.cartProducts));
     },
@@ -394,16 +394,16 @@ export const useProductStore = defineStore("productStore", {
      * Remove product from the cart
      * @param {Number} removeProductId - The ID of the product to remove from the cart
      */
-    removeProductFromCart(removeProductId) {
-      const removeProduct = this.cartProducts.find(
-        (product) => product.id === removeProductId
+    removeProductFromCart(removeProduct) {
+      const removeProductFound = this.cartProducts.find(
+        (product) => product === removeProduct
       );
 
-      if (removeProduct.quantity > 1) {
-        removeProduct.quantity -= 1;
+      if (removeProductFound.quantity > 1) {
+        removeProductFound.quantity -= 1;
       } else {
         this.cartProducts = this.cartProducts.filter(
-          (product) => product !== removeProduct
+          (product) => product !== removeProductFound
         );
       }
       localStorage.setItem("cartProducts", JSON.stringify(this.cartProducts));

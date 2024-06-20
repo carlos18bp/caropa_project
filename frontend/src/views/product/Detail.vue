@@ -251,7 +251,7 @@
     };
 
     const addToCart = () => {
-        productStore.addProductToCart(product);
+        productStore.addProductToCart(product, selectedColor.value);
         Swal.fire({
             title: "Product added to Shopping Cart successfully",
             icon: "success"

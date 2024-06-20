@@ -19,7 +19,7 @@
                     :key="product.id" 
                     :product="product"
                     @addProduct="addProduct(product)" 
-                    @removeProduct="removeProduct(product.id)" />
+                    @removeProduct="removeProduct(product)" />
             </div>
             <div v-else class="text-lg font-regular ps-10">
                 <p>No products added</p>
@@ -61,6 +61,7 @@
     import { gsap } from "gsap";
     import { XMarkIcon } from "@heroicons/vue/24/outline";
     import { useProductStore } from "@/stores/product";
+    import Swal from 'sweetalert2';
 
     // Create references for Background and Cart Elements
     const background = ref(null);
@@ -158,14 +159,21 @@
      * @param {Object} product - The product to add
      */
     const addProduct = (product) => {
-        productStore.addProductToCart(product, 1, product.colorSelected);
+        if ((product.quantity + 1) <= product.stock) {
+            productStore.addProductToCart(product, product.colorSelected);
+        } else {
+            Swal.fire({
+                title: "Sorry, we have no more units for this product",
+                icon: "warning"
+            });
+        }
     };
 
     /**
      * Remove product from cart
      * @param {Number} productId - The ID of the product to remove
      */
-    const removeProduct = (productId) => {
-        productStore.removeProductFromCart(productId);
+    const removeProduct = (product) => {
+        productStore.removeProductFromCart(product);
     };
 </script>

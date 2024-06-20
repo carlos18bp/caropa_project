@@ -35,6 +35,8 @@ class ProductSerializer(serializers.ModelSerializer):
             list: A list of absolute URLs of the images in the gallery.
         """
         request = self.context.get('request')
+        if not request:
+            return []
         if obj.gallery:
             return [request.build_absolute_uri(attachment.file.url) for attachment in obj.gallery.attachment_set.all()]
         return []

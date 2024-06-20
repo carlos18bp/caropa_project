@@ -20,6 +20,11 @@ class HomeAdmin(AttachmentsAdminMixin, admin.ModelAdmin):
         for obj in queryset:
             obj.delete()
 
+class SaleAdmin(admin.ModelAdmin):
+    def delete_queryset(self, request, queryset):
+        for sale in queryset:
+            sale.delete()
+
 # Custom AdminSite to organize models by sections
 class CaropaAdminSite(admin.AdminSite):
     site_header = 'Caropa Project'
@@ -69,5 +74,5 @@ admin_site.register(ProductDetail)
 admin_site.register(Category)
 admin_site.register(Size)
 admin_site.register(Color)
-admin_site.register(Sale)
+admin_site.register(Sale, SaleAdmin)
 admin_site.register(SoldProduct)

@@ -22,7 +22,7 @@ class SoldProduct(models.Model):
         Returns:
             str: The name of the product, selected color, and quantity sold.
         """
-        return f'{self.product.product_detail.name} ({self.color_selected} - Qty: {self.quantity})'
+        return f'{self.product.product_detail.name_en} ({self.color_selected} - Qty: {self.quantity})'
     
     def save(self, *args, **kwargs):
         """
@@ -81,7 +81,9 @@ class Sale(models.Model):
             **kwargs: Arbitrary keyword arguments.
         """
         # Delete all sold products associated with this sale
+        print(self.sold_products.all())
         for sold_product in self.sold_products.all():
             sold_product.delete()
+        self.sold_products.clear()
         # Call the superclass delete method
         super().delete(*args, **kwargs)
