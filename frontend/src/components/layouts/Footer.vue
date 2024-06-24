@@ -48,7 +48,10 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="cursor-pointer">Blue Mom</a>
+                                    <a @click="goTo('about_us')" class="cursor-pointer">Blue Mom</a>
+                                    <div>
+                                        <img src="@/assets/images/icons/heart.png" alt="Icon blue heart">
+                                    </div>
                                 </li>
                             </ul>
                         </div>
