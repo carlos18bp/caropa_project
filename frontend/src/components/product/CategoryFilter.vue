@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Disclosure Component for Category Filter -->
-        <Disclosure defaultOpen>
+        <Disclosure >
             <template #default="{ open }">
 
                 <!-- Disclosure Button -->

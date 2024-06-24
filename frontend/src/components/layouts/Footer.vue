@@ -43,11 +43,9 @@
                                     <a @click="goTo('about_us')" class="cursor-pointer">About Us</a>
                                 </li>
                                 <li>
-                                    <a class="cursor-pointer" data-modal-toggle="contact_modal" data-modal-target="contact_modal">
+                                    <a @click="showContactModel = true" class="cursor-pointer">
                                         Contact
                                     </a>
-                                    <!-- Contact modal component -->
-                                    <ContactModel></ContactModel>
                                 </li>
                                 <li>
                                     <a href="#" class="cursor-pointer">Blue Mom</a>
@@ -84,16 +82,22 @@
             </div>
         </div>
     </footer>
+
+    <!-- Contact modal component -->
+    <div v-if="showContactModel" class="fixed z-30 w-full h-screen top-0">
+        <ContactModel :visible="showContactModel" @update:visible="showContactModel = $event"></ContactModel>
+    </div>
 </template>
 
 <script setup>
     // Importing necessary modules and components
-    import { computed, onMounted } from 'vue';
+    import { computed, onMounted, ref } from 'vue';
     import ContactModel from "@/components/ContactModel.vue";
     import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
     import { useRouter, useRoute } from 'vue-router';
 
+    const showContactModel = ref(false)
     // Initialize app store to access the current language
     const appStore = useAppStore();
     const currentLanguage = computed(() => appStore.getCurrentLanguage);

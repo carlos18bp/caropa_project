@@ -1,9 +1,9 @@
 <template>
     <!-- Container for the image and brand information section -->
-    <div class="px-72 py-16">
-        <div class="flex">
+    <div class="max-w-7xl px-8 mx-auto py-16">
+        <div class="grid gap-6 lg:grid-cols-2">
             <!-- Main product image -->
-            <div class="w-4/5">
+            <div class="w-full">
                 <img src="@/assets/images/product/image1.png" alt="Image 1" />
             </div>
             <!-- Brand information section -->

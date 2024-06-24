@@ -3,19 +3,17 @@
     <Banner></Banner>
 
     <!-- Main header -->
-    <header ref="header" class="bg-white">
-        <div class="w-full grid grid-cols-3 px-8">
-            <div class="pt-2 text-md font-famil-semibold text-black flex gap-6">
+    <header ref="header" class="bg-white max-w-7xl mx-auto hidden lg:block">
+        <div class=" grid grid-cols-3 px-8">
+            <div class="pt-2 text-md font-semibold text-black flex gap-6">
                 <!-- Navigation links -->
                 <a @click="goTo('catalog')" class="cursor-pointer">Shop</a>
-                <a class="cursor-pointer" data-modal-toggle="contact_modal" data-modal-target="contact_modal">
+                <a @click="showContactModel = true" class="cursor-pointer">
                     Contact
                 </a>
-                <!-- Contact modal component -->
-                <ContactModel></ContactModel>
                 <a @click="goTo('about_us')" class="cursor-pointer">About</a>
                 <div>
-                    <div class="flex items-center gap-1 cursor-pointer">
+                    <div @click="goTo('about_us')" class="flex items-center gap-1 cursor-pointer">
                         Blue Mom
                         <div>
                             <img src="@/assets/images/icons/heart.png" alt="Icon blue heart">
@@ -70,8 +68,69 @@
         </div>
     </header>
 
+    <!-- Mobile Header -->
+    <header class="block w-screen lg:hidden relative">
+        <div class="w-full h-16 bg-white flex justify-between items-center px-6">
+            <Bars3Icon @click="dropDownHeaderMobile = true" class="w-6 h-6 cursor-pointer"></Bars3Icon>
+            <RouterLink :to="{ name: 'home' }" class="cursor-pointer h-8 absolute left-1/2 transform -translate-x-1/2">
+                <img class="h-8" src="@/assets/images/logo2.png" alt="Principal logo of Caropa Couture">
+            </RouterLink>
+            <div class="flex gap-2">
+                <!-- Search bar trigger -->
+                <div>
+                    <div @click="showSearchBar = true" class="flex items-center justify-center gap-3 cursor-pointer">
+                        <MagnifyingGlassIcon class="text-black size-6"></MagnifyingGlassIcon>
+                    </div>
+                </div>
+
+                <!-- Shopping cart icon -->
+                <div class="relative cursor-pointer">
+                    <ShoppingBagIcon class="size-6 text-black" @click="shoppingCartToggle = true" />
+                    <span @click="shoppingCartToggle = true" v-if="totalCartProducts > 0"
+                        class="absolute top-0 left-1/2 font-regular bg-primary text-white rounded-full text-xxs w-4 h-4 flex items-center justify-center shadow-lg">
+                        {{ totalCartProducts }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Dropdown Menu -->
+        <div v-if="dropDownHeaderMobile" class="fixed w-screen h-screen top-0 left-0 z-10">
+            <!-- Close modal when clicking outside the modal content -->
+            <div ref="background" @click="closeMobileMenu" class="absolute inset-0 bg-gray-500 bg-opacity-40 backdrop-blur-md"></div>
+            <div ref="navBarMobile" class="relative w-full h-full px-6 py-8 bg-white z-50 md:w-96">
+                <div class="flex justify-between items-center">
+                    <XMarkIcon @click="closeMobileMenu" class="w-6 h-6 cursor-pointer"></XMarkIcon>
+                    <RouterLink :to="{ name: 'home' }">
+                        <img class="h-12 py-2" src="@/assets/images/logo2.png" alt="Principal logo of Caropa Couture">
+                    </RouterLink>
+                </div>
+                <div class="grid gap-2 pb-2 mt-4">
+                    <a v-for="(category, index) in categories" :key="category.id" @click="filterProducts(category)"
+                        class="inline-block font-famil-semibold text-lg uppercase hover:text-yellow-300 cursor-pointer"
+                        :class="{ 'text-primary': selectedCategory === category && route.name !== 'home' }">
+                        {{ category }}
+                    </a>
+                    <!-- Navigation links -->
+                    <a @click="goTo('catalog')" class="pt-2 cursor-pointer border-t border-t-gray-500 font-regular">Shop</a>
+                    <a @click="showContactModel = true" class="cursor-pointer font-regular">
+                        Contact
+                    </a>
+                    <a @click="goTo('about_us')" class="cursor-pointer font-regular">About</a>
+                    <div>
+                        <div @click="goTo('about_us')" class="flex items-center gap-1 cursor-pointer font-regular">
+                            Blue Mom
+                            <div>
+                                <img src="@/assets/images/icons/heart.png" alt="Icon blue heart">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <!-- Short header for scroll effect -->
-    <div ref="headerShort" class="fixed top-0 left-0 z-20 opacity-0">
+    <div ref="headerShort" class="fixed top-0 left-0 z-20 opacity-0 hidden lg:block">
         <HeaderShort></HeaderShort>
     </div>
 
@@ -82,16 +141,19 @@
 
     <!-- Shopping cart component -->
     <div v-if="shoppingCartToggle" class="fixed z-30 w-full h-screen top-0">
-        <ShoppingCart :visible="shoppingCartToggle" @update:visible="shoppingCartToggle = $event">
-        </ShoppingCart>
+        <ShoppingCart :visible="shoppingCartToggle" @update:visible="shoppingCartToggle = $event"></ShoppingCart>
+    </div>
+    <!-- Contact modal component -->
+    <div v-if="showContactModel" class="fixed z-30 w-full h-screen top-0">
+        <ContactModel :visible="showContactModel" @update:visible="showContactModel = $event"></ContactModel>
     </div>
 </template>
 
 <script setup>
     // Importing necessary modules and components
-    import { computed, onMounted, ref } from 'vue';
-    import { MagnifyingGlassIcon, ShoppingBagIcon } from '@heroicons/vue/24/outline';
-    import { useRouter, useRoute } from 'vue-router';
+    import { computed, onMounted, ref, watchEffect } from 'vue';
+    import { MagnifyingGlassIcon, ShoppingBagIcon, Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline';
+    import { useRouter, useRoute, RouterLink } from 'vue-router';
     import { gsap } from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -109,6 +171,10 @@
     const header = ref(null);
     const headerShort = ref(null);
     const showSearchBar = ref(false);
+    const dropDownHeaderMobile = ref(false);
+    const background = ref(null)
+    const navBarMobile = ref(null)
+    const showContactModel = ref(false)
 
     // Initialize app store to access the current language
     const appStore = useAppStore();
@@ -147,6 +213,53 @@
                 },
             });
     });
+
+    // Waiting to make animation by open the Mobile Menu
+    watchEffect(() => {
+        if (dropDownHeaderMobile && navBarMobile.value && background.value) {
+            gsap.fromTo(background.value,
+                {
+                    opacity: 0
+                },
+                {
+                    opacity: 1,
+                    duration: 1,
+                    ease: 'power2.inOut',
+                }
+            )
+            gsap.fromTo(navBarMobile.value,
+                {
+                    x: -navBarMobile.value.offsetWidth
+                },
+                {
+                    x: 0,
+                    duration: 1,
+                    ease: 'power2.inOut'
+                }
+            )
+        }
+    })
+
+    const closeMobileMenu = () => {
+        const menuAnimation = gsap.to(navBarMobile.value,
+            {
+                x: -navBarMobile.value.offsetWidth,
+                duration: 1,
+                ease: 'power2.inOut',
+            }
+        )
+        const backgroundAnimation = gsap.to(background.value,
+            {
+                opacity: 0,
+                duration: 1,
+                ease: 'power2.inOut',
+            }
+        )
+
+        Promise.all([menuAnimation, backgroundAnimation]).then(() => {
+            dropDownHeaderMobile.value = false
+        })
+    }
 
     /**
      * Handle language change

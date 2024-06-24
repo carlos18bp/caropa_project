@@ -1,8 +1,8 @@
 <template>
     <Header></Header>
 
-    <div v-if="product && product.product_detail" class="relative isolate px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
+    <div v-if="product && product.product_detail" class="relative px-8 lg:px-8">
+        <div class="mx-auto max-w-2xl py-16 sm:py-6 lg:max-w-7xl lg:px-8">
             <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
 
                 <!-- Image gallery -->
@@ -36,8 +36,7 @@
                 </TabGroup>
 
                 <!-- Product info -->
-                <div class="relative mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-                    <div class="absolute inset-0 z-10">
+                <div class="relative mt-10 sm:mt-16 lg:mt-0">
 
                         <!-- Product Title and Brand -->
                         <div class="mb-12">
@@ -102,7 +101,6 @@
                                 Add to Bag
                             </button>
                         </div>
-                    </div>
 
                     <!-- Zoomed Image Display -->
                     <div v-if="selectedImage" class="absolute inset-0 z-20">
@@ -117,12 +115,12 @@
             </div>
         </div>
 
-        <!-- Product Carousel -->
-        <ProductCarousel></ProductCarousel>
-
-        <!-- Last content -->
-        <AboutShortCut></AboutShortCut>
     </div>
+    <!-- Product Carousel -->
+    <ProductCarousel></ProductCarousel>
+
+    <!-- Last content -->
+    <AboutShortCut></AboutShortCut>
 
     <Footer></Footer>
 </template>

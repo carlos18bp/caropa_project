@@ -14,7 +14,7 @@
             </div>
             <!-- Modal body with search results -->
             <div class="mt-4">
-                <div class="grid grid-cols-3 gap-4">
+                <div class="max-h-96 overflow-auto grid lg:grid-cols-3 gap-4">
                     <!-- Suggestion items -->
                     <RouterLink v-if="products" :to="{ name: 'product', params: { product_ref: product.ref } }"
                         v-for="product in products" :key="product.id" @click.native="closeModal"

@@ -2,7 +2,7 @@
     <div>
 
         <!-- Disclosure Component for Color Filter -->
-        <Disclosure defaultOpen>
+        <Disclosure >
             <template #default="{ open }">
 
                 <!-- Disclosure Button -->

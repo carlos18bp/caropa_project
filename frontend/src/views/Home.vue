@@ -5,11 +5,11 @@
 
         <!-- Carousel section -->
         <section class="w-full h-screen">
-            <swiper :modules="modules" :loop="true" :pagination="pagination" :autoplay="{
+            <swiper v-if="home" :modules="modules" :loop="true" :pagination="pagination" :autoplay="{
                 delay: 4000,
                 disableOnInteraction: false,
             }" class="w-full h-full">
-                <swiper-slide class="flex justify-center items-center" v-if="home"
+                <swiper-slide class="flex justify-center items-center"
                     v-for="image in home.carousel_presentation_urls" :key="image">
                     <img class="block w-full h-full object-cover" :src="image" />
                 </swiper-slide>
@@ -17,8 +17,8 @@
         </section>
 
         <!-- First category section -->
-        <section class="px-72 py-16">
-            <div class="grid grid-cols-2 gap-4">
+        <section class="max-w-7xl mx-auto py-16">
+            <div class="grid md:grid-cols-2 gap-4">
                 <div v-for="category in home_categories.slice(0, 2)" :key="category.id">
                     <div>
                         <h1 class="text-black font-semibold text-3xl text-center">
@@ -30,7 +30,7 @@
                         <h2 class="text-black font-light text-lg text-center">Shop Now</h2>
                     </div>
                     <div class="flex justify-center pt-6">
-                        <img class="w-full" :src="category.image"
+                        <img class="w-3/4 rounded-full lg:rounded-none lg:w-full" :src="category.image"
                             :alt="'Image from Caropa Couture about ' + category.title_en" />
                     </div>
                 </div>
@@ -38,7 +38,7 @@
         </section>
 
         <!-- Different occasions section -->
-        <section class="px-72 py-16">
+        <section class="px-8 max-w-7xl mx-auto py-16 lg:px-0">
             <div>
                 <h1 class="text-black font-semibold text-3xl text-center">
                     DIFFERENT OCCASIONS
@@ -48,7 +48,7 @@
                     Explore now | <span class="border-b-2 border-b-black">SHOP NOW</span>
                 </h2>
             </div>
-            <div class="mt-16 grid grid-cols-3 gap-4">
+            <div class="mt-16 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <div v-for="category in home_categories.slice(2, 8)" :key="category.id">
                     <h2 class="text-black font-semibold text-lg text-center">
                         <span v-if="currentLanguage === 'en'">
@@ -66,7 +66,7 @@
         </section>
 
         <!-- Gallery and description section -->
-        <section v-if="home" class="px-72 py-16 grid grid-cols-2">
+        <section v-if="home" class="max-w-7xl px-8 mx-auto py-16 grid gap-6 lg:grid-cols-2">
             <swiper :modules="modules" :loop="true" :pagination="pagination" :autoplay="{
                 delay: 3000,
                 disableOnInteraction: false,
@@ -98,8 +98,8 @@
         </section>
 
         <!-- Second category section -->
-        <section class="px-72 py-16">
-            <div class="grid grid-cols-2 gap-4">
+        <section class="max-w-7xl px-8 mx-auto py-16">
+            <div class="grid md:grid-cols-2 gap-4">
                 <div v-for="category in home_categories.slice(8, 12)" :key="category.id">
                     <div>
                         <h1 class="text-black font-semibold text-lg text-center">

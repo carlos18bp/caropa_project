@@ -2,14 +2,14 @@
     <div class="flex flex-col bg-white">
         <Banner></Banner>
         <!-- Header -->
-        <header class="flex justify-between items-center px-8 py-2">
-            <router-link :to="{ name: 'home' }">
-                <img src="@/assets/images/logo2.png" alt="Caropa Couture Logo" class="h-20 cursor-pointer mb-8" />
+        <header class="flex justify-between items-center px-8 py-4">
+            <router-link :to="{ name: 'home' }" class="flex items-center">
+                <img src="@/assets/images/logo2.png" alt="Caropa Couture Logo" class="h-12 cursor-pointer" />
             </router-link>
 
             <div class="flex items-center space-x-4">
-                <LockClosedIcon class="text-black_p w-6 h-6"></LockClosedIcon>
-                <div class="flex items-center space-x-2">
+                <LockClosedIcon class="text-black_p w-6 h-6 hidden lg:block"></LockClosedIcon>
+                <div class="items-center space-x-2 hidden lg:flex">
                     <span class="text-black_p text-lg font-bold">{{
                 $t("purchase_safety")
             }}</span>
@@ -25,10 +25,10 @@
         </header>
 
         <!-- Main Content -->
-        <div class="w-full grid grid-cols-2">
+        <div class="w-full grid lg:grid-cols-2">
             <!-- Left Column -->
-            <div class="relative w-full">
-                <form @submit.prevent="handleSubmit" class="sticky top-0 py-8 px-16">
+            <div class="relative w-full order-2 lg:order-1">
+                <form @submit.prevent="handleSubmit" class="sticky top-0 py-8 px-8">
                     <h2 class="text-2xl font-semibold">
                         {{ $t("contact_information") }}
                     </h2>
@@ -52,16 +52,16 @@
                             class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
                             required />
                     </div>
-                    <div class="mt-4 flex space-x-5">
-                        <div class="w-1/2">
+                    <div class="mt-4 grid grid-cols-4 gap-4">
+                        <div class="col-span-4 md:col-span-3">
                             <label class="block text-gray-500 mb-2 font-semibold text-md">{{
-                $t("expiration_date")
-            }}</label>
+                                $t("expiration_date")
+                            }}</label>
                             <input type="text" v-model="form.expirationDate"
                                 class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
                                 required />
                         </div>
-                        <div class="w-1/2">
+                        <div class="col-span-4 md:col-span-1">
                             <label class="block text-gray-500 mb-2 font-semibold text-md">CVC</label>
                             <input type="text" v-model="form.cvc"
                                 class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
@@ -80,8 +80,8 @@
                             class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
                             required />
                     </div>
-                    <div class="mt-4 flex space-x-5">
-                        <div class="w-1/3">
+                    <div class="mt-4 lg:grid lg:grid-cols-3 lg:gap-4">
+                        <div class="">
                             <label class="block text-gray-500 mb-2 font-semibold text-md">{{
                 $t("city")
             }}</label>
@@ -89,7 +89,7 @@
                                 class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
                                 required />
                         </div>
-                        <div class="w-1/3">
+                        <div class="">
                             <label class="block text-gray-500 mb-2 font-semibold text-md">{{
                 $t("state_province")
             }}</label>
@@ -97,7 +97,7 @@
                                 class="w-full p-3 font-regular border border-gray-500 rounded-lg bg-transparent focus:ring-0 focus:ring-transparent focus:outline-none focus:border-black_p"
                                 required />
                         </div>
-                        <div class="w-1/3">
+                        <div class="">
                             <label class="block text-gray-500 mb-2 font-semibold text-md">{{
                 $t("postal_code")
             }}</label>
@@ -117,18 +117,18 @@
             </div>
 
             <!-- Right Column -->
-            <div class="w-full border-t-2 border-t-primary border-l-2 border-l-primary px-16 py-8">
+            <div class="w-full border-t-2 border-t-primary border-b-2 border-b-primary px-8 py-8 order-1 lg:order-2 lg:border-l-2 lg:border-l-primary lg:border-b-0">
                 <h2 class="text-xl font-semibold text-gray-500">
                     {{ $t("amount_due") }}
                 </h2>
                 <h2 class="font-semibold text-3xl text-black -mt-1">
                     $ {{ productStore.totalCartPrice }}
                 </h2>
-                <div class="mt-8 ps-12 divide-y-2 divide-brown overflow-auto">
+                <div class="mt-8 divide-y-2 divide-brown overflow-auto lg:ps-12">
                     <div v-for="product in cartProducts" :key="product.id"
-                        class="flex justify-between h-40 py-4 box-content">
+                        class="flex items-center justify-between h-40 py-4 box-content">
                         <!-- Product Image -->
-                        <img :src="product.gallery_urls[0]" alt="Product Image" class="w-40 h-full rounded" />
+                        <img :src="product.gallery_urls[0]" alt="Product Image" class="w-24 h-24 rounded lg:w-40 lg:h-full" />
                         <div class="h-full relative flex-1 pl-4">
                             <div>
                                 <!-- Product Title -->
