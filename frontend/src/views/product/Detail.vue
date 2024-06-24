@@ -123,11 +123,17 @@
     <AboutShortCut></AboutShortCut>
 
     <Footer></Footer>
+
+    <!-- Search bar component -->
+    <div v-if="showAlertShoppingCart" class="fixed z-30 top-0">
+        <AlertShoppingCart :visible="showAlertShoppingCart" @update:visible="showAlertShoppingCart = $event"></AlertShoppingCart>
+    </div>
 </template>
 
 <script setup>
     import Header from "@/components/layouts/Header.vue";
     import Footer from "@/components/layouts/Footer.vue";
+    import AlertShoppingCart from "@/components/product/AlertShoppingCart.vue";
     import ProductCarousel from "@/components/ProductCarousel.vue";
     import AboutShortCut from "@/components/AboutShortCut.vue";
     import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
@@ -145,6 +151,7 @@
     const product = reactive({});
     const selectedColor = ref(null);
     const selectedSize = ref(null);
+    const showAlertShoppingCart = ref(false)
 
     // This code runs when the component is mounted
     onMounted(async () => {
@@ -247,13 +254,13 @@
     const setProductBySize = (size) => {
         selectedSize.value = size;
     };
-
+    
     const addToCart = () => {
         productStore.addProductToCart(product, selectedColor.value);
-        Swal.fire({
-            title: "Product added to Shopping Cart successfully",
-            icon: "success"
-        });
+        showAlertShoppingCart.value = true;
+        setTimeout(() => {
+            showAlertShoppingCart.value = false;
+        }, 7000);
     };
 
     const selectedImage = ref(null);

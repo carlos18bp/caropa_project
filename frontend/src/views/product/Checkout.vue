@@ -263,7 +263,16 @@
 
         Swal.fire({
             title: "The payment has been processed successfully",
-            icon: "success"
+            icon: "success",
+            iconColor: '#FFF',
+            confirmButtonText: 'Ok',
+            customClass: {
+                popup: 'bg-primary',
+                icon: 'bg-primary',
+                title: 'font-regular text-white',
+                confirmButton: 'bg-white text-primary font-regular py-2 px-4 rounded-lg outline-none',
+            },
+            buttonsStyling: false,
         });
 
         router.push({ name: "home" });

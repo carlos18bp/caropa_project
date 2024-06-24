@@ -143,6 +143,7 @@
     <div v-if="shoppingCartToggle" class="fixed z-30 w-full h-screen top-0">
         <ShoppingCart :visible="shoppingCartToggle" @update:visible="shoppingCartToggle = $event"></ShoppingCart>
     </div>
+    
     <!-- Contact modal component -->
     <div v-if="showContactModel" class="fixed z-30 w-full h-screen top-0">
         <ContactModel :visible="showContactModel" @update:visible="showContactModel = $event"></ContactModel>
