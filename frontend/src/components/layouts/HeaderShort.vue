@@ -1,30 +1,30 @@
 <template>
-    <div>
+    <div class="bg-white">
         <!-- Banner component -->
         <Banner></Banner>
 
         <!-- Main header -->
-        <header class="bg-white h-16 flex items-center px-8 py-2 w-full">
+        <header class="h-16 flex gap-4 items-center px-8 py-2 w-full">
             <!-- Language switcher -->
-            <div class="inline-block">
+            <div class="flex-none w-16">
                 <div class="flex gap-3 items-center">
                     <a @click="handleLanguage('en')" 
-                        class="text-black font-famil-semibold text-md cursor-pointer flex items-center">
+                        class="text-black font-famil-semibold text-sm cursor-pointer flex items-center">
                         <span>EN</span>
                     </a>
                     <span class="text-black font-semibold text-lg">|</span>
                     <a @click="handleLanguage('es')" 
-                        class="text-black font-famil-semibold text-md cursor-pointer flex items-center">
+                        class="text-black font-famil-semibold text-sm cursor-pointer flex items-center">
                         <span>ES</span>
                     </a>
                 </div>
             </div>
 
             <!-- Category navigation and logo -->
-            <div class="grow flex justify-evenly items-center">
+            <div class="flex-1 flex justify-between items-center">
                 <div v-for="category in categories.slice(0, 5)" :key="category.id" @click="filterProducts(category)"
                     class="flex-1 flex justify-center items-center">
-                    <a class="inline-block font-famil-semibold text-lg uppercase text-center"
+                    <a class="inline-block font-famil-semibold text-sm uppercase text-center"
                         :class="{
                             'text-primary': selectedCategory === category,
                             'hover:text-yellow-300': selectedCategory !== category,
@@ -34,11 +34,11 @@
                     </a>
                 </div>
                 <div class="flex-1 flex justify-center items-center">
-                    <img src="@/assets/images/logo2.png" alt="Secondary logo of Caropa Couture" class="h-full">
+                    <img src="@/assets/images/logo2.png" alt="Secondary logo of Caropa Couture" class="h-8">
                 </div>
                 <div v-for="category in categories.slice(5, 10)" :key="category.id" @click="filterProducts(category)"
                     class="flex-1 flex justify-center items-center">
-                    <a class="inline-block font-famil-semibold text-lg uppercase text-center"
+                    <a class="inline-block font-famil-semibold text-sm uppercase text-center"
                         :class="{
                             'text-primary': selectedCategory === category,
                             'hover:text-yellow-300': selectedCategory !== category,
@@ -50,7 +50,7 @@
             </div>
 
             <!-- Search and shopping cart icons -->
-            <div class="flex items-center justify-end gap-6">
+            <div class="flex-none w-16 flex items-center justify-end gap-2">
                 <MagnifyingGlassIcon @click="showSearchBar = true" 
                     class="text-black size-6 cursor-pointer">
                 </MagnifyingGlassIcon>

@@ -1,8 +1,8 @@
 <template>
     <Header></Header>
 
-    <div v-if="product && product.product_detail" class="relative isolate px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-6 lg:max-w-7xl lg:px-8">
+    <div v-if="product && product.product_detail" class="relative px-8 lg:px-8">
+        <div class="mx-auto max-w-2xl py-16 sm:py-6 lg:max-w-7xl lg:px-8">
             <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
 
                 <!-- Image gallery -->
@@ -36,8 +36,7 @@
                 </TabGroup>
 
                 <!-- Product info -->
-                <div class="relative mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-                    <div class="absolute inset-0 z-10">
+                <div class="relative mt-10 sm:mt-16 lg:mt-0">
 
                         <!-- Product Title and Brand -->
                         <div class="mb-12">
@@ -102,7 +101,6 @@
                                 Add to Bag
                             </button>
                         </div>
-                    </div>
 
                     <!-- Zoomed Image Display -->
                     <div v-if="selectedImage" class="absolute inset-0 z-20">
@@ -117,19 +115,25 @@
             </div>
         </div>
 
-        <!-- Product Carousel -->
-        <ProductCarousel></ProductCarousel>
-
-        <!-- Last content -->
-        <AboutShortCut></AboutShortCut>
     </div>
+    <!-- Product Carousel -->
+    <ProductCarousel></ProductCarousel>
+
+    <!-- Last content -->
+    <AboutShortCut></AboutShortCut>
 
     <Footer></Footer>
+
+    <!-- Search bar component -->
+    <div v-if="showAlertShoppingCart" class="fixed z-30 top-0">
+        <AlertShoppingCart :visible="showAlertShoppingCart" @update:visible="showAlertShoppingCart = $event"></AlertShoppingCart>
+    </div>
 </template>
 
 <script setup>
     import Header from "@/components/layouts/Header.vue";
     import Footer from "@/components/layouts/Footer.vue";
+    import AlertShoppingCart from "@/components/product/AlertShoppingCart.vue";
     import ProductCarousel from "@/components/ProductCarousel.vue";
     import AboutShortCut from "@/components/AboutShortCut.vue";
     import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
@@ -147,6 +151,7 @@
     const product = reactive({});
     const selectedColor = ref(null);
     const selectedSize = ref(null);
+    const showAlertShoppingCart = ref(false)
 
     // This code runs when the component is mounted
     onMounted(async () => {
@@ -249,13 +254,13 @@
     const setProductBySize = (size) => {
         selectedSize.value = size;
     };
-
+    
     const addToCart = () => {
         productStore.addProductToCart(product, selectedColor.value);
-        Swal.fire({
-            title: "Product added to Shopping Cart successfully",
-            icon: "success"
-        });
+        showAlertShoppingCart.value = true;
+        setTimeout(() => {
+            showAlertShoppingCart.value = false;
+        }, 7000);
     };
 
     const selectedImage = ref(null);

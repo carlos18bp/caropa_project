@@ -1,24 +1,23 @@
 <template>
     <Header></Header>
 
-    <div class="relative px-8">
+    <div class="relative px-8 mt-12">
         <div>
-
-            <main class="mx-auto xl:max-w-7xl">
+            <main class="mx-auto max-w-7xl">
                 <section aria-labelledby="products-heading">
                     <div class="grid gap-x-8 gap-y-10 grid-cols-4">
 
                         <!-- Filters -->
-                        <div class="col-span-4 md:col-span-1">
-                            <CategoryFilter class="mb-16" :key="categoryFilterKey" />
+                        <div class="col-span-4 lg:col-span-1">
+                            <CategoryFilter class="mb-6" :key="categoryFilterKey" />
                             <PriceFilter class="mb-6" :key="priceFilterKey" />
                             <ColorFilter :key="colorFilterKey" />
                         </div>
 
                         <!-- Product Listing -->
-                        <div class="col-span-4 md:col-span-3">
-                            <div class="mx-auto pt-8 pb-16 max-w-7xl">
-                                <div class="mt-6 grid gap-x-6 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
+                        <div class="col-span-4 lg:col-span-3">
+                            <div class="mx-auto pb-16 max-w-7xl">
+                                <div class="grid gap-x-6 gap-y-10 md:grid-cols-2 xl:grid-cols-3">
                                     <div v-for="product in paginatedProducts" :key="product.id" class="group relative">
                                         <div
                                             class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 aspect-none group-hover:opacity-75 h-80 mb-4">
