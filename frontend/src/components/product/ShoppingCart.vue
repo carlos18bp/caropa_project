@@ -8,7 +8,7 @@
         <div ref="cart" class="relative bg-white h-full w-full shadow-lg flex flex-col z-60 lg:w-2/5">
             <!-- Cart Header -->
             <div class="flex justify-between items-center p-10">
-                <h2 class="text-2xl font-famil-semibold">Shopping Cart</h2>
+                <h2 class="text-2xl font-famil-semibold">{{ $t('shoppingCart').shoppingCart }}</h2>
                 <XMarkIcon @click="closeCart()" class="text-gray-500 cursor-pointer w-6 h-6">
                 </XMarkIcon>
             </div>
@@ -22,9 +22,9 @@
                     @removeProduct="removeProduct(product)" />
             </div>
             <div v-else class="text-lg font-regular ps-10">
-                <p>No products added</p>
+                <p>{{ $t('shoppingCart').noProducts }}</p>
                 <RouterLink :to="{ name: 'catalog' }" class="cursor-pointer">
-                    <span class="text-primary">Continue Shopping</span>
+                    <span class="text-primary test-shoppingCart-continueShopping">{{ $t('shoppingCart').continueShopping }}</span>
                 </RouterLink>
             </div>
 
@@ -33,21 +33,21 @@
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <h3 class="text-2xl font-semibold">Subtotal</h3>
-                        <p class="text-md text-gray-500 font-medium">
-                            Shipping and taxes calculated at checkout.
+                        <p class="text-md text-gray-500 font-medium test-shoppingCart-shipping">
+                            {{ $t('shoppingCart').shipping }}
                         </p>
                     </div>
                     <span class="text-xl font-semibold">${{ cartTotalPrice }}</span>
                 </div>
                 <router-link to="/checkout">
                     <button
-                        class="bg-primary text-white w-full mt-4 py-2 rounded-lg hover:bg-terciary font-medium text-xl tracking-wide">
-                        Checkout
+                        class="bg-primary text-white w-full mt-4 py-2 rounded-lg hover:bg-terciary font-medium text-xl tracking-wide test-shoppingCart-checkout">
+                        {{ $t('shoppingCart').checkout }}
                     </button>
                 </router-link>
                 <div class="text-center mt-4 font-regular text-lg">
                     <RouterLink :to="{ name: 'catalog' }" class="cursor-pointer">
-                        <span class="text-black">or</span> <span class="text-primary">Continue Shopping</span>
+                        <span class="text-black test-shoppingCart-or">{{ $t('shoppingCart').or }}</span> <span class="text-primary test.shoppingCart-continueShopping">{{ $t('shoppingCart').continueShopping }}</span>
                     </RouterLink>
                 </div>
             </div>
@@ -62,11 +62,18 @@
     import { XMarkIcon } from "@heroicons/vue/24/outline";
     import { useProductStore } from "@/stores/product";
     import Swal from 'sweetalert2';
+    import { useAppStore } from '@/stores/language.js';
+    import enMessages from "@/locales/layouts/header/en";
+    import esMessages from "@/locales/layouts/header/es";
 
     // Create references for Background and Cart Elements
     const background = ref(null);
     const cart = ref(null);
+    const messages = ref(enMessages)
 
+    // Initialize app store to access the current language
+    const appStore = useAppStore();
+    const currentLanguage = computed(() => appStore.getCurrentLanguage);
 
     // Product store references
     const productStore = useProductStore();
@@ -82,8 +89,14 @@
     });
     const emit = defineEmits(["update:visible"]);
 
-    // Watch for changes in the state of shoppingCartToggle
+    // Translation function
+    const $t = (key) => messages.value[key];
+
+    // Watch for changes in the state of shoppingCartToggle and change messages in function to currently language
     watchEffect(() => {
+        
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+
         if (props.visible) {
             document.body.style.overflow = "hidden";
             if (background.value) {

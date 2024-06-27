@@ -16,4 +16,7 @@ export default {
     remove: 'Eliminar',
     shipping: 'Envio',
     taxes: 'Impuestos',
+    success: {
+        title: "El pago se a procesado con exito",
+    },
 }

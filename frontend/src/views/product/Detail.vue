@@ -70,7 +70,7 @@
 
                         <!-- Size Options -->
                         <div class="mb-12">
-                            <h3 class="text-md font-medium text-gray-700">Size</h3>
+                            <h3 class="text-md font-medium text-gray-700 test-size">{{ $t('size') }}</h3>
                             <div class="grid grid-cols-2 gap-4 mt-2">
                                 <div v-for="size in sizes" :key="size" class="p-4 border border-gray-300 rounded-md"
                                     :class="{
@@ -89,16 +89,16 @@
                             <p class="text-gray-700 text-sm">
                                 The model is 1.74m tall and wears a size M
                             </p>
-                            <a href="#" class="text-yellow-600 text-sm underline">
-                                Find the perfect size?
+                            <a href="#" class="text-yellow-600 text-sm underline test-sizeReference">
+                                {{ $t('sizeReference') }}
                             </a>
                         </div>
 
                         <!-- Add to Bag Button -->
                         <div class="mt-4">
-                            <button class="w-full py-3 bg-yellow-400 text-white font-semibold rounded-md"
+                            <button class="w-full py-3 bg-yellow-400 text-white font-semibold rounded-md test-addToCart"
                                 @click="addToCart">
-                                Add to Bag
+                                {{ $t('addToCart') }}
                             </button>
                         </div>
 
@@ -137,11 +137,12 @@
     import ProductCarousel from "@/components/ProductCarousel.vue";
     import AboutShortCut from "@/components/AboutShortCut.vue";
     import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/vue";
-    import { computed, onMounted, reactive, ref, watch } from "vue";
+    import { computed, onMounted, reactive, ref, watch, watchEffect } from "vue";
     import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
     import { useRoute } from "vue-router";
-    import Swal from 'sweetalert2';
+    import enMessages from "@/locales/product/detail/en";
+    import esMessages from "@/locales/product/detail/es";
 
     const route = useRoute();
     const appStore = useAppStore();
@@ -152,6 +153,15 @@
     const selectedColor = ref(null);
     const selectedSize = ref(null);
     const showAlertShoppingCart = ref(false)
+    const messages = ref(enMessages)
+
+    // Translation function
+    const $t = (key) => messages.value[key];
+
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+    });
 
     // This code runs when the component is mounted
     onMounted(async () => {

@@ -15,5 +15,8 @@ export default {
     amount_due: 'Amount due',
     remove: 'Remove',
     shipping: 'Shipping',
-    taxes: 'Taxes'
+    taxes: 'Taxes',
+    success: {
+        title: "The payment has been processed successfully",
+    },
 }

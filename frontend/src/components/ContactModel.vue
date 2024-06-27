@@ -9,7 +9,7 @@
                 <!-- Modal header -->
                 <div class="flex items-start justify-between p-5 pb-0">
                     <h3 class="text-2xl font-semibold text-black lg:text-4xl">
-                        Get In Touch
+                        {{ $t('contact').getInTouch }}
                     </h3>
                     <XMarkIcon @click="closeContact()" class="text-gray-500 cursor-pointer w-6 h-6">
                     </XMarkIcon>
@@ -64,10 +64,19 @@
 </template>
 
 <script setup>
-    import { ref, watchEffect } from 'vue';
+    import { ref, watchEffect, computed } from 'vue';
     import { GoogleMap, Marker } from "vue3-google-map";
     import { XMarkIcon } from "@heroicons/vue/24/outline";
     import gsap from "gsap";
+
+    import { useAppStore } from '@/stores/language.js';
+    import enMessages from "@/locales/layouts/header/en";
+    import esMessages from "@/locales/layouts/header/es";
+
+    // Initialize app store to access the current language
+    const appStore = useAppStore();
+    const currentLanguage = computed(() => appStore.getCurrentLanguage);
+    const messages = ref(enMessages)
 
     const background = ref(null);
     const modal = ref(null)
@@ -83,10 +92,13 @@
             required: true
         }
     });
+
+    const $t = (key) => messages.value[key];
+    
     const emit = defineEmits(['update:visible']);
 
-
     watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
         if (props.visible) {
             document.body.style.overflow = "hidden";
             if (background.value) {
