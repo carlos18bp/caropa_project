@@ -11,17 +11,37 @@
                 <!-- Brand logo -->
                 <img src="@/assets/images/logo2.png" alt="Logo" class="w-56" />
                 <!-- Brand description -->
-                <p class="text-lg font-medium text-black text-center">
-                    Learn more about our brand's journey, values, and commitment to quality fashion.
+                <p class="text-lg font-medium text-black text-center test-fourthSection-title">
+                    {{ $t('fourthSection').title }}
                 </p>
                 <!-- Link to About Us page -->
                 <p class="text-lg font-medium text-black">
-                    Discover our story |
-                    <router-link :to="{ name: 'about_us' }" class="border-b-2 border-black">
-                        About Us
+                    <span class="test-fourthSection-subtitle">{{ $t('fourthSection').subtitle }}</span> |
+                    <router-link :to="{ name: 'about_us' }" class="border-b-2 border-black test-fourthSection-about">
+                        {{ $t('fourthSection').about }}
                     </router-link>
                 </p>
             </div>
         </div>
     </div>
 </template>
+
+<script setup>
+    import { ref, watchEffect, computed } from 'vue';
+    import { useAppStore } from '@/stores/language.js';
+    import enMessages from "@/locales/home/en";
+    import esMessages from "@/locales/home/es";
+
+    // Initialize app store to access the current language
+    const appStore = useAppStore();
+    const currentLanguage = computed(() => appStore.getCurrentLanguage);
+    const messages = ref(enMessages)
+
+    // Translation function
+    const $t = (key) => messages.value[key];
+
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+    });
+</script>

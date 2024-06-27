@@ -7,7 +7,7 @@
                 <!-- Disclosure Button -->
                 <DisclosureButton
                     class="flex justify-between w-full px-4 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-100">
-                    <span>Price</span>
+                    <span class="test-filters-price">{{ $t('filters').price }}</span>
                     <ChevronUpIcon class="w-5 h-5 text-gray-500" :class="{ 'transform rotate-180': open }" />
                 </DisclosureButton>
 
@@ -34,14 +34,20 @@
 <script setup>
     import { ChevronUpIcon } from '@heroicons/vue/24/solid';
     import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue';
-    import { computed, nextTick, onMounted, ref, watch } from 'vue';
+    import { computed, nextTick, onMounted, ref, watch, watchEffect } from 'vue';
     import Vue3SliderComponent from 'vue-3-slider-component';
     import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
+    import enMessages from "@/locales/product/catalog/en";
+    import esMessages from "@/locales/product/catalog/es";
 
     const appStore = useAppStore();
     const currentLanguage = computed(() => appStore.getCurrentLanguage);
     const productStore = useProductStore();
+    const messages = ref(enMessages)
+
+    // Translation function
+    const $t = (key) => messages.value[key];
 
     /**
      * Computed property for minimum price in filtered products
@@ -79,6 +85,11 @@
      */
     const formattedMaxPrice = ref(`$ ${maxPrice.value}`);
 
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+    });
+    
     /**
      * Lifecycle hook to set minMaxLoaded to true when minPrice and maxPrice are available on mount
      */
