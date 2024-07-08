@@ -140,3 +140,7 @@ import os
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+PAYPAL_CLIENT_ID = 'AU2YB2_Bro_yaROZ-iQerpGhiExhvQKHtmCnwjMQTFgm1gbUzd4o_VIRtCdKn71cng8Rs0EhPcCMRgc6'
+PAYPAL_CLIENT_SECRET = 'EFfU9wCXiuu16hCETg7nSV9Cr2e2PIVz2__brwEtqgzNttMFGuqzIdAbQmGfSCeSO61JYzkkwr2xy0U-'
+PAYPAL_MODE = 'sandbox'  # Change to 'live' in production
