@@ -15,11 +15,17 @@
             }}</span>
                 </div>
                 <div class="flex items-center space-x-2 text-lg">
-                    <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'en' }" class="cursor-pointer font-bold" @click="handleLanguage('en')">
+                    <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'en' }" 
+                            class="cursor-pointer font-bold" 
+                            @click="handleLanguage('en')">
                         EN
                     </span>
                     <span class="font-bold">|</span>
-                    <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'es' }" class="cursor-pointer font-bold" @click="handleLanguage('es')"> ES </span>
+                    <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'es' }" 
+                            class="cursor-pointer font-bold" 
+                            @click="handleLanguage('es')"> 
+                        ES 
+                    </span>
                 </div>
             </div>
         </header>

@@ -24,7 +24,9 @@
             <div v-else class="text-lg font-regular ps-10">
                 <p>{{ $t('shoppingCart').noProducts }}</p>
                 <RouterLink :to="{ name: 'catalog' }" class="cursor-pointer">
-                    <span class="text-primary test-shoppingCart-continueShopping">{{ $t('shoppingCart').continueShopping }}</span>
+                    <span class="text-primary test-shoppingCart-continueShopping">
+                        {{ $t('shoppingCart').continueShopping }}
+                    </span>
                 </RouterLink>
             </div>
 

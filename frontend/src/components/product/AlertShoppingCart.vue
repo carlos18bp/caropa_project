@@ -1,10 +1,14 @@
 <template>
     <div v-if="visible" class="w-screen h-14 bg-primary flex justify-between items-center px-16 text-white font-regular text-md shadow-2xl">
         <div>
-            <p class="test-addShoppingCart-text">{{ $t('addShoppingCart').text }}</p>
+            <p class="test-addShoppingCart-text">
+                {{ $t('addShoppingCart').text }}
+            </p>
         </div>
         <div class="flex gap-6">
-            <a @click="shoppingCartToggle = true" class="cursor-pointer underline test-addShoppingCart-seeCart">{{ $t('addShoppingCart').seeCart }}</a>
+            <a @click="shoppingCartToggle = true" class="cursor-pointer underline test-addShoppingCart-seeCart">
+                {{ $t('addShoppingCart').seeCart }}
+            </a>
             <XMarkIcon @click="closeModal()" class="w-6 h-6 cursor-pointer"></XMarkIcon>
         </div>
     </div>

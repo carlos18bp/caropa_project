@@ -32,7 +32,8 @@
                 </div>
                 <!-- Link to see all products -->
                 <div class="mt-4 text-right">
-                    <RouterLink :to="{ name: 'catalog' }" @click="closeModal" class="font-medium me-6 test-searchBar-seeAllProducts">{{ $t('searchBar').seeAllProducts }}
+                    <RouterLink :to="{ name: 'catalog' }" @click="closeModal" class="font-medium me-6 test-searchBar-seeAllProducts">
+                        {{ $t('searchBar').seeAllProducts }}
                     </RouterLink>
                 </div>
             </div>

@@ -27,7 +27,9 @@
                             </span>
                             <span v-else>{{ category.title_es }}</span>
                         </h1>
-                        <h2 class="text-black font-light text-lg text-center test-shopNow">{{ $t('shopNow') }}</h2>
+                        <h2 class="text-black font-light text-lg text-center test-shopNow">
+                            {{ $t('shopNow') }}
+                        </h2>
                     </div>
                     <div class="flex justify-center pt-6">
                         <img class="w-3/4 rounded-full lg:rounded-none lg:w-full" :src="category.image"
@@ -107,7 +109,9 @@
                             </span>
                             <span v-else>{{ category.title_es }}</span>
                         </h1>
-                        <h2 class="text-black font-light text-md text-center test-shopNow">{{ $t('shopNow') }}</h2>
+                        <h2 class="text-black font-light text-md text-center test-shopNow">
+                            {{ $t('shopNow') }}
+                        </h2>
                     </div>
                     <div class="flex justify-center pt-6">
                         <img class="w-full" :src="category.image"

@@ -10,8 +10,8 @@
                 <!-- Logo and company description -->
                 <div class="space-y-8">
                     <img src="@/assets/images/logo2.png" alt="Logo of Caropa Couture">
-                    <p class="text-md font-medium leading-6 text-white test-text">
-                        {{ $t('text') }}
+                    <p class="text-md font-medium leading-6 text-white test-textBrandMission">
+                        {{ $t('textBrandMission') }}
                     </p>
 
                     <!-- Social media icons -->
