@@ -307,7 +307,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Payment Successful',
-                        text: 'Your payment has been successfully captured!',
+                        text: "We're going to send you a Email with your invoice and with your purchase details!",
                         iconColor: '#FFF',
                         customClass: {
                             popup: 'bg-primary',
@@ -369,7 +369,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'An unexpected error occurred. Please try again.',
+                    text: "Your order don't be completed and your account didn't charged. Please try again.",
                     iconColor: '#FFF',
                     customClass: {
                         popup: 'bg-primary',
