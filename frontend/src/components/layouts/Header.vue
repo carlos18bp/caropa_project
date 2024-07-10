@@ -7,11 +7,11 @@
         <div class=" grid grid-cols-3 px-8">
             <div class="pt-2 text-md font-semibold text-black flex gap-6">
                 <!-- Navigation links -->
-                <a @click="goTo('catalog')" class="cursor-pointer">Shop</a>
-                <a @click="showContactModel = true" class="cursor-pointer">
-                    Contact
+                <a @click="goTo('catalog')" class="cursor-pointer test-header-shop">{{ $t('header').shop }}</a>
+                <a @click="showContactModel = true" class="cursor-pointer test-header-contact">
+                    {{ $t('header').contact }}
                 </a>
-                <a @click="goTo('about_us')" class="cursor-pointer">About</a>
+                <a @click="goTo('about_us')" class="cursor-pointer test-header-about">{{ $t('header').about }}</a>
                 <div>
                     <div @click="goTo('about_us')" class="flex items-center gap-1 cursor-pointer">
                         Blue Mom
@@ -32,7 +32,9 @@
                 <div>
                     <div @click="showSearchBar = true" class="flex items-center justify-center gap-3 cursor-pointer">
                         <MagnifyingGlassIcon class="text-black size-6"></MagnifyingGlassIcon>
-                        <a class="text-md font-famil-semibold text-black">Search</a>
+                        <a class="text-md font-famil-semibold text-black test-header-search">
+                            {{ $t('header').search }}
+                        </a>
                     </div>
                 </div>
 
@@ -111,11 +113,15 @@
                         {{ category }}
                     </a>
                     <!-- Navigation links -->
-                    <a @click="goTo('catalog')" class="pt-2 cursor-pointer border-t border-t-gray-500 font-regular">Shop</a>
-                    <a @click="showContactModel = true" class="cursor-pointer font-regular">
-                        Contact
+                    <a @click="goTo('catalog')" class="pt-2 cursor-pointer border-t border-t-gray-500 font-regular test-header-shop">
+                        {{ $t('header').shop }}
                     </a>
-                    <a @click="goTo('about_us')" class="cursor-pointer font-regular">About</a>
+                    <a @click="showContactModel = true" class="cursor-pointer font-regular test-header-contact">
+                        {{ $t('header').contact }}
+                    </a>
+                    <a @click="goTo('about_us')" class="cursor-pointer font-regular test-header-about">
+                        {{ $t('header').about }}
+                    </a>
                     <div>
                         <div @click="goTo('about_us')" class="flex items-center gap-1 cursor-pointer font-regular">
                             Blue Mom
@@ -123,6 +129,17 @@
                                 <img src="@/assets/images/icons/heart.png" alt="Icon blue heart">
                             </div>
                         </div>
+                    </div>
+                    <div class="flex items-center space-x-2 text-md">
+                        <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'en' }" 
+                        class="cursor-pointer font-regular" @click="handleLanguage('en')">
+                            EN
+                        </span>
+                        <span class="font-regular">|</span>
+                        <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'es' }" 
+                        class="cursor-pointer font-regular" @click="handleLanguage('es')"> 
+                            ES 
+                        </span>
                     </div>
                 </div>
             </div>
@@ -166,6 +183,9 @@
     import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
 
+    import enMessages from "@/locales/layouts/header/en";
+    import esMessages from "@/locales/layouts/header/es";
+
     gsap.registerPlugin(ScrollTrigger);
 
     // References to DOM elements
@@ -176,6 +196,7 @@
     const background = ref(null)
     const navBarMobile = ref(null)
     const showContactModel = ref(false)
+    const messages = ref(enMessages)
 
     // Initialize app store to access the current language
     const appStore = useAppStore();
@@ -193,6 +214,14 @@
     const selectedCategory = computed(() => productStore.primaryCategorySeleted);
     const shoppingCartToggle = ref(false);
     const totalCartProducts = computed(() => productStore.totalCartProducts);
+
+    // Translation function
+    const $t = (key) => messages.value[key];
+
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+    });
 
     // Fetch products when component is mounted and setup scroll animation
     onMounted(async () => {

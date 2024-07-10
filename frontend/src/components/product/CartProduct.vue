@@ -26,13 +26,13 @@
                 <div class="flex gap-2">
                     <!-- Add Product Button -->
                     <button @click="$emit('addProduct', product)" 
-                        class="text-primary hover:underline">
-                        Add
+                        class="text-primary hover:underline test-shoppingCart-cartProduct-add">
+                        {{ $t('shoppingCart').cartProduct.add }}
                     </button>
                     <!-- Remove Product Button -->
                     <button @click="$emit('removeProduct', product.id)" 
-                        class="text-gray-500 hover:underline">
-                        Remove
+                        class="text-gray-500 hover:underline test-shoppingCart-cartProduct-remove">
+                        {{ $t('shoppingCart').cartProduct.remove }}
                     </button>
                 </div>
             </div>
@@ -42,15 +42,27 @@
 
 <script setup>
     // Importing necessary modules
-    import { computed } from 'vue';
+    import { computed, ref, watchEffect } from 'vue';
     import { useAppStore } from '@/stores/language.js';
+    import enMessages from "@/locales/layouts/header/en";
+    import esMessages from "@/locales/layouts/header/es";
+    
 
     // Initializing app store to access the current language
     const appStore = useAppStore();
     const currentLanguage = computed(() => appStore.getCurrentLanguage);
+    const messages = ref(enMessages)
 
     // Defining component props
     const props = defineProps({
         product: Object,
+    });
+
+    // Translation function
+    const $t = (key) => messages.value[key];
+
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
     });
 </script>

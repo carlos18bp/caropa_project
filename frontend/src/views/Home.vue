@@ -27,7 +27,9 @@
                             </span>
                             <span v-else>{{ category.title_es }}</span>
                         </h1>
-                        <h2 class="text-black font-light text-lg text-center">Shop Now</h2>
+                        <h2 class="text-black font-light text-lg text-center test-shopNow">
+                            {{ $t('shopNow') }}
+                        </h2>
                     </div>
                     <div class="flex justify-center pt-6">
                         <img class="w-3/4 rounded-full lg:rounded-none lg:w-full" :src="category.image"
@@ -40,12 +42,11 @@
         <!-- Different occasions section -->
         <section class="px-8 max-w-7xl mx-auto py-16 lg:px-0">
             <div>
-                <h1 class="text-black font-semibold text-3xl text-center">
-                    DIFFERENT OCCASIONS
+                <h1 class="text-black font-semibold text-3xl text-center test-firstSection-title">
+                    {{ $t('firstSection').title }}
                 </h1>
-                <h2 class="text-black font-medium text-xl text-center">
-                    Your one-stop destination for every style, trend, and occasion.
-                    Explore now | <span class="border-b-2 border-b-black">SHOP NOW</span>
+                <h2 class="text-black font-medium text-xl text-center test-firstSection-subtitle">
+                    {{ $t('firstSection').subtitle }} | <span class="border-b-2 border-b-black uppercase test-shopNow">{{ $t('shopNow') }}</span>
                 </h2>
             </div>
             <div class="mt-16 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -58,8 +59,8 @@
                     </h2>
                     <img class="w-full mt-4" :src="category.image"
                         :alt="'Image from Caropa Couture about ' + category.title_en" />
-                    <h3 class="text-gray-500 text-md text-center font-semibold mt-4">
-                        SHOP NOW
+                    <h3 class="text-gray-500 text-md text-center font-semibold mt-4 test-shopNow">
+                        {{ $t('shopNow') }}
                     </h3>
                 </div>
             </div>
@@ -89,9 +90,9 @@
                         </span>
                         <span v-else>{{ home.section_3_description_es }}</span>
                     </h2>
-                    <h3 class="font-semibold text-gray-400 text-xl text-center mt-4">
-                        Want to explore more?
-                        <span class="border-b-2 border-b-gray-400">Click here now!</span>
+                    <h3 class="font-semibold text-gray-400 text-xl text-center mt-4 test-secondSection-subtitle">
+                        {{ $t('secondSection').subtitle }}
+                        <span class="border-b-2 border-b-gray-400 test-secondSection-subtitle">{{ $t('secondSection').click }}</span>
                     </h3>
                 </div>
             </div>
@@ -108,7 +109,9 @@
                             </span>
                             <span v-else>{{ category.title_es }}</span>
                         </h1>
-                        <h2 class="text-black font-light text-md text-center">Shop Now</h2>
+                        <h2 class="text-black font-light text-md text-center test-shopNow">
+                            {{ $t('shopNow') }}
+                        </h2>
                     </div>
                     <div class="flex justify-center pt-6">
                         <img class="w-full" :src="category.image"
@@ -129,7 +132,7 @@
 
 <script setup>
     // Importing necessary modules and components
-    import { computed, ref, onMounted } from "vue";
+    import { computed, ref, onMounted, watchEffect } from "vue";
     import { Pagination, Autoplay } from "swiper/modules";
     import { Swiper, SwiperSlide } from "swiper/vue";
     import { useAppStore } from '@/stores/language.js';
@@ -139,6 +142,9 @@
     import Footer from "@/components/layouts/Footer.vue";
     import Header from "@/components/layouts/Header.vue";
     import ProductCarousel from "@/components/ProductCarousel.vue";
+
+    import enMessages from "@/locales/home/en";
+    import esMessages from "@/locales/home/es";
 
     import "swiper/css";
     import "swiper/css/pagination";
@@ -153,6 +159,15 @@
     const pagination = {
         clickable: true,
     };
+    const messages = ref(enMessages)
+
+    // Translation function
+    const $t = (key) => messages.value[key];
+
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+    });
 
     // Fetch home data when the component is mounted
     onMounted(async () => {

@@ -10,12 +10,12 @@
                 <div class="flex gap-3 items-center">
                     <a @click="handleLanguage('en')" 
                         class="text-black font-famil-semibold text-sm cursor-pointer flex items-center">
-                        <span>EN</span>
+                        <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'en' }">EN</span>
                     </a>
                     <span class="text-black font-semibold text-lg">|</span>
                     <a @click="handleLanguage('es')" 
                         class="text-black font-famil-semibold text-sm cursor-pointer flex items-center">
-                        <span>ES</span>
+                        <span :class="{ 'border-b-2 border-black border-current': currentLanguage === 'es' }">ES</span>
                     </a>
                 </div>
             </div>

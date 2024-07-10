@@ -46,16 +46,16 @@
 
                                 <!-- Pagination -->
                                 <nav class="flex items-center justify-between border-t border-gray-200 px-4 mt-8">
-                                    <a href="#"
-                                        class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-terciary_p hover:text-terciary_p"
+                                    <a
+                                        class="inline-flex items-center border-t-2 border-transparent pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-terciary_p hover:text-terciary_p test-navigate-previous"
                                         @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">
                                         <ArrowLongLeftIcon class="mr-3 h-5 w-5 text-primary_p" aria-hidden="true" />
-                                        Previous
+                                        {{ $t('navigate').previous }}
                                     </a>
 
                                     <div>
                                         <template v-for="page in totalPages" :key="page">
-                                            <a href="#"
+                                            <a
                                                 class="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium"
                                                 :class="{
                                                         'border-primary_p text-primary_p': currentPage === page,
@@ -66,10 +66,10 @@
                                         </template>
                                     </div>
 
-                                    <a href="#"
-                                        class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-terciary_p hover:text-terciary_p"
+                                    <a
+                                        class="inline-flex items-center border-t-2 border-transparent pl-1 pt-4 text-sm font-medium text-gray-500 hover:border-terciary_p hover:text-terciary_p test-navigate-next"
                                         @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">
-                                        Next
+                                        {{ $t('navigate').next }}
                                         <ArrowLongRightIcon class="ml-3 h-5 w-5 text-primary_p" aria-hidden="true" />
                                     </a>
                                 </nav>
@@ -92,9 +92,11 @@
     import Header from "@/components/layouts/Header.vue";
     import PriceFilter from "@/components/product/PriceFilter.vue";
     import { ArrowLongLeftIcon, ArrowLongRightIcon } from "@heroicons/vue/20/solid";
-    import { computed, onMounted, ref } from "vue";
+    import { computed, onMounted, ref, watchEffect } from "vue";
     import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
+    import enMessages from "@/locales/product/catalog/en";
+    import esMessages from "@/locales/product/catalog/es";
 
     const appStore = useAppStore();
     const currentLanguage = computed(() => appStore.getCurrentLanguage);
@@ -112,6 +114,10 @@
     const categoryFilterKey = computed(() => productStore.categoryFilterKey);
     const priceFilterKey = computed(() => productStore.priceFilterKey);
     const colorFilterKey = computed(() => productStore.colorFilterKey);
+    const messages = ref(enMessages)
+
+    // Translation function
+    const $t = (key) => messages.value[key];
 
     /**
      * Ref for the current page in pagination
@@ -137,6 +143,11 @@
     } else if (window.innerWidth < 760) {
         productsPerPage = 3;
     }
+
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+    });
 
     /**
      * Lifecycle hook to fetch products on mount and initialize category filter

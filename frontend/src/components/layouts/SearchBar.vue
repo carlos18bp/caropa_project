@@ -9,7 +9,9 @@
             <div class="flex items-center justify-between border-b pb-4">
                 <input type="text"
                     class="w-full p-2 text-lg border-transparent focus:border-none focus:ring-0 focus:outline-none font-semibold"
-                    placeholder="Search..." v-model="searchQuery" @input="onSearch(searchQuery)" />
+                    :placeholder="$t('searchBar').search" 
+                    v-model="searchQuery" 
+                    @input="onSearch(searchQuery)"/>
                 <XMarkIcon @click="closeModal" class="h-6 w-6 cursor-pointer me-6 text-gray-500"></XMarkIcon>
             </div>
             <!-- Modal body with search results -->
@@ -32,7 +34,8 @@
                 </div>
                 <!-- Link to see all products -->
                 <div class="mt-4 text-right">
-                    <RouterLink :to="{ name: 'catalog' }" @click="closeModal" class="font-medium me-6">See all products
+                    <RouterLink :to="{ name: 'catalog' }" @click="closeModal" class="font-medium me-6 test-searchBar-seeAllProducts">
+                        {{ $t('searchBar').seeAllProducts }}
                     </RouterLink>
                 </div>
             </div>
@@ -47,9 +50,13 @@
     import { XMarkIcon } from "@heroicons/vue/24/outline";
     import { gsap } from "gsap";
 
+    import enMessages from "@/locales/layouts/header/en";
+    import esMessages from "@/locales/layouts/header/es";
+
     // Create references for Background and Bar Elements
     const background = ref(null);
     const bar = ref(null);
+    const messages = ref(enMessages)
 
     // Define component props and events
     const props = defineProps({
@@ -63,6 +70,14 @@
     const productStore = useProductStore();
     const products = ref([]);
     const searchQuery = ref(null);
+
+    // Translation function
+    const $t = (key) => messages.value[key];
+
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+    });
 
     // Close modal function
     const closeModal = () => {

@@ -2,10 +2,16 @@
     <!-- Carousel container for trending products -->
     <div v-if="productsOnTrending" class="carousel-container px-8 max-w-7xl mx-auto py-16">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-semibold">TRENDING NOW</h2>
+            <h2 class="text-3xl font-semibold test-thirdSection-title">
+                {{ $t('thirdSection').title }}
+            </h2>
             <p class="text-xl font-medium text-gray-500">
-                Discover the trending dresses everyone loves. Explore now |
-                <span class="border-b-2 border-b-gray-500">SHOP NOW</span>
+                <span class="test-thirdSection-subtitle">
+                    {{ $t('thirdSection').subtitle }}
+                </span> |
+                <span class="border-b-2 border-b-gray-500 test-shopNow">
+                    {{ $t('shopNow') }}
+                </span>
             </p>
         </div>
         <div class="relative">
@@ -46,16 +52,18 @@
 
 <script setup>
     // Importing necessary modules
-    import { computed, ref, onMounted } from "vue";
+    import { computed, ref, onMounted, watchEffect } from "vue";
     import { useAppStore } from '@/stores/language.js';
     import { useProductStore } from "@/stores/product";
     import { Autoplay } from "swiper/modules";
     import { Swiper, SwiperSlide } from "swiper/vue";
+    import enMessages from "@/locales/home/en";
+    import esMessages from "@/locales/home/es";
 
     import "swiper/css";
 
     // Functions necessary for Swiper
-        const modules = [Autoplay];
+    const modules = [Autoplay];
 
     // Initializing state
     const productsOnTrending = ref(null);
@@ -63,9 +71,18 @@
     // Access the current language from the store
     const appStore = useAppStore();
     const currentLanguage = computed(() => appStore.getCurrentLanguage);
+    const messages = ref(enMessages)
 
     // Access the product store to get trending products
     const productStore = useProductStore();
+
+    // Translation function
+    const $t = (key) => messages.value[key];
+
+    // Change messages in function to currently language
+    watchEffect(() => {
+        messages.value = currentLanguage.value === "en" ? enMessages : esMessages;
+    });
 
     // Fetch products when the component is mounted
     onMounted(async () => {
