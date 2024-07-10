@@ -70,7 +70,9 @@
 
                         <!-- Size Options -->
                         <div class="mb-12">
-                            <h3 class="text-md font-medium text-gray-700 test-size">{{ $t('size') }}</h3>
+                            <h3 class="text-md font-medium text-gray-700 test-size">
+                                {{ $t('size') }}
+                            </h3>
                             <div class="grid grid-cols-2 gap-4 mt-2">
                                 <div v-for="size in sizes" :key="size" class="p-4 border border-gray-300 rounded-md"
                                     :class="{

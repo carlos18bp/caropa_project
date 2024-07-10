@@ -32,7 +32,9 @@
                 <div>
                     <div @click="showSearchBar = true" class="flex items-center justify-center gap-3 cursor-pointer">
                         <MagnifyingGlassIcon class="text-black size-6"></MagnifyingGlassIcon>
-                        <a class="text-md font-famil-semibold text-black test-header-search">{{ $t('header').search }}</a>
+                        <a class="text-md font-famil-semibold text-black test-header-search">
+                            {{ $t('header').search }}
+                        </a>
                     </div>
                 </div>
 
@@ -111,11 +113,15 @@
                         {{ category }}
                     </a>
                     <!-- Navigation links -->
-                    <a @click="goTo('catalog')" class="pt-2 cursor-pointer border-t border-t-gray-500 font-regular test-header-shop">{{ $t('header').shop }}</a>
+                    <a @click="goTo('catalog')" class="pt-2 cursor-pointer border-t border-t-gray-500 font-regular test-header-shop">
+                        {{ $t('header').shop }}
+                    </a>
                     <a @click="showContactModel = true" class="cursor-pointer font-regular test-header-contact">
                         {{ $t('header').contact }}
                     </a>
-                    <a @click="goTo('about_us')" class="cursor-pointer font-regular test-header-about">{{ $t('header').about }}</a>
+                    <a @click="goTo('about_us')" class="cursor-pointer font-regular test-header-about">
+                        {{ $t('header').about }}
+                    </a>
                     <div>
                         <div @click="goTo('about_us')" class="flex items-center gap-1 cursor-pointer font-regular">
                             Blue Mom

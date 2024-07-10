@@ -9,7 +9,9 @@
             <div class="flex items-center justify-between border-b pb-4">
                 <input type="text"
                     class="w-full p-2 text-lg border-transparent focus:border-none focus:ring-0 focus:outline-none font-semibold"
-                    :placeholder="$t('searchBar').search" v-model="searchQuery" @input="onSearch(searchQuery)" />
+                    :placeholder="$t('searchBar').search" 
+                    v-model="searchQuery" 
+                    @input="onSearch(searchQuery)"/>
                 <XMarkIcon @click="closeModal" class="h-6 w-6 cursor-pointer me-6 text-gray-500"></XMarkIcon>
             </div>
             <!-- Modal body with search results -->

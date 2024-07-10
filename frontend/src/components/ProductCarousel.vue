@@ -2,10 +2,16 @@
     <!-- Carousel container for trending products -->
     <div v-if="productsOnTrending" class="carousel-container px-8 max-w-7xl mx-auto py-16">
         <div class="text-center mb-8">
-            <h2 class="text-3xl font-semibold test-thirdSection-title">{{ $t('thirdSection').title }}</h2>
+            <h2 class="text-3xl font-semibold test-thirdSection-title">
+                {{ $t('thirdSection').title }}
+            </h2>
             <p class="text-xl font-medium text-gray-500">
-                <span class="test-thirdSection-subtitle">{{ $t('thirdSection').subtitle }}</span> |
-                <span class="border-b-2 border-b-gray-500 test-shopNow">{{ $t('shopNow') }}</span>
+                <span class="test-thirdSection-subtitle">
+                    {{ $t('thirdSection').subtitle }}
+                </span> |
+                <span class="border-b-2 border-b-gray-500 test-shopNow">
+                    {{ $t('shopNow') }}
+                </span>
             </p>
         </div>
         <div class="relative">

@@ -8,7 +8,9 @@
         <div ref="cart" class="relative bg-white h-full w-full shadow-lg flex flex-col z-60 lg:w-2/5">
             <!-- Cart Header -->
             <div class="flex justify-between items-center p-10">
-                <h2 class="text-2xl font-famil-semibold">{{ $t('shoppingCart').shoppingCart }}</h2>
+                <h2 class="text-2xl font-famil-semibold">
+                    {{ $t('shoppingCart').shoppingCart }}
+                </h2>
                 <XMarkIcon @click="closeCart()" class="text-gray-500 cursor-pointer w-6 h-6">
                 </XMarkIcon>
             </div>
