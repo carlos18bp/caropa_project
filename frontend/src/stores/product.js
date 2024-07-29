@@ -408,26 +408,5 @@ export const useProductStore = defineStore("productStore", {
       }
       localStorage.setItem("cartProducts", JSON.stringify(this.cartProducts));
     },
-    /**
-     * Create a new sale
-     * @param {Object} form - The form data for the sale
-     * @returns {Number} - The response status of the sale creation request
-     */
-    async createSale(form) {
-      try {
-        const response = await create_request("create-sale/", {
-          email: form.email,
-          address: form.address,
-          city: form.city,
-          state: form.state,
-          postal_code: form.postalCode,
-          sold_products: form.soldProducts,
-        });
-
-        return response.status;
-      } catch (error) {
-        console.error("Error creating sale:", error);
-      }
-    },
   },
 });

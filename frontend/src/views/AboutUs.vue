@@ -36,7 +36,7 @@
 
             <!-- Image content -->
             <div class="relative order-2 lg:order-1">
-                <img src="@/assets/images/about_us/image2.png" alt="Blue Mom partnership"
+                <img src="@/assets/images/about_us/image2.webp" alt="Blue Mom partnership"
                     class="sticky top-0 mx-auto rounded-full shadow-lg object-cover w-2/3" />
             </div>
 
