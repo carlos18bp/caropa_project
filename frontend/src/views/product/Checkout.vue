@@ -303,10 +303,8 @@
 
             // Assign sold products and create the sale
             form.soldProducts = extractProductInfo(cartProducts.value);
-
             try {
                 const status = await paypalStore.submitFormAndCaptureOrder(form);
-
                 if (status === 200) {
                     Swal.fire({
                         icon: 'success',
