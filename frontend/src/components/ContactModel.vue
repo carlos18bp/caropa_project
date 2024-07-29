@@ -8,7 +8,7 @@
         <div ref="modal" class="relative w-full h-fit max-w-md md:max-w-lg lg:max-w-2xl mx-auto bg-white rounded-lg">
                 <!-- Modal header -->
                 <div class="flex items-start justify-between p-5 pb-0">
-                    <h3 class="text-2xl font-semibold text-black lg:text-4xl">
+                    <h3 class="text-2xl font-semibold text-black lg:text-4xl test-contact-getInTouch">
                         {{ $t('contact').getInTouch }}
                     </h3>
                     <XMarkIcon @click="closeContact()" class="text-gray-500 cursor-pointer w-6 h-6">

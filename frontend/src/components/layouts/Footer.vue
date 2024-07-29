@@ -10,8 +10,8 @@
                 <!-- Logo and company description -->
                 <div class="space-y-8">
                     <img src="@/assets/images/logo2.png" alt="Logo of Caropa Couture">
-                    <p class="text-md font-medium leading-6 text-white test-text">
-                        {{ $t('text') }}
+                    <p class="text-md font-medium leading-6 text-white test-textBrandMission">
+                        {{ $t('textBrandMission') }}
                     </p>
 
                     <!-- Social media icons -->
@@ -34,13 +34,19 @@
                 <div class="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
                     <div class="md:grid md:grid-cols-2 md:gap-8">
                         <div>
-                            <h3 class="text-sm font-medium leading-6 text-white test-company">{{ $t('company') }}</h3>
+                            <h3 class="text-sm font-medium leading-6 text-white test-company">
+                                {{ $t('company') }}
+                            </h3>
                             <ul role="list" class="mt-6 grid grid-cols-1 gap-4 font-regular text-white text-sm">
                                 <li>
-                                    <a @click="goTo('catalog')" class="cursor-pointer test-shop">{{ $t('shop') }}</a>
+                                    <a @click="goTo('catalog')" class="cursor-pointer test-shop">
+                                        {{ $t('shop') }}
+                                    </a>
                                 </li>
                                 <li>
-                                    <a @click="goTo('about_us')" class="cursor-pointer test-about">{{ $t('about') }}</a>
+                                    <a @click="goTo('about_us')" class="cursor-pointer test-about">
+                                        {{ $t('about') }}
+                                    </a>
                                 </li>
                                 <li>
                                     <a @click="showContactModel = true" class="cursor-pointer test-contact">
@@ -56,7 +62,9 @@
                             </ul>
                         </div>
                         <div class="mt-10 md:mt-0">
-                            <h3 class="text-sm font-medium leading-6 text-white test-navigate">{{ $t('navigate') }}</h3>
+                            <h3 class="text-sm font-medium leading-6 text-white test-navigate">
+                                {{ $t('navigate') }}
+                            </h3>
                             <ul role="list" class="mt-6 grid grid-cols-2 gap-4 font-regular text-white text-sm">
                                 <li v-for="category in categories" :key="category">
                                     <a @click="filterProducts(category)" class="cursor-pointer">
@@ -71,7 +79,9 @@
                             <h3 class="text-sm font-semibold leading-6 text-white">LEGAL</h3>
                             <ul role="list" class="mt-6 space-y-4 font-regular text-white text-sm">
                                 <li>
-                                    <a href="#" class="leading-6 test-termsConditions">{{ $t('termsConditions') }}</a>
+                                    <a href="#" class="leading-6 test-termsConditions">
+                                        {{ $t('termsConditions') }}
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -81,7 +91,9 @@
             
             <!-- Footer bottom section -->
             <div class="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
-                <p class="text-sm font-medium leading-5 text-white test-rights">{{ $t('rights') }}</p>
+                <p class="text-sm font-medium leading-5 text-white test-rights">
+                    {{ $t('rights') }}
+                </p>
             </div>
         </div>
     </footer>

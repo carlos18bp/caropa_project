@@ -5,11 +5,15 @@
 
             <!-- Text content -->
             <div>
-                <h2 class="text-2xl font-medium mb-4 test-firstSection-whoWeAre-title">{{ $t('firstSection').whoWeAre.title }}</h2>
+                <h2 class="text-2xl font-medium mb-4 test-firstSection-whoWeAre-title">
+                    {{ $t('firstSection').whoWeAre.title }}
+                </h2>
                 <p class="mb-4 font-regular test-firstSection-whoWeAre-paragraph">
                     {{ $t('firstSection').whoWeAre.paragraph }}
                 </p>
-                <h2 class="text-2xl font-medium mb-4 test-firstSection-ourStory-title">{{ $t('firstSection').ourStory.title }}</h2>
+                <h2 class="text-2xl font-medium mb-4 test-firstSection-ourStory-title">
+                    {{ $t('firstSection').ourStory.title }}
+                </h2>
                 <p class="mb-4 font-regular test-firstSection-ourStory-paragraphOne" v-html=" $t('firstSection').ourStory.paragraphOne ">
                 </p>
                 <p class="mb-4 font-regular test-firstSection-ourStory-paragraphTwo">
